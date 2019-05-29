@@ -1,17 +1,23 @@
 <ion-header>
     <ion-toolbar>
         <!-- <ion-buttons slot="secondary"> -->
-        <ion-grid>
-            <ion-row class="ion-justify-content-end">
-                <ion-buttons>
-                    <ion-back-button></ion-back-button>
-                    <!-- <ion-title>create</ion-title> -->
-                    <ion-button [disabled]="form.invalid" slot="end" (click)="trySave()" routerDirection="forward">
-                        Done
-                    </ion-button>
-                </ion-buttons>
-            </ion-row>
-        </ion-grid>
+        <!-- <ion-grid> -->
+        <!-- <ion-row> -->
+        <div float-left>
+            <ion-buttons>
+                <ion-back-button></ion-back-button>
+            </ion-buttons>
+        </div>
+        <div float-right>
+            <ion-buttons>
+                <ion-button [disabled]="form.invalid" slot="end" (click)="trySave()" routerDirection="forward">
+                    Done
+                </ion-button>
+            </ion-buttons>
+        </div>
+        <!-- <ion-title>create</ion-title> -->
+        <!-- </ion-row> -->
+        <!-- </ion-grid> -->
 
     </ion-toolbar>
 </ion-header>

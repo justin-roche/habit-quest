@@ -9,6 +9,8 @@ import { ToastController } from '@ionic/angular';
 })
 export class Tab1Page {
     private habits = [];
+    private selectedHabits = [];
+    private mode = 'normal';
     private toast;
 
     constructor(private hs: HabitsService, private toastController: ToastController) {
@@ -24,6 +26,14 @@ export class Tab1Page {
             console.log('habits received', this.habits);
         })
     }
+
+    removeSelectedHabits() {
+        this.hs.removeSelectedHabits();
+        this.mode = 'normal'
+    }
+
+
+
 
     ngAfterViewInit() {
     }
@@ -42,6 +52,23 @@ export class Tab1Page {
     completeTask(h) {
         this.hs.completeTask(h)
     }
+
+    selectHabit(e, h) {
+        console.log(e);
+        if (!e.target.checked) {
+            this.selectedHabits.push(h)
+
+        } else {
+            this.selectedHabits = this.selectedHabits.filter((_h) => {
+                return _h != h;
+            })
+        }
+        console.log(this.selectedHabits);
+
+    }
+
+
+
 
     // async presentToast() {
     //     const toast = await this.toastController.create({
@@ -76,5 +103,11 @@ export class Tab1Page {
         this.toast.present();
     }
 
-
+    private toggleDeleteMode() {
+        if (this.mode == 'normal') {
+            this.mode = 'delete';
+        } else {
+            this.mode = 'normal';
+        }
+    }
 }

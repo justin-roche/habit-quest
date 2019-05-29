@@ -18,7 +18,7 @@ export class HabitsService {
     constructor(private s: Storage) {
         s.set('habits', []);
         this.habits = new BehaviorSubject([]);
-        // this.addHabit(mockData[0]);
+        this.addHabit(mockData[0]);
     }
 
     private assignDates(h) {
@@ -59,6 +59,16 @@ export class HabitsService {
             this.h = val;
             this.habits.next(this.h);
         });
+    }
+
+    public removeSelectedHabits(hs) {
+        // let s = this
+        this.h = this.h.filter((h) => {
+            return this.h.every((_h) => {
+                return _h.name != h.name;
+            })
+        })
+        this.habits.next(this.h);
     }
 
     public completeTask(h) {

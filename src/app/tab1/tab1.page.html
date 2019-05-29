@@ -15,20 +15,51 @@
             <ion-button>
                 <ion-icon slot="icon-only" name="create"></ion-icon>
             </ion-button>
-            <ion-button routerDirection="forward">
+            <ion-button (click)="toggleDeleteMode()" routerDirection="forward">
 
                 <ion-icon name="remove-circle-outline"></ion-icon>
             </ion-button>
 
             <ion-button [routerLink]="['create']" routerDirection="forward">
-
                 <ion-icon name="add-circle-outline"></ion-icon>
             </ion-button>
 
         </ion-buttons>
         <!-- <ion-title>Default Buttons</ion-title> -->
     </ion-toolbar>
+
 </ion-header>
+<!-- <ion-toolbar no-padding style="border:3px solid white"> -->
+<!-- <ion-toolbar float-left style="border:3px solid white;width:50%"> -->
+<!-- </ion-toolbar> -->
+<ion-toolbar *ngIf="mode == 'delete'" no-padding>
+    <div style="display:flex;justify-content:center;padding:0;border:none;">
+
+
+        <ion-button (click)="mode = 'normal'" style="display:flex;align-items:center;flex-basis:0.5;min-height:44px;background-color:blue;border:none;" class="btn-fill" no-margin full large>
+            Cancel
+        </ion-button>
+
+        <ion-button (click)="removeSelectedHabits()" style="display:flex;align-items:center;flex-basis:0.5;min-height:44px;background-color:red;" class="btn-fill" no-margin full large>
+            Delete
+        </ion-button>
+
+    </div>
+    <!-- <ion-grid no-margin no-padding style="border:3px solid green;min-height:44px">
+         <ion-row no-margin no-padding>
+         <ion-col size="6" no-margin no-padding class="col-fill">
+         <ion-button no-margin class="btn-fill" no-margin full large>Update</ion-button>
+         </ion-col>
+         <ion-col size="6" no-margin no-padding class="col-fill">
+         </ion-col>
+         </ion-row>
+
+         </ion-grid> -->
+</ion-toolbar>
+
+<!-- </ion-buttons> -->
+<!-- <ion-titleDefault Buttons</ion-title> -->
+<!-- </ion-toolbar> -->
 
 <ion-content>
     <!-- <ion-card class="welcome-card">
@@ -95,10 +126,12 @@
                     <ion-col size="3">
                         <!-- complete -->
 
-                        <ion-button (click)="completeTask(h)">
+                        <ion-button *ngIf="mode == 'normal'" (enterclick)="completeTask(h)">
                             <ion-icon name="checkmark-circle-outline"></ion-icon>
                             <!-- complete -->
                         </ion-button>
+                        <ion-checkbox *ngIf="mode == 'delete'" color="danger" (click)="selectHabit($event,h)"></ion-checkbox>
+
 
                     </ion-col>
                 </ion-row>
