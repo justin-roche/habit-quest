@@ -14,10 +14,10 @@ export class SettingsPage {
     private theme = null;
 
     constructor(private ss: StateService) {
-        // this.ss.theme.asObservable().pipe(take(1)).subscribe((r) => {
-        //     this.darkMode = (r == 'dark-theme');
-        //     console.log('dark', this.darkMode);
-        // })
+        this.ss.theme.asObservable().pipe(take(1)).subscribe((r) => {
+            this.darkMode = (r == 'dark-theme');
+            console.log('dark', this.darkMode);
+        })
 
     }
 

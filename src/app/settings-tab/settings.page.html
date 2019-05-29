@@ -10,7 +10,23 @@
     <ion-list>
         <ion-item>
             <ion-label>Dark Mode</ion-label>
-            <ion-toggle (ionChange)="toggleDark()"></ion-toggle>
+            <ion-toggle [ngModel]="darkMode" (ionChange)="toggleDark()"></ion-toggle>
+        </ion-item>
+        <ion-item>
+            <ion-label>Zen Lock</ion-label>
+            <ion-toggle></ion-toggle>
+        </ion-item>
+        <ion-item>
+            <ion-label>Conserve Willpower</ion-label>
+            <ion-toggle></ion-toggle>
+        </ion-item>
+        <ion-item>
+            <ion-label>Require Purpose Statement</ion-label>
+            <ion-toggle></ion-toggle>
+        </ion-item>
+        <ion-item>
+            <ion-label>Require new identity PIN</ion-label>
+            <ion-toggle></ion-toggle>
         </ion-item>
     </ion-list>
 </ion-content>

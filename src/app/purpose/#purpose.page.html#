@@ -1,0 +1,29 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>purpose</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid style="height:100%">
+        <ion-row style="padding:20px;height:33%" class="ion-justify-content-end">
+            <ion-label floating>
+                takea moment to think about the reasons for adopting this habit. how will your life improve?
+            </ion-label>
+        </ion-row>
+        <ion-row style="padding:20px;height:33%">
+            <ion-textarea style="border: 1px solid gray" [(ngModel)]="purpose"></ion-textarea>
+        </ion-row>
+        <ion-row style="padding:20px;height:10%">
+            <ion-progress-bar value="0.25" buffer="0.5"></ion-progress-bar>
+        </ion-row>
+        <ion-row style="height:33%" justify-content-end>
+            <ion-button>
+                Next
+            </ion-button>
+
+        </ion-row>
+    </ion-grid>
+
+
+</ion-content>

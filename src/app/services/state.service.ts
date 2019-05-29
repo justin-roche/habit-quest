@@ -9,7 +9,7 @@ export class StateService {
     public theme: BehaviorSubject<String>;
 
     constructor() {
-        this.theme = new BehaviorSubject('light-theme');
+        this.theme = new BehaviorSubject('dark-theme');
     }
 
     setActiveTheme(val) {

@@ -8,6 +8,14 @@
         background-color: #090f2f;
         color: #fff;
         --background: #090f2f;
+
+        --ion-text-color:white;
+    }
+    ion-button {
+
+        background-color: #090f2f;
+        color: #fff;
+        --background: #090f2f;
     }
     ion-tab-bar {
         background-color: #090f2f;
@@ -19,6 +27,16 @@
         --color: white;
         --background: #090f2f;
         background-color: #090f2f;
+    }
+    ion-list-header {
+        --color: #2885c6;
+        /* white; */
+        --background: #090f2f;
+        background-color: #090f2f;
+    }
+
+    .monthview-current {
+        background-color: #2885c6 !important;
     }
 
     ion-item {
@@ -44,5 +62,15 @@
 
     .header .toolbar-background {
         border-color: #ff0fff;
+    }
+
+    .button-native{
+        color:white;
+    }
+    table{
+
+        --color:white;
+        --ion-text-color:white;
+
     }
 }  

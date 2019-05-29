@@ -19,10 +19,10 @@ export class AppComponent {
     ) {
         this.initializeApp();
 
-this.ss.getActiveTheme().subscribe((val) => {
-console.log('app', val);
-this.theme = val;
-});
+        this.ss.getActiveTheme().subscribe((val) => {
+            console.log('app', val);
+            this.theme = val;
+        });
 
     }
 

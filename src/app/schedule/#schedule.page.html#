@@ -1,0 +1,12 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>schedule</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <calendar (onTimeSelected)="onTimeSelected($event)" [currentDate]="calendar.currentDate" [noEventsLabel]="''" [showEventDetail]="false">
+    </calendar>
+    <!-- <calendar [currentDate]="calendar.currentDate" [calendarMode]="'day'"> -->
+    <!-- </calendar> -->
+</ion-content>

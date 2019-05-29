@@ -1,0 +1,6 @@
+ion-input{
+    text-align: right;
+}
+.native-input{
+    text-align: right !important;
+}
