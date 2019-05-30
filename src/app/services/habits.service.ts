@@ -13,26 +13,37 @@ const mockData =
 export class HabitsService {
 
     private h = [];
-    public habits: BehaviorSubject<String>;
+
+    public habits: BehaviorSubject<Array<any>>;
+    public habitsForDate: BehaviorSubject<Array<any>>;
 
     constructor(private s: Storage) {
         s.set('habits', []);
         this.habits = new BehaviorSubject([]);
+        this.habitsForDate = new BehaviorSubject([]);
+        this.habits.subscribe(() => {
+
+        })
+
         this.addHabit(mockData[0]);
     }
 
     private assignDates(h) {
-        const start = moment().startOf('day');
+        let start = null;
+        if (h.start_date) {
+            start = moment(h.start_date).startOf('day');
+        } else {
+            start = moment().startOf('day');
+        }
         let next = start.clone().add(1, h.frequency_units);
         h.created_on = start.format();
 
         h.scheduled_tasks = [];
         h.completed_tasks = [];
-        const x = start.clone().add(1, h.frequency_units);
-        console.log('x', x);
+
         const end = start.add(h.end_quantity, h.end_units);
         while (next <= end) {
-            h.scheduled_tasks.push(next);
+            h.scheduled_tasks.push(next.format());
             next = next.clone().add(1, h.frequency_units);
         }
         h.current_scheduled_task = h.scheduled_tasks[0];

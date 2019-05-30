@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-schedule',
@@ -9,12 +12,24 @@ export class SchedulePage implements OnInit {
     private calendar = {
         currentDate: new Date,
     }
-    constructor() { }
+    private selectedDate;
+
+    constructor(private mc: ModalController) { }
 
     ngOnInit() {
     }
 
+    dismiss() {
+        this.mc.dismiss(this.selectedDate)
+    }
+
+
+
+
+
     onTimeSelected = (ev: { selectedTime: Date, events: any[] }) => {
-        console.log('Selected time: ' + ev.selectedTime + ', hasEvents: ' + (ev.events !== undefined && ev.events.length !== 0));
+        let d = moment(ev.selectedTime).format()
+        console.log('selected', d);
+        this.selectedDate = ev.selectedTime;
     };
 }

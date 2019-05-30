@@ -7,6 +7,9 @@ import { Component } from '@angular/core';
 })
 export class Tab3Page {
 
+    private calendar = {
+        currentDate: new Date,
+    }
   constructor() {}
 
 }

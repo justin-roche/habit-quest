@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HabitsService } from '../services/habits.service';
 import { ToastController } from '@ionic/angular';
 
+import * as moment from 'moment';
 @Component({
     selector: 'app-tab1',
     templateUrl: 'tab1.page.html',
@@ -9,26 +10,37 @@ import { ToastController } from '@ionic/angular';
 })
 export class Tab1Page {
     private habits = [];
+    private allHabits = [];
     private selectedHabits = [];
+    private currentDate = moment();
     private mode = 'normal';
     private toast;
 
     constructor(private hs: HabitsService, private toastController: ToastController) {
         this.hs.habits.asObservable().subscribe((d) => {
-            this.habits = d;
-
-            this.habits = this.habits.filter((h) => {
-                return h.scheduled_tasks.length > 0;
-            })
-            if (this.habits.length == 0) {
+            if (d.length == 0) {
                 this.presentToast();
             }
-            console.log('habits received', this.habits);
+            this.allHabits = d;
+            this.handleData()
         })
     }
 
+    handleData() {
+        this.habits = this.allHabits.filter((h) => {
+            return h.scheduled_tasks.length > 0;
+        }).filter((h) => {
+            let x = this.currentDate.isSame(h.currently_scheduled_task, 'd') || h.scheduled_tasks.some((t) => {
+                return this.currentDate.isSame(t, 'd')
+            })
+            return x
+        })
+
+        console.log('habits received', this.habits);
+    }
+
     removeSelectedHabits() {
-        this.hs.removeSelectedHabits();
+        this.hs.removeSelectedHabits(this.selectedHabits);
         this.mode = 'normal'
     }
 
@@ -38,11 +50,12 @@ export class Tab1Page {
     ngAfterViewInit() {
     }
 
-    ngOnDestroy() {
-        this.toast.dismiss()
-    }
     ionViewWillLeave() {
-        this.toast.dismiss()
+
+        if (this.toast) {
+            this.toast.dismiss()
+            this.toast = null
+        }
     }
 
     ionViewWillEnter() {
@@ -50,6 +63,8 @@ export class Tab1Page {
     }
 
     completeTask(h) {
+        console.log('completing');
+
         this.hs.completeTask(h)
     }
 
@@ -109,5 +124,14 @@ export class Tab1Page {
         } else {
             this.mode = 'normal';
         }
+    }
+
+    private decrementDate() {
+        this.currentDate = this.currentDate.subtract(1, 'day');
+        this.handleData()
+    }
+    private incrementDate() {
+        this.currentDate = this.currentDate.add(1, 'day');
+        this.handleData()
     }
 }

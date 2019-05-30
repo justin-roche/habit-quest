@@ -1,9 +1,18 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Tab Three
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content></ion-content>
+
+<ion-segment (ionChange)="segmentChanged($event)" value="habits">
+    <ion-segment-button value="summary">
+        <ion-label>Summary</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="habits">
+        <ion-label>Habits</ion-label>
+    </ion-segment-button>
+</ion-segment>
+
+<ion-content>
+    <ion-content>
+        <calendar [currentDate]="calendar.currentDate" [noEventsLabel]="''" [formatDayHeader]="" [calendarMode]="'month'" [showEventDetail]="false" [formatMonthTitle]="'MMMM '">
+        </calendar>
+    </ion-content>
+
+</ion-content>
