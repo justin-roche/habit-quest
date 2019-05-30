@@ -4,6 +4,7 @@ import { SchedulePage } from '../schedule/schedule.page';
 import { ModalController, NavController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Scheduler } from 'rxjs';
+import { options } from './form-options';
 import { HabitsService } from '../services/habits.service';
 
 @Component({
@@ -13,47 +14,13 @@ import { HabitsService } from '../services/habits.service';
 })
 export class CreatePage implements OnInit {
 
+    private formOptions = options;
     private calendar = {
         currentDate: new Date,
     }
-    private formOptions = {
-        start_types: [
-            { display: 'today', value: 'today' },
-            { display: 'first available', value: 'first' },
-            { display: 'set date', value: 'date' },
-        ],
-        frequency_units: [
-            { display: 'daily', value: 'day' },
-            { display: 'weekly', value: 'week' },
-            { display: 'monthly', value: 'month' },
-        ],
-        groups: [
-            { display: 'health', value: 'health' },
-            { display: 'work', value: 'work' },
-            { display: 'social', value: 'social' },
-            { display: 'other', value: 'other' },
-        ],
-        difficulties: [
-            { display: '1', value: 1 },
-            { display: '2', value: 2 },
-            { display: '3', value: 3 },
-        ],
-        priorities: [
-            { display: '1', value: 1 },
-            { display: '2', value: 2 },
-            { display: '3', value: 3 },
-        ],
-        end_units: [
-            { display: 'days', value: 'day' },
-            { display: 'weeks', value: 'week' },
-            { display: 'months', value: 'month' },
-            { display: 'times', value: 'times' },
-            { display: 'set date', value: 'date' },
-        ],
-    }
     private form: FormGroup;
     customAlertOptions: any = {
-        header: 'Pizza Toppings',
+        header: '',
         subHeader: 'Select your toppings',
         message: '$1.00 per topping',
         translucent: true
@@ -79,11 +46,12 @@ export class CreatePage implements OnInit {
 
     ngAfterViewInit() {
         // this.presentPurposeModal()
-        console.log('calling');
+
+        // this.presentScheduleModal()
     }
     private onInit() {
-        console.log('calling');
-        // this.presentPurposeModal()
+        // console.log('calling');
+        this.presentPurposeModal()
     }
     private trySave() {
         let habit = this.form.value
@@ -104,14 +72,19 @@ export class CreatePage implements OnInit {
     }
 
 
-    private async presentScheduleModal() {
+    private async presentScheduleModal(formControl = 'start_date') {
         // const modal = await modalController.create({...}); const { data } = await modal.onDidDismiss(); console.log(data);
 
         const modal = await this.modalController.create({
             component: SchedulePage,
             componentProps: { showBackdrop: true }
         });
-        return await modal.present();
+        await modal.present();
+        const { data } = await modal.onDidDismiss();
+        this.form.controls[formControl].setValue(data)
+        console.log('return', data, this.form.value);
+
+
     }
 
     ngOnInit() {
@@ -122,7 +95,10 @@ export class CreatePage implements OnInit {
             frequency_units: ['day'],
             end_quantity: [90],
             end_units: ['day'],
+
             start_type: ['today'],
+            start_date: [null],
+
             duration: [''],
             clock_time: [''],
             difficulty: [1],
@@ -130,15 +106,17 @@ export class CreatePage implements OnInit {
             group: ['health'],
             priority: [1],
         })
+
         this.form.statusChanges.subscribe((f) => {
-            // console.log(f);
-            // console.log(this.form.invalid);
-            // console.log(this.form.controls);
+        })
+        this.form.controls['start_type'].valueChanges.subscribe((f) => {
+            console.log('control changed right , fail', f);
+
             if (this.form.controls['start_type'].value == 'date') {
                 this.presentScheduleModal()
             }
-
         })
+
 
     }
 }

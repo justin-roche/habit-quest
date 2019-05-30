@@ -30,8 +30,11 @@ export class Tab1Page {
         this.habits = this.allHabits.filter((h) => {
             return h.scheduled_tasks.length > 0;
         }).filter((h) => {
-            let x = this.currentDate.isSame(h.currently_scheduled_task, 'd') || h.scheduled_tasks.some((t) => {
-                return this.currentDate.isSame(t, 'd')
+            let x = this.currentDate.isSame(h.current_scheduled_task, 'd') || h.scheduled_tasks.some((t) => {
+                let y = this.currentDate.isSame(t, 'd')
+                console.log('y', y);
+                return y;
+
             })
             return x
         })

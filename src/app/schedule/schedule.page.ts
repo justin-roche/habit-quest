@@ -23,13 +23,9 @@ export class SchedulePage implements OnInit {
         this.mc.dismiss(this.selectedDate)
     }
 
-
-
-
-
     onTimeSelected = (ev: { selectedTime: Date, events: any[] }) => {
         let d = moment(ev.selectedTime).format()
         console.log('selected', d);
-        this.selectedDate = ev.selectedTime;
+        this.selectedDate = d;
     };
 }

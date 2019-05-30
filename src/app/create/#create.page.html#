@@ -52,16 +52,25 @@
         <ion-list-header>
             <ion-label>Scheduling</ion-label>
         </ion-list-header>
-        <ion-item>
+        <ion-item [attr.lines]="form.controls['start_date'].value? 'none':''">
+
             <ion-label>
                 Start On
             </ion-label>
-            <ion-select [formControl]="form.controls.start_type" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
+
+
+            <ion-select float-right [formControl]="form.controls.start_type" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
                 <ion-select-option *ngFor="let item of formOptions.start_types" [value]="item.value">{{item.display}}</ion-select-option>
             </ion-select>
         </ion-item>
 
-        <ion-item>
+        <ion-item *ngIf="form.controls['start_date'].value">
+
+            <ion-text slot="end">{{form.controls.start_date.value | date: 'dd/MM/yyyy'}}</ion-text>
+
+        </ion-item>
+
+        <ion-item lines="none">
             <ion-label>Repeat</ion-label>
             <ion-input slot="end" type="text" style="border:1px solid green" style="text-align:right" [formControl]="form.controls.frequency_quantity"></ion-input>
         </ion-item>
@@ -77,7 +86,7 @@
 
         <!-- <calendar (onTimeSelected)="onTimeSelected($event)" [currentDate]="calendar.currentDate" [noEventsLabel]="''" [showEventDetail]="false"> -->
         <!-- </calendar> -->
-        <ion-item>
+        <ion-item lines="none">
             <ion-label>
                 End After
             </ion-label>

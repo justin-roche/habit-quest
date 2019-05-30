@@ -11,3 +11,37 @@
 @import '~@ionic/angular/css/flex-utils.css';
 @import "theme/theme.dark";
 @import "theme/theme.light";
+
+.monthview-datetable td, .monthview-datetable th{
+    border: none !important;
+    border-radius: 30px;
+}
+.monthview-primary-with-event{
+        background-color: blue;
+
+}
+
+.calendar-day {
+    border-radius: 45px;
+    padding: 3px 5px;
+
+    &.primary {
+        // background-color: --background-color;
+        // color: white;
+    }
+
+    // &.success {
+    //     background-color: color($colors, 'success');
+    //     color: white;
+    // }
+
+    // &.warning {
+    //     background-color: color($colors, 'warning');
+    //     color: white;
+    // }
+
+    // &.danger {
+    //     background-color: color($colors, 'danger');
+    //     color: white;
+    // }
+}

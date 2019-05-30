@@ -5,7 +5,12 @@ import * as moment from 'moment';
 
 // let mockData = [{ "description": "a", "name": "b", "frequency_quantity": 1, "frequency_units": "daily", "abstinence": false, "end_quantity": 90, "end_units": "day", "start_type": "today", "time": "", "difficulty": 1, "group": "health", "priority": 1 }]
 const mockData =
-    [{ description: 'a', name: 'b', frequency_quantity: 1, frequency_units: 'day', abstinence: false, end_quantity: 3, end_units: 'day', start_type: 'today', time: '', difficulty: 1, group: 'health', priority: 1 }];
+    [{
+        description: 'a', name: 'b', frequency_quantity: 1, frequency_units: 'day', abstinence: false, end_quantity: 3, end_units: 'day', start_type: 'today',
+        // start_date: "2019-05-07T12:00:00+07:00",
+
+        time: '', difficulty: 1, group: 'health', priority: 1
+    }];
 
 @Injectable({
     providedIn: 'root'

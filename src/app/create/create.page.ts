@@ -82,7 +82,7 @@ export class CreatePage implements OnInit {
         await modal.present();
         const { data } = await modal.onDidDismiss();
         this.form.controls[formControl].setValue(data)
-        console.log('return', this.form.value);
+        console.log('return', data,this.form.value);
 
 
     }
@@ -110,7 +110,7 @@ export class CreatePage implements OnInit {
         this.form.statusChanges.subscribe((f) => {
         })
         this.form.controls['start_type'].valueChanges.subscribe((f) => {
-            console.log('control changed right , fail',f);
+            console.log('control changed right , fail', f);
 
             if (this.form.controls['start_type'].value == 'date') {
                 this.presentScheduleModal()
