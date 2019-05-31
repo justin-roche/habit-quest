@@ -115,7 +115,7 @@
                     <ion-col size="3">
                         <!-- complete -->
 
-                        <ion-button *ngIf="mode == 'normal'" (click)="completeTask(h)">
+                        <ion-button *ngIf="mode == 'normal'  && h._canComplete" (click)="completeTask(h)">
                             <ion-icon name="checkmark-circle-outline"></ion-icon>
                             <!-- complete -->
                         </ion-button>

@@ -26,7 +26,11 @@ export class Tab3Page {
 
     constructor(private hs: HabitsService) {
         this.hs.habits.asObservable().subscribe((d) => {
-            this.habits = d
+            if (d) {
+
+                this.habits = d
+                this.setHabit(this.habits[0])
+            }
         })
 
 
@@ -35,16 +39,35 @@ export class Tab3Page {
     setHabit(h) {
         console.log('h', h);
         let s = []
-        h.scheduled_tasks.forEach((t) => {
+        h.tasks.missed.forEach((t) => {
             s.push({
                 title: h.name,
                 startTime: new Date(t),
                 endTime: new Date(moment(t).add(1, 'hour').format()),
-                allDay: false
+                allDay: false,
+                color: 'failure',
+            })
+        })
+        h.tasks.awaiting.forEach((t) => {
+            s.push({
+                title: h.name,
+                startTime: new Date(t),
+                endTime: new Date(moment(t).add(1, 'hour').format()),
+                allDay: false,
+                color: 'awaiting',
+            })
+        })
+        h.tasks.completed.forEach((t) => {
+            s.push({
+                title: h.name,
+                startTime: new Date(t),
+                endTime: new Date(moment(t).add(1, 'hour').format()),
+                allDay: false,
+                color: 'completed',
             })
         })
         this.source = s;
-        console.log(this.source);
+        // console.log(this.source);
         // this.calendar.loadEvents();
 
     }

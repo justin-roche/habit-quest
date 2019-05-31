@@ -14,34 +14,29 @@
 
 .monthview-datetable td, .monthview-datetable th{
     border: none !important;
-    border-radius: 30px;
 }
 .monthview-primary-with-event{
-        background-color: blue;
-
+        background-color: transparent !important;
 }
 
 .calendar-day {
-    border-radius: 45px;
-    padding: 3px 5px;
+    border-radius: 30px;
+        color: black;
 
     &.primary {
-        // background-color: --background-color;
-        // color: white;
+        color: white;
     }
 
-    // &.success {
-    //     background-color: color($colors, 'success');
-    //     color: white;
-    // }
-
-    // &.warning {
-    //     background-color: color($colors, 'warning');
-    //     color: white;
-    // }
-
-    // &.danger {
-    //     background-color: color($colors, 'danger');
-    //     color: white;
-    // }
+    &.failure {
+        border: 3px solid gray;
+    }
+    
+    &.awaiting {
+        border: 3px solid green;
+        
+    }
+    &.completed {
+        border: 3px solid blue;
+                     
+    }
 }

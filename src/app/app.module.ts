@@ -13,6 +13,7 @@ import { StateService } from './services/state.service';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgCalendarModule } from 'ionic2-calendar';
 import { HabitsService } from './services/habits.service';
+import { StorageService } from './services/storage.service';
 
 @NgModule({
     declarations: [AppComponent],
@@ -27,6 +28,7 @@ import { HabitsService } from './services/habits.service';
         StatusBar,
         StateService,
         HabitsService,
+        StorageService,
         SplashScreen,
 
         NgCalendarModule,
