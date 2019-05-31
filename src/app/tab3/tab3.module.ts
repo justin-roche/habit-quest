@@ -8,14 +8,14 @@ import { Tab3Page } from './tab3.page';
 import { NgCalendarModule } from 'ionic2-calendar';
 
 @NgModule({
-  imports: [
-    IonicModule,
-    CommonModule,
-    FormsModule,
+    imports: [
+        IonicModule,
+        CommonModule,
+        FormsModule,
 
-      NgCalendarModule,
-    RouterModule.forChild([{ path: '', component: Tab3Page }])
-  ],
-  declarations: [Tab3Page]
+        NgCalendarModule,
+        RouterModule.forChild([{ path: '', component: Tab3Page }])
+    ],
+    declarations: [Tab3Page]
 })
-export class Tab3PageModule {}
+export class Tab3PageModule { }

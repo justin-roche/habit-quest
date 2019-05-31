@@ -3,14 +3,12 @@ import { BehaviorSubject } from 'rxjs';
 import * as moment from 'moment';
 import { StorageService } from './storage.service';
 
-// let mockData = [{ "description": "a", "name": "b", "frequency_quantity": 1, "frequency_units": "daily", "abstinence": false, "end_quantity": 90, "end_units": "day", "start_type": "today", "time": "", "difficulty": 1, "group": "health", "priority": 1 }]
-
 @Injectable({
     providedIn: 'root'
 })
 export class HabitsService {
 
-    private h = null;
+    private h = [];
     private currentDate = moment();
 
     public habits: BehaviorSubject<Array<any>>;
@@ -21,87 +19,66 @@ export class HabitsService {
         this.loadHabits()
     }
 
-    private assignDates(h) {
-        h.created_on = moment().format();
-        let start = null;
-
-        if (h.start_date) {
-            start = moment(h.start_date).startOf('day');
-        } else {
-            start = moment().startOf('day');
-            // console.log('st', start);
-
-        }
-        // .add(1, h.frequency_units);
-
-
-        let tasks = {
-            scheduled: [],
-            completed: [],
-            awaiting: [],
-            missed: [],
-        };
-
-        let next = start.clone()
-        const end = start.add(h.end_quantity, h.end_units);
-        while (next <= end) {
-            tasks.scheduled.push(next.format());
-            next = next.clone().add(1, h.frequency_units);
-        }
-        h.current_scheduled_task = tasks.scheduled[0];
-        tasks.awaiting = tasks.scheduled.slice() // 
-
-        h.tasks = tasks;
-
-    }
-
-    private assignStatistics(h) {
-        h.statistics = {
-            // total_scheduled: h.scheduled.length,
-            completed_percentage: 0,
-            longest_streak: 0,
-            points: 0,
-            finished_runs: [],
-        };
-    }
-
-    private updateStatistics(h) {
-        h.statistics.completed_percentage = Math.floor((h.tasks.completed.length / h.tasks.scheduled.length) * 100);
-
-    }
-
-    public loadHabits() {
-        // this.addHabit(mockData[0]);
-
+    loadHabits() {
         this.ss.load().subscribe((v) => {
-            // console.log('loaded', v);
+            console.log('loaded storage', v)
             this.h = v;
-            this.updateLoadData();
+            this.checkForMissedTasks();
+            console.log('loaded', this.h)
             this.habits.next(this.h);
         })
-
     }
 
-    updateLoadData() {
+    checkForMissedTasks() {
         this.h.forEach((h) => {
-            // console.log('loaded data', JSON.parse(JSON.stringify(h)));
-
-            h.tasks.awaiting = h.tasks.awaiting.map((t) => {
-                let x = moment(t).isBefore(this.currentDate, 'day');
-                // console.log('missed', x);
-
-                if (x) {
-                    h.tasks.missed.push(t)
-                    return null;
-                }
-                return t
-            }).filter(x => x != null)
-
+            h.tasks.forEach((t) => {
+                if (this.isMissed(t)) t.status = 'MISSED'
+            })
         })
+    }
+
+    isMissed(t) {
+        // debugger;
+        return moment(t.date).isBefore(this.currentDate, 'day');
+    }
+
+    addHabit(h) {
+        this.createTasks(h);
+        this.createStatistics(h);
+        console.log(JSON.stringify(h))
+        this.h.push(h);
+        this.habits.next(this.h);
+    }
+
+    createTasks(h) {
+        h.created_on = moment().format();
+        h.tasks = [];
+        h.status = 'AWAITING';
+
+        let next = this.getStartDate(h);
+        // let next = start.clone()
+        const end = next.clone().add(h.end_quantity, h.end_units);
+
+        while (next <= end) {
+            let task = {
+                date: next.format(),
+                status: 'AWAITING'
+            }
+            h.tasks.push(task);
+            next = next.clone().add(1, h.frequency_units);
+        }
 
     }
 
-    public removeSelectedHabits(hs) {
+    getStartDate(h) {
+        if (h.start_date) {
+            return moment(h.start_date).startOf('day');
+        }
+        return moment().startOf('day');
+    }
+
+
+    removeSelectedHabits(hs) {
         this.h = this.h.filter((h) => {
             return this.h.every((_h) => {
                 return _h.name != h.name;
@@ -110,35 +87,48 @@ export class HabitsService {
         this.habits.next(this.h);
     }
 
-    public completeTask(h, t: Moment) {
-        const completed_time = moment(t).startOf('day').format();
-        h.tasks.completed.push(completed_time);
+    completeTask(h, time) {
+        let task = h.tasks.filter((t) => {
+            return time.isSame(t.date, 'd')
+        })[0];
+        task.status = 'COMPLETE'
+        task.completed_time = moment(time).startOf('day').format();
 
-        if (h.tasks.scheduled.length == 0) {
-            h.finished_runs.push(h.tasks.completed);
-        } else {
-            h.tasks.awaiting = h.tasks.awaiting.filter((t) => {
-                return t != completed_time;
-            })
-            h.tasks.missed = h.tasks.missed.filter((t) => {
-                return t != completed_time;
-            })
-
-            // h.current_scheduled_task = h.tasks.scheduled[0];
-        }
         this.updateStatistics(h);
+
+        if (this.allTasksComplete(h)) {
+            h.status = 'COMPLETE'
+        }
+        debugger;
         this.habits.next(this.h);
     }
 
-    public addHabit(h) {
-        this.assignDates(h);
-        this.assignStatistics(h);
-        this.h.push(h);
-        this.habits.next(this.h);
-        // this.s.set('habits', this.h)
+    createStatistics(h) {
+        let statistics =
+        {
+            completed_percentage: 0,
+            longest_streak: 0,
+            points: 0,
+            finished_runs: [],
+        };
+        h.statistics = statistics
     }
 
+    updateStatistics(h) {
+        h.statistics.completed = h.tasks.filter((t) => {
+            return t.status == 'COMPLETE';
+        }).length
+        h.statistics.missed = h.tasks.filter((t) => {
+            return t.status == 'MISSED';
+        }).length
 
+        h.statistics.completed_percentage = Math.floor((h.statistics.completed / h.tasks.length) * 100);
+    }
 
-
+    allTasksComplete(h) {
+        return h.tasks.every((t) => {
+            return t.status == 'COMPLETE'
+        })
+    }
 }
+

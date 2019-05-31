@@ -91,12 +91,12 @@
         <ion-list-header no-margin no-padding>
             <ion-label>Daily Habits</ion-label>
         </ion-list-header>
-        <ion-item *ngFor="let h of habits">
+        <ion-item *ngFor="let i of items">
             <ion-grid>
                 <ion-row>
                     <ion-col size="3">
                         <ion-label class="item-text-center" floating>
-                            {{h.name}}
+                            {{i.habit.name}}
                         </ion-label>
                     </ion-col>
 
@@ -108,18 +108,18 @@
 
                     <ion-col size="3">
                         <div class="item-text-center">
-                            <ion-badge color="secondary">{{h.statistics.completed_percentage}}%</ion-badge>
+                            <ion-badge color="secondary">{{i.habit.statistics.completed_percentage}}%</ion-badge>
                         </div>
                     </ion-col>
 
                     <ion-col size="3">
                         <!-- complete -->
 
-                        <ion-button *ngIf="mode == 'normal'  && h._canComplete" (click)="completeTask(h)">
+                        <ion-button *ngIf="mode == 'normal'  && i.task.status  != 'COMPLETE'" (click)="completeTask(i)">
                             <ion-icon name="checkmark-circle-outline"></ion-icon>
                             <!-- complete -->
                         </ion-button>
-                        <ion-checkbox *ngIf="mode == 'delete'" color="danger" (click)="selectHabit($event,h)"></ion-checkbox>
+                        <ion-checkbox *ngIf="mode == 'delete'" color="danger" (click)="selectHabit($event,i)"></ion-checkbox>
 
 
                     </ion-col>

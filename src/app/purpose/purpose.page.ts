@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-purpose',
-  templateUrl: './purpose.page.html',
-  styleUrls: ['./purpose.page.scss'],
+    selector: 'app-purpose',
+    templateUrl: './purpose.page.html',
+    styleUrls: ['./purpose.page.scss'],
 })
 export class PurposePage implements OnInit {
     private purpose = "";
-  constructor() { }
+    constructor() { }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
 }

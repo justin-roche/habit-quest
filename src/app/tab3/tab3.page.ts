@@ -1,16 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { HabitsService } from '../services/habits.service';
-
 import { CalendarComponent } from 'ionic2-calendar';
-import * as moment from 'moment';
 
-let mockSource = [{
-    "title": "b",
-    // allDay: false,
-    "startTime": new Date("2019-05-07T17:00:00.000Z"),
-    "endTime": new Date("2019-05-07T19:00:00.000Z")
-}
-]
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-tab3',
@@ -18,57 +10,40 @@ let mockSource = [{
     styleUrls: ['tab3.page.scss']
 })
 export class Tab3Page {
-    // @ViewChild('calendar') calendar: CalendarComponent;
+
     currentDate = new Date
 
     private habits = [];
-    private source = mockSource
+    private source = [];
 
     constructor(private hs: HabitsService) {
         this.hs.habits.asObservable().subscribe((d) => {
-            if (d) {
-
+            if (d.length) {
                 this.habits = d
                 this.setHabit(this.habits[0])
             }
         })
-
-
     }
 
     setHabit(h) {
-        console.log('h', h);
+
+        let map = {
+            'COMPLETE': 'completed',
+            'MISSED': 'failure',
+            'AWAITING': 'awaiting',
+        }
         let s = []
-        h.tasks.missed.forEach((t) => {
+        h.tasks.forEach((t) => {
             s.push({
                 title: h.name,
-                startTime: new Date(t),
-                endTime: new Date(moment(t).add(1, 'hour').format()),
+                startTime: new Date(t.date),
+                endTime: new Date(moment(t.date).add(1, 'hour').format()),
                 allDay: false,
-                color: 'failure',
-            })
-        })
-        h.tasks.awaiting.forEach((t) => {
-            s.push({
-                title: h.name,
-                startTime: new Date(t),
-                endTime: new Date(moment(t).add(1, 'hour').format()),
-                allDay: false,
-                color: 'awaiting',
-            })
-        })
-        h.tasks.completed.forEach((t) => {
-            s.push({
-                title: h.name,
-                startTime: new Date(t),
-                endTime: new Date(moment(t).add(1, 'hour').format()),
-                allDay: false,
-                color: 'completed',
+                color: map[t.status],
             })
         })
         this.source = s;
         // console.log(this.source);
-        // this.calendar.loadEvents();
 
     }
 

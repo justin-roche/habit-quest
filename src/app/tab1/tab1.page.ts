@@ -10,6 +10,7 @@ import * as moment from 'moment';
 })
 export class Tab1Page {
     private habits = [];
+    private items = [];
     private allHabits = [];
     private selectedHabits = [];
     private currentDate = moment();
@@ -19,111 +20,86 @@ export class Tab1Page {
     constructor(private hs: HabitsService, private toastController: ToastController) {
         this.hs.habits.asObservable().subscribe((d) => {
             if (d) {
-
                 if (d.length == 0) {
                     this.presentToast();
                 }
                 this.allHabits = d;
                 console.log('all', d);
 
-                this.handleData()
+                this.createItems()
             }
         })
     }
 
-    handleData() {
-
-        this.habits = this.allHabits.filter((h) => {
-            if (this.checkIfCompleteble(h)) {
-                h._canComplete = true;
-                return true;
+    createItems() {
+        this.items = this.allHabits.map((h) => {
+            let dayTask = h.tasks.filter((t) => {
+                return this.currentDate.isSame(t.date, 'd')
+            })[0]
+            if (dayTask) {
+                return {
+                    task: dayTask,
+                    habit: h
+                }
             }
-        })
-}
-
-checkIfCompleteble(h){
-    let c = h.tasks.awaiting.concat(h.tasks.missed)
-    return c.some(t => this.currentDate.isSame(t, 'd'))
-}
-
-// console.log('habits received', this.habits);
-
-
-removeSelectedHabits() {
-    this.hs.removeSelectedHabits(this.selectedHabits);
-    this.mode = 'normal'
-}
-
-
-ngAfterViewInit() {
-}
-
-ionViewWillLeave() {
-
-    if (this.toast) {
-        this.toast.dismiss()
-        this.toast = null
+            return null
+        }).filter((h) => h != null);
+        console.log('filtered items', this.items);
     }
-}
-
-ionViewWillEnter() {
-    // this.hs.loadHabits()
-}
-
-completeTask(h) {
-    this.hs.completeTask(h, this.currentDate)
-}
-
-selectHabit(e, h) {
-    console.log(e);
-    if (!e.target.checked) {
-        this.selectedHabits.push(h)
-
-    } else {
-        this.selectedHabits = this.selectedHabits.filter((_h) => {
-            return _h != h;
-        })
-    }
-    console.log(this.selectedHabits);
-
-}
-
-
-
-
-// async presentToast() {
-//     const toast = await this.toastController.create({
-//         message: 'You have no incomplete habits. Create one by clicking the plus icon at the top right',
-//         duration: 2000
-//     });
-//     toast.present();
-// }
-
-async presentToast() {
-    this.toast = await this.toastController.create({
-        // header: '',
-        message: 'You have no incomplete habits. Create one by clicking the plus icon at the top right',
-        position: 'middle',
-        buttons: [
-        ]
-    });
-    this.toast.present();
-}
-
-    private toggleDeleteMode() {
-    if (this.mode == 'normal') {
-        this.mode = 'delete';
-    } else {
-        this.mode = 'normal';
-    }
-}
 
     private decrementDate() {
-    this.currentDate = this.currentDate.subtract(1, 'day');
-    this.handleData()
-}
+        this.currentDate = this.currentDate.subtract(1, 'day');
+        this.createItems()
+    }
     private incrementDate() {
-    this.currentDate = this.currentDate.add(1, 'day');
-    this.handleData()
-}
+        this.currentDate = this.currentDate.add(1, 'day');
+        this.createItems()
+    }
+
+    completeTask(i) {
+        this.hs.completeTask(i.habit, this.currentDate)
+    }
+
+    private toggleDeleteMode() {
+        if (this.mode == 'normal') {
+            this.mode = 'delete';
+        } else {
+            this.mode = 'normal';
+        }
+    }
+
+    selectHabit(e, h) {
+        if (!e.target.checked) {
+            this.selectedHabits.push(h)
+
+        } else {
+            this.selectedHabits = this.selectedHabits.filter((_h) => {
+                return _h != h;
+            })
+        }
+    }
+
+    removeSelectedHabits() {
+        this.hs.removeSelectedHabits(this.selectedHabits);
+        this.mode = 'normal'
+    }
+
+    async presentToast() {
+        this.toast = await this.toastController.create({
+            // header: '',
+            message: 'You have no incomplete habits. Create one by clicking the plus icon at the top right',
+            position: 'middle',
+            buttons: [
+            ]
+        });
+        this.toast.present();
+    }
+
+    ionViewWillLeave() {
+        if (this.toast) {
+            this.toast.dismiss()
+            this.toast = null
+        }
+    }
+
 }

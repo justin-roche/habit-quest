@@ -82,7 +82,7 @@ export class CreatePage implements OnInit {
         await modal.present();
         const { data } = await modal.onDidDismiss();
         this.form.controls[formControl].setValue(data)
-        console.log('return', data,this.form.value);
+        console.log('return', data, this.form.value);
 
 
     }
