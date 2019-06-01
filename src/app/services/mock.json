@@ -388,5 +388,47 @@
             "points": 0,
             "finished_runs": []
         }
+    },
+    {
+        "statistics": {
+            "finished_runs": [],
+            "points": 0,
+            "longest_streak": 0,
+            "completed_percentage": 0
+        },
+        "status": "AWAITING",
+        "tasks": [
+            {
+                "status": "AWAITING",
+                "date": "2019-05-31T00:00:00+07:00"
+            },
+            {
+                "status": "AWAITING",
+                "date": "2019-06-01T00:00:00+07:00"
+            },
+            {
+                "status": "AWAITING",
+                "date": "2019-06-02T00:00:00+07:00"
+            },
+            {
+                "status": "AWAITING",
+                "date": "2019-06-03T00:00:00+07:00"
+            }
+        ],
+        "created_on": "2019-05-31T20:56:39+07:00",
+        "priority": 1,
+        "group": "health",
+        "abstinence": false,
+        "difficulty": 1,
+        "clock_time": "",
+        "duration": "",
+        "start_date": null,
+        "start_type": "today",
+        "end_units": "day",
+        "end_quantity": 3,
+        "frequency_units": "day",
+        "frequency_quantity": 1,
+        "name": "b",
+        "description": "b"
     }
 ]

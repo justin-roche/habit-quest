@@ -35,6 +35,15 @@ const routes: Routes = [
                 ]
             },
             {
+                path: 'week',
+                children: [
+                    {
+                        path: '',
+                        loadChildren: '../week-schedule/week-schedule.module#WeekSchedulePageModule'
+                    }
+                ]
+            },
+            {
                 path: 'battle',
                 children: [
                     {

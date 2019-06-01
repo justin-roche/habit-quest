@@ -1,0 +1,26 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>week-schedule</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+    <!-- <div *ngIf="ready" class="calendar-container"> -->
+    <calendar [currentDate]="calendar.currentDate" [formatWeekViewDayHeader]="'EEE'" [autoSelect]="false" [calendarMode]="'week'" (onTimeSelected)="onTimeSelected($event)" [eventSource]="calendar.selectedDates">
+    </calendar>
+    <!-- </div> -->
+
+</ion-content>
+<ion-footer>
+
+    <ion-button float-left (click)="dismiss()">
+        Cancel
+    </ion-button>
+
+    <ion-button float-right (click)="dismiss()">
+        Done
+    </ion-button>
+
+</ion-footer>

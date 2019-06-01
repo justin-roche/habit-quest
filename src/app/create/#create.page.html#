@@ -1,8 +1,5 @@
 <ion-header>
     <ion-toolbar>
-        <!-- <ion-buttons slot="secondary"> -->
-        <!-- <ion-grid> -->
-        <!-- <ion-row> -->
         <div float-left>
             <ion-buttons>
                 <ion-back-button></ion-back-button>
@@ -15,9 +12,6 @@
                 </ion-button>
             </ion-buttons>
         </div>
-        <!-- <ion-title>create</ion-title> -->
-        <!-- </ion-row> -->
-        <!-- </ion-grid> -->
 
     </ion-toolbar>
 </ion-header>
@@ -28,20 +22,6 @@
         <ion-list-header>
             <ion-label>Info</ion-label>
         </ion-list-header>
-
-        <ion-item>
-            <ion-grid>
-                <ion-row>
-                    <ion-label floating>
-                        Description
-                    </ion-label>
-                </ion-row>
-                <ion-row>
-                    <ion-input style="text-align:right" [formControl]="form.controls.description" placeholder="enter description"></ion-input>
-                </ion-row>
-            </ion-grid>
-        </ion-item>
-
         <ion-item>
             <ion-label>
                 Name
@@ -49,43 +29,43 @@
             <ion-input placeholder="enter name" slot="end" style="text-align:right" [formControl]="form.controls.name"></ion-input>
         </ion-item>
 
+        <ion-item>
+            <ion-label>
+                Description
+            </ion-label>
+            <ion-input style="text-align:right" [formControl]="form.controls.description" placeholder="enter description"></ion-input>
+        </ion-item>
+
+
         <ion-list-header>
             <ion-label>Scheduling</ion-label>
         </ion-list-header>
-        <ion-item [attr.lines]="form.controls['start_date'].value? 'none':''">
 
+        <ion-item [attr.lines]="form.controls['start_date'].value? 'none':''">
             <ion-label>
                 Start On
             </ion-label>
-
-
             <ion-select float-right [formControl]="form.controls.start_type" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
                 <ion-select-option *ngFor="let item of formOptions.start_types" [value]="item.value">{{item.display}}</ion-select-option>
             </ion-select>
         </ion-item>
 
         <ion-item *ngIf="form.controls['start_date'].value">
-
             <ion-text slot="end">{{form.controls.start_date.value | date: 'dd/MM/yyyy'}}</ion-text>
-
         </ion-item>
 
         <ion-item lines="none">
             <ion-label>Repeat</ion-label>
-            <ion-input slot="end" type="text" style="border:1px solid green" style="text-align:right" [formControl]="form.controls.frequency_quantity"></ion-input>
+            <ion-select style="" [formControl]="form.controls.frequency_units" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
+                <ion-select-option *ngFor="let item of formOptions.frequency_units" [value]="item.value">{{item.display}}</ion-select-option>
+            </ion-select>
         </ion-item>
 
         <ion-item>
-            <ion-label></ion-label>
-            <ion-select style="border:1px solid green" [formControl]="form.controls.frequency_units" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
-                <ion-select-option *ngFor="let item of formOptions.frequency_units" [value]="item.value">{{item.display}}</ion-select-option>
-            </ion-select>
-
+            <ion-button (click)="presentDaySchedule()" *ngIf="form.controls.frequency_units.value == 'day'" slot="end">select time</ion-button>
+            <ion-button (click)="presentWeekSchedule()" *ngIf="form.controls.frequency_units.value == 'week'" slot="end">select times</ion-button>
         </ion-item>
 
-
-        <!-- <calendar (onTimeSelected)="onTimeSelected($event)" [currentDate]="calendar.currentDate" [noEventsLabel]="''" [showEventDetail]="false"> -->
-        <!-- </calendar> -->
         <ion-item lines="none">
             <ion-label>
                 End After
@@ -103,15 +83,6 @@
 
         </ion-item>
 
-        <ion-item>
-
-            <ion-label>
-                Time of day
-            </ion-label>
-            <ion-button>select</ion-button>
-
-        </ion-item>
-        <!-- <ion-label>Type</ion-label> -->
         <ion-list-header>
             <ion-label>Category</ion-label>
         </ion-list-header>

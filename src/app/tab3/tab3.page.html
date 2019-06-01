@@ -1,10 +1,5 @@
 <ion-header>
 
-
-</ion-header>
-
-
-<ion-content>
     <ion-segment (ionChange)="segmentChanged($event)" value="habits">
         <ion-segment-button value="summary">
             <ion-label>Summary</ion-label>
@@ -14,8 +9,13 @@
         </ion-segment-button>
     </ion-segment>
 
+</ion-header>
+
+
+<ion-content>
+
     <ion-content>
-        <ion-select style="border:5px solid green" (ionChange)="setHabit($event.target.value)" interface="popover" placeholder="Select One">
+        <ion-select style="text-align:center" (ionChange)="setHabit($event.target.value)" interface="popover" [ngModel]="selectedHabit" placeholder="Select One">
             <ion-select-option *ngFor="let item of habits" [value]="item">{{item.name}}</ion-select-option>
         </ion-select>
 
@@ -28,9 +28,9 @@
 
             <calendar [currentDate]="currentDate" [noEventsLabel]="''" [queryMode]="'local'" [eventSource]="source" [monthviewDisplayEventTemplate]="template" [calendarMode]="'month'" [showEventDetail]="false" [formatMonthTitle]="'MMMM'">
             </calendar>
-            <!-- <calendar [currentDate]="calendar.currentDate" [calendarMode]="'day'"> -->
         </div>
-        <!-- </calendar> -->
+        <calendar [currentDate]="currentDate" [noEventsLabel]="''" [queryMode]="'local'" [monthviewDisplayEventTemplate]="template" [calendarMode]="'week'" [showEventDetail]="false" [formatMonthTitle]="'MMMM'">
+        </calendar>
     </ion-content>
 
 </ion-content>

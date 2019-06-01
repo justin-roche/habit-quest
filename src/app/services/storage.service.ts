@@ -10,7 +10,7 @@ export class StorageService {
     constructor(private s: Storage) {
         s.set('habits', []);
         // if (m.length) {
-        s.set('habits', m);
+        // s.set('habits', m);
         // }
     }
 

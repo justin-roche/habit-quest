@@ -14,25 +14,33 @@
 
 .monthview-datetable td, .monthview-datetable th{
     border: none !important;
+        /* padding:0px !important; */
+        /* vertical-align: center !important; */
 }
 .monthview-primary-with-event{
+    background-color: transparent !important;
+}
+.monthview-secondary-with-event{
         background-color: transparent !important;
 }
 
 .calendar-day {
     border-radius: 30px;
         color: black;
+        border: 3px solid transparent;
 
     &.primary {
         color: white;
     }
 
     &.failure {
+        background-color: 3px solid gray;
+        /* padding:8px !important; */
         border: 3px solid gray;
     }
     
     &.awaiting {
-        border: 3px solid green;
+        border: 3px solid black;
         
     }
     &.completed {

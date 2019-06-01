@@ -15,10 +15,12 @@ export class Tab3Page {
 
     private habits = [];
     private source = [];
+    private selectedHabit = null;
+
 
     constructor(private hs: HabitsService) {
         this.hs.habits.asObservable().subscribe((d) => {
-            if (d.length) {
+            if (d && d.length) {
                 this.habits = d
                 this.setHabit(this.habits[0])
             }
@@ -26,7 +28,7 @@ export class Tab3Page {
     }
 
     setHabit(h) {
-
+        this.selectedHabit = h;
         let map = {
             'COMPLETE': 'completed',
             'MISSED': 'failure',

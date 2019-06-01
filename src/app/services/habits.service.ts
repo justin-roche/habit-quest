@@ -43,30 +43,29 @@ export class HabitsService {
     }
 
     addHabit(h) {
-        this.createTasks(h);
+
+        h.created_on = moment().format();
+        h.status = 'AWAITING';
+
+        this.createRange(h)
+        this.createTasks(h)
         this.createStatistics(h);
         console.log(JSON.stringify(h))
+        console.log('new habit', h)
         this.h.push(h);
         this.habits.next(this.h);
     }
 
-    createTasks(h) {
-        h.created_on = moment().format();
-        h.tasks = [];
-        h.status = 'AWAITING';
+    createRange(h) {
+        let start = this.getStartDate(h)
+        let end = this.getEndDate(h, start)
+        let diff = end.diff(start, 'day')
 
-        let next = this.getStartDate(h);
-        // let next = start.clone()
-        const end = next.clone().add(h.end_quantity, h.end_units);
-
-        while (next <= end) {
-            let task = {
-                date: next.format(),
-                status: 'AWAITING'
-            }
-            h.tasks.push(task);
-            next = next.clone().add(1, h.frequency_units);
-        }
+        h.range = {
+            start: start.format(),
+            end: end.format(),
+            diff: diff
+        };
 
     }
 
@@ -76,6 +75,51 @@ export class HabitsService {
         }
         return moment().startOf('day');
     }
+
+    getEndDate(h, start) {
+        if (h.end_units == 'day') {
+            return start.clone().add(h.end_quantity, 'day');
+        }
+        if (h.end_units == 'week') {
+            return start.clone().add(h.end_quantity, 'week');
+        }
+
+        if (h.end_units == 'times') {
+            return start.clone().add(h.end_quantity, h.frequency_units);
+        }
+    }
+
+    createTasks(h, c) {
+        h.tasks = [];
+
+        for (let c = 0; c < h.range.diff; c++) {
+            let currentDay = moment(h.range.start).clone().add(c, 'day')
+
+            h.times.forEach((_t) => {
+                if (_t.weekday == currentDay.weekday()) {
+
+                    let task = {
+
+                        allDay: _t.allDay,
+                        weekday: _t.weekday,
+                        hour: _t.hour,
+
+                        startTime: currentDay.clone().add(_t.hour, 'hours').format(),
+                        endTime: currentDay.clone().add(_t.hour + 1, 'hours').format(),
+                        date: currentDay.format(),
+                        status: 'AWAITING',
+                    }
+
+                    h.tasks.push(task);
+                }
+            })
+
+        }
+    }
+
+
+
+
 
 
     removeSelectedHabits(hs) {
