@@ -29,8 +29,82 @@
             <calendar [currentDate]="currentDate" [noEventsLabel]="''" [queryMode]="'local'" [eventSource]="source" [monthviewDisplayEventTemplate]="template" [calendarMode]="'month'" [showEventDetail]="false" [formatMonthTitle]="'MMMM'">
             </calendar>
         </div>
-        <calendar [currentDate]="currentDate" [noEventsLabel]="''" [queryMode]="'local'" [monthviewDisplayEventTemplate]="template" [calendarMode]="'week'" [showEventDetail]="false" [formatMonthTitle]="'MMMM'">
-        </calendar>
+
+        <ion-list>
+
+            <ion-item>
+
+
+                <ion-label>
+                    total repetitions to meet goal
+                </ion-label>
+                <ion-text>
+                    {{selectedHabit.tasks.length}}
+                </ion-text>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    percentage completed
+                </ion-label>
+                <ion-text>
+                    {{selectedHabit.statistics.completed_percentage}}
+                </ion-text>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    percentage completed for month
+                </ion-label>
+                <ion-text>
+                    {{selectedHabit.statistics.completed_percentage_month}}
+                </ion-text>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    percentage completed for week
+                </ion-label>
+                <ion-text>
+                    {{selectedHabit.statistics.completed_percentage_week}}
+                </ion-text>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    longest streak
+                </ion-label>
+                <ion-text>
+                    {{selectedHabit.statistics.longest_streak}}
+                </ion-text>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>
+                    points accrued
+                </ion-label>
+                <ion-text>
+                    {{selectedHabit.statistics.total_points}}
+                </ion-text>
+
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    measurable outcomes
+                </ion-label>
+                <ion-text>
+                    {{selectedHabit.statistics.measurable_outcomes}}
+                </ion-text>
+
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    total missed
+                </ion-label>
+                <ion-text>
+                    {{selectedHabit.statistics.total_missed}}
+                </ion-text>
+
+            </ion-item>
+
+        </ion-list>
+
     </ion-content>
 
 </ion-content>

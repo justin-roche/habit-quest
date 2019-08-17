@@ -17,6 +17,7 @@ export class SchedulePage implements OnInit {
     constructor(private mc: ModalController) { }
 
     ngOnInit() {
+
     }
 
     dismiss() {

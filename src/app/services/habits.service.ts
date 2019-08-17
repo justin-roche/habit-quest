@@ -8,7 +8,7 @@ import { StorageService } from './storage.service';
 })
 export class HabitsService {
 
-    private h = [];
+    private h = null;
     private currentDate = moment();
 
     public habits: BehaviorSubject<Array<any>>;
@@ -28,6 +28,8 @@ export class HabitsService {
             this.habits.next(this.h);
         })
     }
+
+
 
     checkForMissedTasks() {
         this.h.forEach((h) => {
@@ -77,50 +79,64 @@ export class HabitsService {
     }
 
     getEndDate(h, start) {
-        if (h.end_units == 'day') {
+        if (h.end_type == 'day') {
             return start.clone().add(h.end_quantity, 'day');
         }
-        if (h.end_units == 'week') {
+        if (h.end_type == 'week') {
             return start.clone().add(h.end_quantity, 'week');
         }
-
-        if (h.end_units == 'times') {
+        if (h.end_type == 'times') {
             return start.clone().add(h.end_quantity, h.frequency_units);
         }
     }
 
-    createTasks(h, c) {
+    createTasks(h) {
         h.tasks = [];
-
-        for (let c = 0; c < h.range.diff; c++) {
-            let currentDay = moment(h.range.start).clone().add(c, 'day')
-
-            h.times.forEach((_t) => {
-                if (_t.weekday == currentDay.weekday()) {
-
-                    let task = {
-
-                        allDay: _t.allDay,
-                        weekday: _t.weekday,
-                        hour: _t.hour,
-
-                        startTime: currentDay.clone().add(_t.hour, 'hours').format(),
-                        endTime: currentDay.clone().add(_t.hour + 1, 'hours').format(),
-                        date: currentDay.format(),
-                        status: 'AWAITING',
-                    }
-
+        this.iterateRange(h, (testDay) => {
+            let taskTemplates = h.frequency_units == 'day' ? h.daily_schedule : h.weekly_schedule;
+            taskTemplates.forEach((taskTemplate) => {
+                let task = this.createTask(taskTemplate, testDay)
+                if (h.frequency_units == 'day') {
                     h.tasks.push(task);
                 }
+                if (h.frequency_units == 'week') {
+                    if (taskTemplate.allWeek && testDay.weekday() == 0) {
+                        h.tasks.push(task);
+                    }
+                    if (!taskTemplate.allWeek && (taskTemplate.weekday == testDay.weekday())) {
+                        h.tasks.push(task);
+                    }
+                }
             })
+        })
+    }
 
+    iterateRange(h, fn) {
+        for (let c = 0; c < h.range.diff; c++) {
+            let testDay = moment(h.range.start).clone().add(c, 'day')
+            if (h.frequency_units == 'day' && ((c % h.frequency) == 0)) {
+                fn(testDay)
+            }
+            if (h.frequency_units == 'week' && ((Math.floor(c / 7)) % h.frequency) == 0) {
+                fn(testDay)
+            }
         }
     }
 
+    createTask(t, testDay) {
+        let task = {
 
+            allDay: t.allDay,
+            weekday: testDay.weekday(),
+            hour: t.hour,
 
-
-
+            startTime: testDay.clone().add(t.hour, 'hours').format(),
+            endTime: testDay.clone().add(t.hour + 1, 'hours').format(),
+            date: testDay.format(),
+            status: 'AWAITING',
+        }
+        return task
+    }
 
     removeSelectedHabits(hs) {
         this.h = this.h.filter((h) => {
@@ -143,7 +159,6 @@ export class HabitsService {
         if (this.allTasksComplete(h)) {
             h.status = 'COMPLETE'
         }
-        debugger;
         this.habits.next(this.h);
     }
 

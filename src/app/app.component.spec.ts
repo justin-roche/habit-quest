@@ -1,47 +1,56 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { TestBed, async } from '@angular/core/testing';
+describe('Google', () => {
+    beforeAll(async () => {
+        await page.goto('http://localhost:8100/');
+    });
 
-import { Platform } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
+    it('should be titled "Habit Camp"', async () => {
+        await expect(page.title()).resolves.toMatch('Habit Camp');
+    });
 
-import { AppComponent } from './app.component';
+    it('should show toast when there are no habits', async () => {
+        await expect(page.title()).resolves.toMatch('Habit Camp');
+        await page.waitForSelector('#toolbar', { timeout: 100000 })
+        await page.waitForSelector('#tabs', { timeout: 100000 })
+        await page.waitForSelector('#toast', { timeout: 100000 })
+        // await expect(page).toMatchElement('.toast-message', { timeout: 100000 })
 
-describe('AppComponent', () => {
+        // await page.waitForSelector('.inner-scroll', { timeout: 100000 })
+        // await jestPuppeteer.debug()
 
-  let statusBarSpy, splashScreenSpy, platformReadySpy, platformSpy;
+    });
 
-  beforeEach(async(() => {
-    statusBarSpy = jasmine.createSpyObj('StatusBar', ['styleDefault']);
-    splashScreenSpy = jasmine.createSpyObj('SplashScreen', ['hide']);
-    platformReadySpy = Promise.resolve();
-    platformSpy = jasmine.createSpyObj('Platform', { ready: platformReadySpy });
+    it('navigates to the creation page', async () => {
+        await expect(page).toClick('#create')
+        await page.waitForSelector('#form-list', { timeout: 100000 })
+    });
 
-    TestBed.configureTestingModule({
-      declarations: [AppComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [
-        { provide: StatusBar, useValue: statusBarSpy },
-        { provide: SplashScreen, useValue: splashScreenSpy },
-        { provide: Platform, useValue: platformSpy },
-      ],
-    }).compileComponents();
-  }));
+    it('done button is disabled', async () => {
+        await expect(page).toClick('#create')
+        let d = await page.waitForSelector('#done', { timeout: 100000 })
+        let r = await GetProperty(d, 'disabled')
+        expect(r).toBe(true)
+    });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
-  });
+    it('done button is enabled when form is valid', async () => {
+        await expect(page).toClick('#create')
+        await page.click('#name')
+        await page.type("#name", 'a')
+        let d = await page.waitForSelector('#done', { timeout: 100000 })
+        let r = await GetProperty(d, 'disabled')
+        expect(r).toBe(false)
+    });
 
-  it('should initialize the app', async () => {
-    TestBed.createComponent(AppComponent);
-    expect(platformSpy.ready).toHaveBeenCalled();
-    await platformReadySpy;
-    expect(statusBarSpy.styleDefault).toHaveBeenCalled();
-    expect(splashScreenSpy.hide).toHaveBeenCalled();
-  });
-
-  // TODO: add more tests!
+    it('creates a daily habit', async () => {
+        await expect(page).toClick('#create')
+        await page.click('#name')
+        await page.type("#name", 'a')
+        await page.click('#done')
+        await page.waitForSelector('#task-list', { timeout: 100000 })
+        await page.waitForSelector('#task', { timeout: 100000 })
+    });
 
 });
+
+async function GetProperty(element, property) {
+    return await (await element.getProperty(property)).jsonValue();
+}

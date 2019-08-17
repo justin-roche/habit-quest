@@ -9,7 +9,6 @@ import * as moment from 'moment';
     styleUrls: ['./week-schedule.page.scss'],
 })
 export class WeekSchedulePage implements OnInit {
-    // @ViewChild(CalendarComponent) myCalendar: CalendarComponent;
     @Input() events;
 
     private ready = false
@@ -18,9 +17,6 @@ export class WeekSchedulePage implements OnInit {
         currentDate: new Date,
         selectedDates: null,
     }
-    // private currentDate = new Date;
-
-    // private selectedDates = [];
 
     constructor(private mc: ModalController, private z: NgZone) { }
 
@@ -33,9 +29,32 @@ export class WeekSchedulePage implements OnInit {
         })
         )
     }
+    newEvent(hour = null) {
+        let today = moment().startOf('day')
+        let base = {
+            title: this.title || 'new habit',
+            allDay: hour ? false : true,
+            weekday: null,
+            hour: hour,
+            id: moment().valueOf()
+        }
+        if (hour) {
+            base = Object.assign(base, {
+                startTime: new Date(today.clone().add(hour, 'hour').format()),
+                endTime: new Date(today.clone().add(hour + 1, 'hour').format()),
+
+            })
+        } else {
+            base = Object.assign(base, {
+                startTime: new Date(today.clone().utc().format()),
+                endTime: new Date(today.add(1, 'day').clone().utc().format())
+            })
+        }
+
+        return base;
+    }
 
     ngOnInit() {
-        console.log('init');
         this.calendar.selectedDates = []
     }
 
@@ -45,12 +64,12 @@ export class WeekSchedulePage implements OnInit {
         while (d.weekday() != 0) {
             d = d.subtract(1, 'day')
         }
-        console.log('sunday', d.format(), d.weekday());
         for (let c = 0; c < 7; c++) {
             map.push(d.clone().add(c, 'day'))
         }
         this.dateMap = map;
     }
+
     ngAfterViewInit() {
         this.createDateMap()
 
@@ -68,21 +87,10 @@ export class WeekSchedulePage implements OnInit {
         }
         this.calendar.selectedDates = this.events || []
 
-        // this.calendar.selectedDates =
-        [{
-
-                weekday: 2,
-                hour: 1,
-                allday: false,
-                title: 'x',
-                startTime: new Date(),
-                endTime: new Date(),
-
-            }]
-
         console.log('afterinit', this.calendar.selectedDates);
         this.ready = true
     }
+
 
     onTimeSelected(ev) {
         let d = moment(ev.selectedTime);
@@ -104,15 +112,9 @@ export class WeekSchedulePage implements OnInit {
         } else {
             newDates.push(event)
         }
-        // this.calendar.selectedDates.push(event)
-        // this.z.runTask()
-        // this.myCalendar.loadEvents();
-
-        // this.z.runOutsideAngular(() => {
         this.calendar.selectedDates = newDates;
         console.log('selected', this.calendar.selectedDates);
 
-        // })
 
     }
 

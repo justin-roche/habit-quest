@@ -15,6 +15,7 @@ import { registerLocaleData } from '@angular/common';
 import localeUS from '@angular/common/locales/en';
 import { SchedulePageModule } from '../schedule/schedule.module';
 import { WeekSchedulePageModule } from '../week-schedule/week-schedule.module';
+import { DaySchedulePageModule } from '../day-schedule/day-schedule.module';
 registerLocaleData(localeUS);
 
 const routes: Routes = [
@@ -32,8 +33,8 @@ const routes: Routes = [
         PurposePageModule,
         SchedulePageModule,
         WeekSchedulePageModule,
+        DaySchedulePageModule,
         ReactiveFormsModule,
-
         NgCalendarModule,
         // Forms
         RouterModule.forChild(routes)

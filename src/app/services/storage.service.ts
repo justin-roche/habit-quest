@@ -8,7 +8,6 @@ let m = require('./mock.json')
 export class StorageService {
 
     constructor(private s: Storage) {
-        s.set('habits', []);
         // if (m.length) {
         // s.set('habits', m);
         // }
@@ -16,8 +15,24 @@ export class StorageService {
 
     load() {
         let p = this.s.get('habits')
+            .then((d) => {
+                if (!d) {
+                    console.log('no habits in storage');
+
+                    return this.s.set('habits', [])
+                        .then((d) => {
+                            console.log('6 initial storage ');
+
+                            return this.s.get('habits')
+                        })
+                }
+                return d
+            })
+
+
         return from(p)
     }
+
 
 
 

@@ -56,6 +56,7 @@ export class Tab1Page {
         this.createItems()
     }
 
+
     completeTask(i) {
         this.hs.completeTask(i.habit, this.currentDate)
     }
@@ -89,6 +90,7 @@ export class Tab1Page {
             // header: '',
             message: 'You have no incomplete habits. Create one by clicking the plus icon at the top right',
             position: 'middle',
+            id: 'toast',
             buttons: [
             ]
         });
