@@ -15,7 +15,7 @@
     </ion-segment>
 
     <ion-content>
-        <ion-select style="border:5px solid green" (ionChange)="setHabit($event.target.value)" interface="popover" placeholder="Select One">
+        <ion-select (ionChange)="setHabit($event.target.value)" interface="popover" placeholder="Select One">
             <ion-select-option *ngFor="let item of habits" [value]="item">{{item.name}}</ion-select-option>
         </ion-select>
 

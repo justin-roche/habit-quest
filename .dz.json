@@ -1,0 +1,15 @@
+{
+    "service": [
+        {
+            "service": "fe",
+            "command": "ionic",
+            "args": "serve"
+        },
+        {
+            "service": "test",
+            "command": "npm",
+            "args": "start",
+            "dir": "~/ref/testium"
+        }
+    ]
+}
