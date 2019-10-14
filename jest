@@ -1,0 +1,9 @@
+
+
+DevTools listening on ws://127.0.0.1:50282/devtools/browser/dc3a94a2-279e-498c-81dd-88db1a01502f
+[0602/145824.740543:INFO:CONSOLE(1322)] "app", source: http://localhost:8100/main.js (1322)
+[0602/145824.757883:INFO:CONSOLE(50872)] "Angular is running in the development mode. Call enableProdMode() to enable the production mode.", source: http://localhost:8100/vendor.js (50872)
+[0602/145824.761171:INFO:CONSOLE(74644)] "Native: tried calling StatusBar.styleDefault, but Cordova is not available. Make sure to include cordova.js or run in a device/simulator", source: http://localhost:8100/vendor.js (74644)
+[0602/145824.761955:INFO:CONSOLE(74644)] "Native: tried calling SplashScreen.hide, but Cordova is not available. Make sure to include cordova.js or run in a device/simulator", source: http://localhost:8100/vendor.js (74644)
+[0602/145825.947914:INFO:CONSOLE(1672)] "no habits in storage", source: http://localhost:8100/main.js (1672)
+[0602/145825.965527:INFO:CONSOLE(1675)] "6 initial storage ", source: http:
