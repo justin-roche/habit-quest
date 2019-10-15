@@ -119,7 +119,5 @@
                 <ion-select-option *ngFor="let item of formOptions.priorities" [value]="item.value">{{item.display}}</ion-select-option>
             </ion-select>
         </ion-item>
-
     </ion-list>
-
 </ion-content>

@@ -15,10 +15,8 @@
         </div>
     </ng-template>
 
-
-
     <!-- <div *ngIf="calendar.events" class="calendar-container"> -->
-    <calendar [dayviewAllDayEventSectionTemplate]="template" [currentDate]="calendar.currentDate" allDayLabel="any time" [autoSelect]="false" [calendarMode]="'day'" (onTimeSelected)="onTimeSelected($event)" (onRangeChanged)="onRangeChanged($event)" [scrollToHour]="calendar.initial" [step]="30" [timeInterval]="30" [preserveScrollPosition]="true" step="30" (onEventSelected)="onEventSelected($event)" [eventSource]="calendar.events">
+    <calendar [dayviewAllDayEventSectionTemplate]="template" [currentDate]="calendar.currentDate" allDayLabel="any time" [autoSelect]="false" [calendarMode]="'day'" (onTimeSelected)="onTimeSelected($event)" (onRangeChanged)="onRangeChanged($event)" [scrollToHour]="calendar.initial" [step]="30" [timeInterval]="60" [preserveScrollPosition]="true" step="30" (onEventSelected)="onEventSelected($event)" [eventSource]="calendar.events">
 
     </calendar>
     <!-- </div> -->
@@ -30,8 +28,8 @@
         Cancel
     </ion-button>
 
-    <!-- <ion-button [disabled]="calendar.events  &&  calendar.events.length == 0" float-right (click)="dismiss()"> -->
-    <!-- Done -->
-    <!-- </ion-button> -->
+    <ion-button [disabled]="calendar.events  &&  calendar.events.length == 0" float-right (click)="dismiss()">
+        Done
+    </ion-button>
 
 </ion-footer>

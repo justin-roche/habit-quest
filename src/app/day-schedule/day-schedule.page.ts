@@ -25,6 +25,8 @@ export class DaySchedulePage implements OnInit {
             weekday: null,
             id: moment().valueOf()
         }
+        console.log('base',base);
+
         return base;
     }
 
@@ -32,21 +34,20 @@ export class DaySchedulePage implements OnInit {
         let today = moment().startOf('day')
         let event = this.newEvent()
 
-        // event.allDay = true;
-        // event.startTime = new Date(today.clone().utc().format())
-        // event.endTime = new Date(today.add(1, 'day').clone().utc().format())
+        event.allDay = true;
+        event.startTime = new Date(today.clone().utc().format())
+        event.endTime = new Date(today.add(1, 'day').clone().utc().format())
         return event;
     }
 
     newTimedEvent(hour, minute = 0) {
-        let today = moment().startOf('day')
-        let event = (<any> this.newEvent() )
-
-        // event.allDay = false;
+        // timed events are always set to start "today"
+       let today = moment().startOf('day')
+        let event = (<any>this.newEvent())
         event.hour = hour;
+        // start time and end time are required for display, but not saved to the model
         event.startTime = new Date(today.clone().add(hour, 'hour').add(minute, 'minute').format())
         event.endTime = new Date(today.clone().add(hour, 'hour').add(minute, 'minute').add(this.duration, 'minute').format())
-
         return event;
     }
 
@@ -58,8 +59,10 @@ export class DaySchedulePage implements OnInit {
 
     ngAfterViewInit() {
         let d = moment().startOf('day')
+        console.log('events', this.events);
 
         if (this.events) {
+            // convert saved event types to calender displayable types 
             this.events = this.events.map((e, i) => {
                 if (e.allDay) return this.newAllDayEvent()
                 if (!e.allDay) return this.newTimedEvent(e.hour, e.minute)
@@ -67,12 +70,13 @@ export class DaySchedulePage implements OnInit {
             this.calendar.events = this.events
         }
 
-        // let s = JSON.stringify(this.calendar.events, null, 2)
-        // console.log('afterinit', this.calendar.events, s);
+        let s = JSON.stringify(this.calendar.events, null, 2)
+        console.log('afterinit', this.calendar.events, s);
     }
 
     onClickAllDay() {
         if (this.calendar.events.some(d => d.allDay)) {
+            // remove existing events
             this.calendar.events = []
         } else {
             let event = this.newAllDayEvent()
@@ -86,13 +90,14 @@ export class DaySchedulePage implements OnInit {
 
     onTimeSelected({ selectedTime, events }) {
         let d = moment(selectedTime);
-        // debugger
+        // create new timed event
         let event = this.newTimedEvent(d.hour(), d.minute())
-        let newDates = this.calendar.events.slice()
 
+        let newDates = this.calendar.events.slice()
         newDates = newDates.filter(e => !e.allDay);
 
         if (events.length == 0) {
+            // if no new events, create one
             newDates.push(event)
         } else {
             newDates = newDates.filter(e => e.hour != event.hour)

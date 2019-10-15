@@ -79,7 +79,7 @@
             <ion-label>
                 Time of day
             </ion-label>
-            <ion-button  (click)="presentDayScheduleModal()"   color="none">
+            <ion-button (click)="presentDayScheduleModal()" color="none">
                 <ion-icon color="dark" slot="icon-only" name="search"></ion-icon>
             </ion-button>
         </ion-item>
@@ -119,7 +119,5 @@
                 <ion-select-option *ngFor="let item of formOptions.priorities" [value]="item.value">{{item.display}}</ion-select-option>
             </ion-select>
         </ion-item>
-
     </ion-list>
-
 </ion-content>

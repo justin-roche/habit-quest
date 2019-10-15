@@ -63,7 +63,7 @@ export class CreatePage implements OnInit {
             start_type: ['today'],
             start_date: [null],
 
-            clock_time: [''],
+            clock_times: [[]],
 
             duration: [''],
             difficulty: [1],
@@ -108,10 +108,18 @@ export class CreatePage implements OnInit {
     }
 
 
-    private async presentDayScheduleModal(formControl = 'clock_time') {
+    private async presentDayScheduleModal(formControl = 'clock_times') {
+        let p =
+        {
+            showBackdrop: true,
+            events: this.form.controls[formControl].value,
+            title: this.form.controls.name.value
+        }
+        console.log('props', p);
+
         const modal = await this.modalController.create({
             component: DaySchedulePage,
-            componentProps: { showBackdrop: true }
+            componentProps: p
         });
         await modal.present();
         const { data } = await modal.onDidDismiss();
