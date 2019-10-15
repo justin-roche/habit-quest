@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { PurposePage } from '../purpose/purpose.page';
-import { SchedulePage } from '../schedule/schedule.page';
 import { ModalController, NavController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Scheduler } from 'rxjs';
 import { options } from './form-options';
 import { HabitsService } from '../services/habits.service';
 // import moment = require('moment');
+import { SchedulePage } from '../schedule/schedule.page';
+import { DaySchedulePage } from '../day-schedule/day-schedule.page';
 
 import * as moment from 'moment';
 
@@ -46,41 +47,6 @@ export class CreatePage implements OnInit {
 
     ngAfterViewInit() {
     }
-    private onInit() {
-        this.presentPurposeModal()
-    }
-    private trySave() {
-        let habit = this.form.value
-        console.log('habit', habit);
-        this.hs.addHabit(habit)
-        this.nc.navigateBack('')
-    }
-
-    private async presentPurposeModal() {
-
-        const modal = await this.modalController.create({
-            component: PurposePage,
-            componentProps: { showBackdrop: true }
-        });
-        return await modal.present();
-    }
-
-    private async presentScheduleModal(formControl = 'start_date') {
-        const modal = await this.modalController.create({
-            component: SchedulePage,
-            componentProps: { showBackdrop: true }
-        });
-        await modal.present();
-        const { data } = await modal.onDidDismiss();
-        this.form.controls[formControl].setValue(data)
-        console.log('return', data, this.form.value);
-
-    }
-
-
-    formatDate(d) {
-        return moment(d).format('dddd MMMM Do');
-    }
 
     ngOnInit() {
         this.form = this.fb.group({
@@ -97,20 +63,19 @@ export class CreatePage implements OnInit {
             start_type: ['today'],
             start_date: [null],
 
-            duration: [''],
             clock_time: [''],
+
+            duration: [''],
             difficulty: [1],
             abstinence: [false],
             group: ['health'],
             priority: [1],
         })
+        this.addFormListeners();
+        this.presentDayScheduleModal();
+    }
 
-
-        this.form.controls['start_type'].valueChanges.subscribe((f) => {
-            if (this.form.controls['start_type'].value == 'date') {
-                this.presentScheduleModal()
-            }
-        })
+    private addFormListeners() {
 
         this.form.controls['end_units'].valueChanges.subscribe((f) => {
 
@@ -119,8 +84,58 @@ export class CreatePage implements OnInit {
             }
         })
 
+        this.form.controls['start_type'].valueChanges.subscribe((f) => {
+            if (this.form.controls['start_type'].value == 'date') {
+                this.presentScheduleModal()
+            }
 
+        })
     }
+
+    private trySave() {
+        let habit = this.form.value
+        console.log('habit', habit);
+        this.hs.addHabit(habit)
+        this.nc.navigateBack('')
+    }
+
+    private async presentPurposeModal() {
+        const modal = await this.modalController.create({
+            component: PurposePage,
+            componentProps: { showBackdrop: true }
+        });
+        return await modal.present();
+    }
+
+
+    private async presentDayScheduleModal(formControl = 'clock_time') {
+        const modal = await this.modalController.create({
+            component: DaySchedulePage,
+            componentProps: { showBackdrop: true }
+        });
+        await modal.present();
+        const { data } = await modal.onDidDismiss();
+        this.form.controls[formControl].setValue(data)
+        console.log('return', data, this.form.value);
+    }
+
+    private async presentScheduleModal(formControl = 'start_date') {
+        const modal = await this.modalController.create({
+            component: SchedulePage,
+            componentProps: { showBackdrop: true }
+        });
+        await modal.present();
+        const { data } = await modal.onDidDismiss();
+        this.form.controls[formControl].setValue(data)
+        console.log('return', data, this.form.value);
+    }
+
+    formatDate(d) {
+        return moment(d).format('dddd MMMM Do');
+    }
+
+
+
 
 
 }

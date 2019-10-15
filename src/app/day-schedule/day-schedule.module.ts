@@ -25,4 +25,5 @@ const routes: Routes = [
     ],
     declarations: [DaySchedulePage]
 })
+
 export class DaySchedulePageModule { }

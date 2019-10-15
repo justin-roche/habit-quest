@@ -16,6 +16,16 @@ const routes: Routes = [
                     }
                 ]
             },
+
+            {
+                path: 'day-schedule',
+                children: [
+                    {
+                        path: '',
+                        loadChildren: '../day-schedule/day-schedule.module#DaySchedulePageModule'
+                    }
+                ]
+            },
             {
                 path: 'schedule',
                 children: [

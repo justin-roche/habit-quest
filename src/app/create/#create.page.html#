@@ -79,7 +79,7 @@
             <ion-label>
                 Time of day
             </ion-label>
-            <ion-button color="none">
+            <ion-button (click)="presentDayScheduleModal()" color="none">
                 <ion-icon color="dark" slot="icon-only" name="search"></ion-icon>
             </ion-button>
         </ion-item>
@@ -122,15 +122,4 @@
 
     </ion-list>
 
-
-
-
 </ion-content>
-
-<!-- Input with value -->
-<!-- <ion-input value="custom"></ion-input> -->
-
-<!-- Input with placeholder -->
-<!-- <ion-input placeholder="Enter Input"></ion-input> -->
-
-<!-- Input with clear button when there is a value -->
