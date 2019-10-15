@@ -7,7 +7,7 @@
 <ion-content>
     <!-- all day template -->
     <ng-template #template let-allDayEvents="allDayEvents" let-eventTemplate="eventTemplate">
-        <div style="border:2px solid green;height:100%" (click)="onClickAllDay()" id="allday-header">
+        <div style="height:100%" (click)="onClickAllDay()" id="allday-header">
             <div *ngFor="let displayEvent of allDayEvents; let eventIndex=index" class="calendar-event" tappable (click)="onEventSelected(displayEvent.event)" [ngStyle]="{top: 25*eventIndex+'px',width: '100%',height:'25px'}">
                 <ng-template [ngTemplateOutlet]="eventTemplate" [ngTemplateOutletContext]="{displayEvent:displayEvent}">
                 </ng-template>
@@ -16,10 +16,9 @@
     </ng-template>
 
     <!-- <div *ngIf="calendar.events" class="calendar-container"> -->
-    <calendar [dayviewAllDayEventSectionTemplate]="template" [currentDate]="calendar.currentDate" allDayLabel="any time" [autoSelect]="false" [calendarMode]="'day'" (onTimeSelected)="onTimeSelected($event)" (onRangeChanged)="onRangeChanged($event)" [scrollToHour]="calendar.initial" [step]="30" [timeInterval]="60" [preserveScrollPosition]="true" step="30" (onEventSelected)="onEventSelected($event)" [eventSource]="calendar.events">
+    <calendar [dayviewAllDayEventSectionTemplate]="template" [currentDate]="calendar.currentDate" allDayLabel="any time" [autoSelect]="false" [calendarMode]="'day'" (onTimeSelected)="onTimeSelected($event)" (onRangeChanged)="onRangeChanged($event)" [scrollToHour]="calendar.initial" [step]="30" [timeInterval]="30" [preserveScrollPosition]="true" step="30" (onEventSelected)="onEventSelected($event)" [eventSource]="calendar.events">
 
     </calendar>
-    <!-- </div> -->
 
 </ion-content>
 <ion-footer>

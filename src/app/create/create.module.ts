@@ -12,7 +12,7 @@ import { registerLocaleData } from '@angular/common';
 import localeUS from '@angular/common/locales/en';
 import { SchedulePageModule } from '../schedule/schedule.module';
 import { DaySchedulePageModule } from '../day-schedule/day-schedule.module';
-
+import { WheelSelector } from '@ionic-native/wheel-selector/ngx';
 registerLocaleData(localeUS);
 
 const routes: Routes = [
@@ -36,8 +36,8 @@ const routes: Routes = [
         RouterModule.forChild(routes)
     ],
     providers: [
+        WheelSelector,
         { provide: LOCALE_ID, useValue: 'en' },
-
     ],
     declarations: [CreatePage]
 })

@@ -106,12 +106,12 @@
         </ion-item>
         <ion-item>
             <ion-label>Time Required</ion-label>
-            <ion-select [formControl]="form.controls.duration" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
-                <ion-select-option value="daily">Daily</ion-select-option>
-                <ion-select-option value="weekly">Weekly</ion-select-option>
-                <ion-select-option value="bi_weekly">Bi-weekly</ion-select-option>
-                <ion-select-option value="other">Other</ion-select-option>
-            </ion-select>
+            <!-- {{getDurationDisplay()}} -->
+            <ion-datetime [pickerOptions]="pickerOptions" value="{{getDurationDisplay()}}" hourValues="{{hours.toString()}}" minuteValues="{{minutes.toString()}}" displayFormat="HH:mm">
+            </ion-datetime>
+            <ion-button slot="end" color="none">
+                <ion-icon color="dark" slot="icon-only" name="timer"></ion-icon>
+            </ion-button>
         </ion-item>
         <ion-item>
             <ion-label>Priority</ion-label>

@@ -10,6 +10,7 @@ import { SchedulePage } from '../schedule/schedule.page';
 import { DaySchedulePage } from '../day-schedule/day-schedule.page';
 
 import * as moment from 'moment';
+// import { WheelSelector } from '@ionic-native/wheel-selector/ngx';
 
 @Component({
     selector: 'app-create',
@@ -18,20 +19,21 @@ import * as moment from 'moment';
 })
 export class CreatePage implements OnInit {
 
+    private hours = Array.apply(0, Array(24)).map(function(_, i) { return i - 1; });
+    private minutes = Array.apply(0, Array(60)).map(function(_, i) { return i - 1; });
+
     private formOptions = options;
     private calendar = {
         currentDate: new Date,
     }
     private form: FormGroup;
-    customAlertOptions: any = {
+    private customAlertOptions: any = {
         header: '',
         subHeader: 'Select your toppings',
         message: '$1.00 per topping',
         translucent: true
     };
-
-    customPopoverOptions: any = {
-    };
+    private pickerOptions = null;
 
     customActionSheetOptions: any = {
         header: 'Colors',
@@ -49,6 +51,22 @@ export class CreatePage implements OnInit {
     }
 
     ngOnInit() {
+        this.pickerOptions =
+            {
+                buttons: [{
+                    text: 'Save',
+                    handler: this.onDurationPicked.bind(this)
+                },
+                {
+                    text: 'Cancel',
+                    handler: () => {
+                        return false;
+                    }
+                }]
+            }
+        console.log('options', this.pickerOptions);
+
+
         this.form = this.fb.group({
             description: [null, Validators.required],
             name: [null, Validators.required],
@@ -65,14 +83,18 @@ export class CreatePage implements OnInit {
 
             clock_times: [[]],
 
-            duration: [''],
+            duration_hours: [1],
+            duration_hours_text: ['01'],
+            duration_minutes: [0],
+            duration_minutes_text: ['00'],
+
             difficulty: [1],
             abstinence: [false],
             group: ['health'],
             priority: [1],
         })
         this.addFormListeners();
-        this.presentDayScheduleModal();
+
     }
 
     private addFormListeners() {
@@ -113,7 +135,8 @@ export class CreatePage implements OnInit {
         {
             showBackdrop: true,
             events: this.form.controls[formControl].value,
-            title: this.form.controls.name.value
+            title: this.form.controls.name.value,
+            duration: this.form.controls.duration_minutes.value + (60 * this.form.controls.duration_hours.value),
         }
         console.log('props', p);
 
@@ -140,6 +163,23 @@ export class CreatePage implements OnInit {
 
     formatDate(d) {
         return moment(d).format('dddd MMMM Do');
+    }
+
+    onDurationPicked(d) {
+
+
+        this.form.controls.duration_minutes.setValue(d.minute.value);
+        this.form.controls.duration_hours.setValue(d.hour.value);
+        this.form.controls.duration_hours_text.setValue(d.hour.text);
+        this.form.controls.duration_minutes_text.setValue(d.minute.text);
+        // debugger;
+        console.log('picked duration', this.form.value);
+    }
+
+    getDurationDisplay() {
+        return this.form.controls.duration_hours_text.value + ":" +
+            this.form.controls.duration_minutes_text.value
+
     }
 
 

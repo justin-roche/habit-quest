@@ -1,5 +1,7 @@
 {
   "name": "habit-streak",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

@@ -20,13 +20,13 @@ export class DaySchedulePage implements OnInit {
     constructor(private mc: ModalController) { }
 
     newEvent() {
+        debugger;
         let base = {
             title: this.title || 'new habit',
             weekday: null,
             id: moment().valueOf()
         }
-        console.log('base',base);
-
+        console.log('base', base);
         return base;
     }
 
@@ -42,7 +42,7 @@ export class DaySchedulePage implements OnInit {
 
     newTimedEvent(hour, minute = 0) {
         // timed events are always set to start "today"
-       let today = moment().startOf('day')
+        let today = moment().startOf('day')
         let event = (<any>this.newEvent())
         event.hour = hour;
         // start time and end time are required for display, but not saved to the model
