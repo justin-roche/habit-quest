@@ -51,14 +51,14 @@ export class HabitsService {
     }
 
     createTasks(h) {
+        // each task is a repetition of a habit, the task list is a property of the habit object
         h.created_on = moment().format();
         h.tasks = [];
         h.status = 'AWAITING';
-
         let next = this.getStartDate(h);
-        // let next = start.clone()
-        const end = next.clone().add(h.end_quantity, h.end_units);
+        const end = this.getEndDate(h, next);
 
+        // for the range of moments between start and end, create tasks and iterate the next moment
         while (next <= end) {
             let task = {
                 date: next.format(),
@@ -67,7 +67,6 @@ export class HabitsService {
             h.tasks.push(task);
             next = next.clone().add(1, h.frequency_units);
         }
-
     }
 
     getStartDate(h) {
@@ -77,6 +76,13 @@ export class HabitsService {
         return moment().startOf('day');
     }
 
+
+    getEndDate(h, start) {
+        if (h.end_date) {
+            return moment(h.end_date).startOf('day');
+        }
+        return start.clone().add(h.end_quantity, h.end_units);
+    }
 
     removeSelectedHabits(hs) {
         this.h = this.h.filter((h) => {

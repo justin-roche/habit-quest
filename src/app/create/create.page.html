@@ -61,16 +61,18 @@
             </ion-select>
         </ion-item>
         <ion-item lines="none">
+
             <ion-label>
                 End After
             </ion-label>
-            <ion-input style="border:1px solid gray" style="text-align:right" type="number" [formControl]="form.controls.end_quantity"></ion-input>
+            <ion-input *ngIf="form.controls.end_date.value" value="{{formatDate(form.controls.end_date.value)}}" slot="end" style="text-align:right"></ion-input>
+            <ion-input *ngIf="form.controls.end_units.value != 'date'" style="border:1px solid gray" style="text-align:right" type="number" [formControl]="form.controls.end_quantity"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label>
             </ion-label>
             <ion-select [formControl]="form.controls.end_units" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
-                <ion-select-option *ngFor="let item of formOptions.end_units" [value]="item.value">{{item.display}}</ion-select-option>
+                <ion-select-option *ngFor="let endUnit of formOptions.end_units" [value]="endUnit.value">{{endUnit.display}}</ion-select-option>
             </ion-select>
         </ion-item>
         <ion-item>

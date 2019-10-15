@@ -6,6 +6,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Scheduler } from 'rxjs';
 import { options } from './form-options';
 import { HabitsService } from '../services/habits.service';
+// import moment = require('moment');
+
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-create',
@@ -75,6 +78,10 @@ export class CreatePage implements OnInit {
     }
 
 
+    formatDate(d) {
+        return moment(d).format('dddd MMMM Do');
+    }
+
     ngOnInit() {
         this.form = this.fb.group({
             description: [null, Validators.required],
@@ -114,4 +121,6 @@ export class CreatePage implements OnInit {
 
 
     }
+
+
 }
