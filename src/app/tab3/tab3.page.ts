@@ -1,21 +1,17 @@
 import { Component, ViewChild } from '@angular/core';
 import { HabitsService } from '../services/habits.service';
-import { CalendarComponent } from 'ionic2-calendar';
-
+// import { CalendarComponent } from 'ionic2-calendar';
 import * as moment from 'moment';
-
 @Component({
     selector: 'app-tab3',
     templateUrl: 'tab3.page.html',
     styleUrls: ['tab3.page.scss']
 })
+
 export class Tab3Page {
-
     currentDate = new Date
-
     private habits = [];
     private source = [];
-
     constructor(private hs: HabitsService) {
         this.hs.habits.asObservable().subscribe((d) => {
             if (d.length) {
@@ -24,15 +20,16 @@ export class Tab3Page {
             }
         })
     }
-
     setHabit(h) {
-
         let map = {
+
             'COMPLETE': 'completed',
+
             'MISSED': 'failure',
             'AWAITING': 'awaiting',
         }
         let s = []
+
         h.tasks.forEach((t) => {
             s.push({
                 title: h.name,
@@ -44,7 +41,5 @@ export class Tab3Page {
         })
         this.source = s;
         // console.log(this.source);
-
     }
-
 }

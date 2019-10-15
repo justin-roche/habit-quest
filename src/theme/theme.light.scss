@@ -1,8 +1,16 @@
 .light-theme {
 
+    --ion-toolbar-background: black;
+    --ion-tab-bar-background: black;
     ion-modal {
         --height: 70%;
         --width: 80%;
+    }
+
+    ion-toolbar {
+        background-color: #090f2f;
+        color: #fff;
+        --background: black;
     }
     // ion-toolbar {
     //     background-color: #090f2f;

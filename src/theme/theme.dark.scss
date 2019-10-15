@@ -1,8 +1,11 @@
 .dark-theme {
+
+    --ion-toolbar-background: white;
+    --ion-tab-bar-background: white;
     ion-toolbar {
         background-color: #090f2f;
         color: #fff;
-        --background: #090f2f;
+        --background: white;
     }
     ion-modal{
         --ion-background-color:   #090f2f;
@@ -139,6 +142,9 @@
         border-color: #ff0fff;
     }
 
+    .toolbar {
+        background: white;
+    }
     .button-native{
         color:white;
     }

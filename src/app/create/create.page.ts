@@ -27,9 +27,6 @@ export class CreatePage implements OnInit {
     };
 
     customPopoverOptions: any = {
-        // header: 'Hair Color',
-        // subHeader: 'Select your hair color',
-        // message: 'Only select your dominant hair color'
     };
 
     customActionSheetOptions: any = {
@@ -45,12 +42,8 @@ export class CreatePage implements OnInit {
     ) { }
 
     ngAfterViewInit() {
-        // this.presentPurposeModal()
-
-        // this.presentScheduleModal()
     }
     private onInit() {
-        // console.log('calling');
         this.presentPurposeModal()
     }
     private trySave() {
@@ -58,11 +51,9 @@ export class CreatePage implements OnInit {
         console.log('habit', habit);
         this.hs.addHabit(habit)
         this.nc.navigateBack('')
-        // this.presentPurposeModal()
     }
 
     private async presentPurposeModal() {
-        // const modal = await modalController.create({...}); const { data } = await modal.onDidDismiss(); console.log(data);
 
         const modal = await this.modalController.create({
             component: PurposePage,
@@ -71,10 +62,7 @@ export class CreatePage implements OnInit {
         return await modal.present();
     }
 
-
     private async presentScheduleModal(formControl = 'start_date') {
-        // const modal = await modalController.create({...}); const { data } = await modal.onDidDismiss(); console.log(data);
-
         const modal = await this.modalController.create({
             component: SchedulePage,
             componentProps: { showBackdrop: true }
@@ -84,17 +72,20 @@ export class CreatePage implements OnInit {
         this.form.controls[formControl].setValue(data)
         console.log('return', data, this.form.value);
 
-
     }
+
 
     ngOnInit() {
         this.form = this.fb.group({
             description: [null, Validators.required],
             name: [null, Validators.required],
-            frequency_quantity: [1, Validators.required],
+
             frequency_units: ['day'],
-            end_quantity: [90],
+            frequency_quantity: [1, Validators.required],
+
             end_units: ['day'],
+            end_quantity: [90],
+            end_date: [null],
 
             start_type: ['today'],
             start_date: [null],
@@ -107,13 +98,17 @@ export class CreatePage implements OnInit {
             priority: [1],
         })
 
-        this.form.statusChanges.subscribe((f) => {
-        })
-        this.form.controls['start_type'].valueChanges.subscribe((f) => {
-            console.log('control changed right , fail', f);
 
+        this.form.controls['start_type'].valueChanges.subscribe((f) => {
             if (this.form.controls['start_type'].value == 'date') {
                 this.presentScheduleModal()
+            }
+        })
+
+        this.form.controls['end_units'].valueChanges.subscribe((f) => {
+
+            if (this.form.controls['end_units'].value == 'date') {
+                this.presentScheduleModal("end_date");
             }
         })
 

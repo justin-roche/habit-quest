@@ -1,26 +1,29 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+let actions = require("./tab3.spec-actions");
 
-import { Tab3Page } from './tab3.page';
+let browser = null;
 
-describe('Tab3Page', () => {
-  let component: Tab3Page;
-  let fixture: ComponentFixture<Tab3Page>;
+let puppeteer = require("puppeteer")
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [Tab3Page],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+let applicationPage = null;
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(Tab3Page);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+beforeAll(async () => {
+    browser = await puppeteer.connect({ browserURL: 'http://127.0.0.1:9224' })
+    page = await browser.newPage();
+    await page.goto("http://www.google.com",
+        { waitUntil: "networkidle2" }
+    );
 });
+afterAll(async () => {
+    browser.close();
+});
+test("Page Title Match", async () => {
+    const title = await page.title();
+    console.log('title', title);
+    expect(title).toBeDefined()
+});
+test("gets existing page", async () => {
+    await actions.getApplicationPage();
+})
+test("creates new habit", async () => {
+    await actions.createNewHabit();
+})

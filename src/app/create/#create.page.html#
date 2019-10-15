@@ -1,8 +1,5 @@
 <ion-header>
     <ion-toolbar>
-        <!-- <ion-buttons slot="secondary"> -->
-        <!-- <ion-grid> -->
-        <!-- <ion-row> -->
         <div float-left>
             <ion-buttons>
                 <ion-back-button></ion-back-button>
@@ -15,31 +12,20 @@
                 </ion-button>
             </ion-buttons>
         </div>
-        <!-- <ion-title>create</ion-title> -->
-        <!-- </ion-row> -->
-        <!-- </ion-grid> -->
-
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
     <ion-list>
-
-        <ion-list-header>
-            <ion-label>Info</ion-label>
+        <!-- <ion-item> -->
+        <ion-list-header domflag>
+            <ion-label floating color="tertiary">Info</ion-label>
         </ion-list-header>
-
         <ion-item>
-            <ion-grid>
-                <ion-row>
-                    <ion-label floating>
-                        Description
-                    </ion-label>
-                </ion-row>
-                <ion-row>
-                    <ion-input style="text-align:right" [formControl]="form.controls.description" placeholder="enter description"></ion-input>
-                </ion-row>
-            </ion-grid>
+            <ion-label floating>
+                Description
+            </ion-label>
+            <ion-input slot="end" style="text-align:right" [formControl]="form.controls.description" placeholder="enter description"></ion-input>
         </ion-item>
 
         <ion-item>
@@ -49,93 +35,73 @@
             <ion-input placeholder="enter name" slot="end" style="text-align:right" [formControl]="form.controls.name"></ion-input>
         </ion-item>
 
+        <!-- scheduling -->
         <ion-list-header>
-            <ion-label>Scheduling</ion-label>
+            <ion-label color="tertiary">Scheduling</ion-label>
         </ion-list-header>
         <ion-item [attr.lines]="form.controls['start_date'].value? 'none':''">
-
             <ion-label>
                 Start On
             </ion-label>
-
-
             <ion-select float-right [formControl]="form.controls.start_type" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
                 <ion-select-option *ngFor="let item of formOptions.start_types" [value]="item.value">{{item.display}}</ion-select-option>
             </ion-select>
         </ion-item>
-
         <ion-item *ngIf="form.controls['start_date'].value">
-
             <ion-text slot="end">{{form.controls.start_date.value | date: 'dd/MM/yyyy'}}</ion-text>
-
         </ion-item>
-
         <ion-item lines="none">
             <ion-label>Repeat</ion-label>
-            <ion-input slot="end" type="text" style="border:1px solid green" style="text-align:right" [formControl]="form.controls.frequency_quantity"></ion-input>
+            <ion-input slot="end" type="text" style="" style="text-align:right" [formControl]="form.controls.frequency_quantity"></ion-input>
         </ion-item>
-
         <ion-item>
             <ion-label></ion-label>
-            <ion-select style="border:1px solid green" [formControl]="form.controls.frequency_units" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
+            <ion-select style="" [formControl]="form.controls.frequency_units" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
                 <ion-select-option *ngFor="let item of formOptions.frequency_units" [value]="item.value">{{item.display}}</ion-select-option>
             </ion-select>
-
         </ion-item>
-
-
-        <!-- <calendar (onTimeSelected)="onTimeSelected($event)" [currentDate]="calendar.currentDate" [noEventsLabel]="''" [showEventDetail]="false"> -->
-        <!-- </calendar> -->
         <ion-item lines="none">
             <ion-label>
                 End After
             </ion-label>
             <ion-input style="border:1px solid gray" style="text-align:right" type="number" [formControl]="form.controls.end_quantity"></ion-input>
         </ion-item>
-
         <ion-item>
             <ion-label>
-                <!-- End After -->
             </ion-label>
             <ion-select [formControl]="form.controls.end_units" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
-                <ion-select-option *ngFor="let item of formOptions.end_units" [value]="item.value">{{item.display}}</ion-select-option>
+                <ion-select-option *ngFor="let endUnit of formOptions.end_units" [value]="endUnit.value">{{endUnit.display}}</ion-select-option>
             </ion-select>
-
         </ion-item>
-
         <ion-item>
-
             <ion-label>
                 Time of day
             </ion-label>
-            <ion-button>select</ion-button>
-
+            <ion-button color="none">
+                <ion-icon color="dark" slot="icon-only" name="search"></ion-icon>
+            </ion-button>
         </ion-item>
-        <!-- <ion-label>Type</ion-label> -->
-        <ion-list-header>
-            <ion-label>Category</ion-label>
-        </ion-list-header>
 
+        <!-- category -->
+        <ion-list-header>
+            <ion-label color="tertiary">Category</ion-label>
+        </ion-list-header>
         <ion-item>
             <ion-label>Abstinence type</ion-label>
             <ion-checkbox [formControl]="form.controls.abstinence"></ion-checkbox>
         </ion-item>
-
         <ion-item>
             <ion-label>Group</ion-label>
             <ion-select [formControl]="form.controls.group" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
                 <ion-select-option *ngFor="let item of formOptions.groups" [value]="item.value">{{item.display}}</ion-select-option>
             </ion-select>
         </ion-item>
-
         <ion-item>
             <ion-label>Difficulty</ion-label>
             <ion-select [formControl]="form.controls.difficulty" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
                 <ion-select-option *ngFor="let item of formOptions.difficulties" [value]="item.value">{{item.display}}</ion-select-option>
-
             </ion-select>
         </ion-item>
-
         <ion-item>
             <ion-label>Time Required</ion-label>
             <ion-select [formControl]="form.controls.duration" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">

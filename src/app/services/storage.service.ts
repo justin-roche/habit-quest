@@ -9,14 +9,12 @@ let m = require('./mock.json')
 })
 export class StorageService {
     constructor(private s: Storage) {
-        s.set('habits', []);
-        // if (m.length) {
+        // s.set('habits', []);
         s.set('habits', m);
-        // }
     }
+
     load() {
         let p = this.s.get('habits')
-
         return from(p)
     }
 }

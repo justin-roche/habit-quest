@@ -6,6 +6,13 @@ export const options = {
         { display: 'first available', value: 'first' },
         { display: 'set date', value: 'date' },
     ],
+    end_units: [
+        { display: 'days', value: 'day' },
+        { display: 'weeks', value: 'week' },
+        { display: 'months', value: 'month' },
+        { display: 'times', value: 'times' },
+        { display: 'set date', value: 'date' }
+    ],
     frequency_units: [
         { display: 'daily', value: 'day' },
         { display: 'weekly', value: 'week' },
@@ -26,13 +33,6 @@ export const options = {
         { display: '1', value: 1 },
         { display: '2', value: 2 },
         { display: '3', value: 3 }
-    ],
-    end_units: [
-        { display: 'days', value: 'day' },
-        { display: 'weeks', value: 'week' },
-        { display: 'months', value: 'month' },
-        { display: 'times', value: 'times' },
-        { display: 'set date', value: 'date' }
     ],
 };
 

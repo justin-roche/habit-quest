@@ -24,8 +24,7 @@ export class HabitsPage {
                     this.presentToast();
                 }
                 this.allHabits = d;
-                console.log('all', d);
-
+                console.log('habits', d);
                 this.createItems()
             }
         })
@@ -86,7 +85,6 @@ export class HabitsPage {
 
     async presentToast() {
         this.toast = await this.toastController.create({
-            // header: '',
             message: 'You have no incomplete habits. Create one by clicking the plus icon at the top right',
             position: 'middle',
             buttons: [

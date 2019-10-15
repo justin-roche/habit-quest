@@ -1,19 +1,20 @@
+<div></div>
 <ion-header>
-    <ion-toolbar ion-justify-content-center class="ion-justify-content-evenly">
+    <ion-toolbar ion-justify-content-center class="toolbar ion-justify-content-evenly">
         <ion-buttons ion-justify-content-center class="ion-justify-content-evenly">
-            <ion-button (click)="mode='list'" [disabled]="true" [color]="mode == 'list'? 'primary' : ''">
+            <ion-button (click)="mode='list'" [disabled]="true" [color]="mode == 'list'? 'primary' : 'medium'">
                 <ion-icon slot="icon-only" name="list"></ion-icon>
             </ion-button>
-            <ion-button (click)="mode='search'" [color]="mode == 'search'? 'primary' : ''">
+            <ion-button (click)="mode='search'" [color]="mode == 'search'? 'primary' : 'medium'">
                 <ion-icon slot="icon-only" name="search"></ion-icon>
             </ion-button>
-            <ion-button [color]="mode == 'create'? 'primary' : ''">
+            <ion-button [color]="mode == 'edit'? 'primary' : 'medium'">
                 <ion-icon slot="icon-only" name="create"></ion-icon>
             </ion-button>
-            <ion-button [color]="mode == 'delete'? 'primary' : ''" (click)="toggleDeleteMode()" routerDirection="forward">
+            <ion-button [color]="mode == 'delete'? 'primary' : 'medium'" (click)="toggleDeleteMode()" routerDirection="forward">
                 <ion-icon name="remove-circle-outline"></ion-icon>
             </ion-button>
-            <ion-button [color]="mode == 'add'? 'primary' : ''" id="add" [routerLink]="['create']" routerDirection="forward">
+            <ion-button [color]="mode == 'add'? 'primary' : 'medium'" id="add" [routerLink]="['create']" routerDirection="forward">
                 <ion-icon name="add-circle-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
@@ -32,44 +33,57 @@
 </ion-toolbar>
 
 <ion-content>
-
-    <ion-header no-margin no-padding>
-        <ion-item lines="none" no-margin no-padding>
-            <ion-button slot="start" (click)="decrementDate()" no-padding no-margin style="justify-content:center;text-align:center;">
-                <ion-icon name="arrow-back"></ion-icon>
-            </ion-button>
-            <ion-button slot="end" (click)="incrementDate()" no-padding no-margin style="justify-content:center;text-align:center;">
-                <ion-icon name="arrow-forward"></ion-icon>
-            </ion-button>
-
-        </ion-item>
+    <ion-header no-border no-margin no-padding>
+        <ion-grid>
+            <ion-row style="border:1px solid red">
+                <ion-col size="4" class="" style="text-align:left">
+                    <ion-button color="none" style="height:100%" (click)="decrementDate()" no-border no-padding no-margin style="font-size:20px;">
+                        <ion-icon name="arrow-back" color="dark"></ion-icon>
+                    </ion-button>
+                </ion-col>
+                <ion-col size="4" class="" style="border: 1px solid blue;">
+                    <div style="text-align:center">
+                        <div style="border:3px solid purple; position:relative;top:50%">
+                            <ion-label>{{currentDate.format('dddd MMMM Do')}}</ion-label>
+                        </div>
+                    </div>
+                </ion-col>
+                <ion-col size="4" class="" style="text-align:right">
+                    <ion-button (click)="incrementDate()" color="none" no-padding no-margin style="font-size:20px;;">
+                        <ion-icon name="arrow-forward" color="dark"></ion-icon>
+                    </ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+        <!-- </ion-item> -->
     </ion-header>
-    <ion-list>
-        <ion-list-header no-margin no-padding>
-            <ion-label>Daily Habits</ion-label>
-        </ion-list-header>
+
+    <ion-list *ngIf="items.length > 0">
+        <!-- <ion-list-header no-margin no-padding> -->
+        <!-- go forward/back buttons -->
+        <!-- </ion-list-header> -->
+        <!-- <ion-list-header>
+             <ion-label>Daily Habits</ion-label>
+             </ion-list-header> -->
         <ion-item *ngFor="let i of items">
             <ion-grid>
                 <ion-row>
-                    <ion-col size="3">
+                    <ion-col size="5" class="">
                         <ion-label class="item-text-center" floating>
                             {{i.habit.name}}
                         </ion-label>
                     </ion-col>
-                    <ion-col size="3">
-                        <ion-label floating>
-                            <!-- {{h.name}} -->
-                        </ion-label>
-                    </ion-col>
-                    <ion-col size="3">
-                        <div class="item-text-center">
-                            <ion-badge color="secondary">{{i.habit.statistics.completed_percentage}}%</ion-badge>
-                        </div>
-                    </ion-col>
 
-                    <ion-col size="3">
-                        <ion-button *ngIf="mode == 'normal'  && i.task.status  != 'COMPLETE'" (click)="completeTask(i)">
-                            <ion-icon name="checkmark-circle-outline"></ion-icon>
+                    <!-- completed percentage column -->
+                    <ion-col size="3" style="">
+                        <!-- <div style="border:1px solid purple" class="item-text-center"> -->
+                        <!-- <ion-badge color="dark">{{i.habit.statistics.completed_percentage}}%</ion-badge> -->
+                        <!-- </div> -->
+                    </ion-col>
+                    <!-- action column -->
+                    <ion-col size="4" style="align-content:right;align-items:right; text-align:right">
+                        <ion-button domflag color="transparent" style="align-content:right;align-items:right" *ngIf=" mode=='list' && i.task.status !='COMPLETE'" (click)=" completeTask(i)">
+                            <ion-icon color="dark" style="font-size:30px" name="checkmark-circle-outline"></ion-icon>
                         </ion-button>
                         <ion-checkbox *ngIf="mode == 'delete'" color="danger" (click)="selectHabit($event,i)"></ion-checkbox>
                     </ion-col>
