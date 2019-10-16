@@ -59,6 +59,37 @@ export class HabitsService {
         let next = this.getStartDate(h);
         const end = this.getEndDate(h, next);
 
+        if (h.frequency_units == 'day') {
+            this.addDailyTasks(h, next, end);
+        }
+        else if (h.frequency_units == 'week') {
+            this.addWeeklyTasks(h, next, end);
+        }
+    }
+
+    addWeeklyTasks(h, next, end) {
+        // for the range of moments between start and end, create tasks and iterate the next moment
+        let next = next.startOf('week');
+
+        while (next <= end) {
+            // debugger;
+            // repeat for the frequency quantity, eg. three times / day
+            for (let i = 0; i < h.frequency_days.length; i++) {
+                // let time = h.frequency_times[i];
+                let task = {
+                    date: next.clone().add(h.frequency_days[i], 'day').format(),
+                    status: 'AWAITING',
+                    id: this.guidGenerator()
+                }
+                console.log('created task', task);
+
+                h.tasks.push(task);
+            }
+            next = next.clone().add(1, 'week');
+        }
+    }
+
+    addDailyTasks(h, next, end) {
         // for the range of moments between start and end, create tasks and iterate the next moment
         while (next <= end) {
             // repeat for the frequency quantity, eg. three times / day
@@ -71,7 +102,6 @@ export class HabitsService {
                 }
                 h.tasks.push(task);
             }
-
             next = next.clone().add(1, h.frequency_units);
         }
     }

@@ -69,13 +69,13 @@ export class CreatePage implements OnInit {
 
 
         this.form = this.fb.group({
-            description: [null, Validators.required],
-            name: [null, Validators.required],
+            description: ['test', Validators.required],
+            name: ['test', Validators.required],
 
             frequency_units: ['week'],
             frequency_quantity: [1, Validators.required],
             frequency_times: [[]],
-            frequency_days: [['Any']],
+            frequency_days: [[null]],
 
             end_units: ['day'],
             end_quantity: [90],
@@ -200,11 +200,11 @@ export class CreatePage implements OnInit {
                 return v != d.value;
             })
         } else {
-            if (d.value == 'Any') {
+            if (d.value == null) {
                 cv = [];
             } else {
                 cv = cv.filter((v) => {
-                    return v != 'Any';
+                    return v != null;
                 })
             }
             cv.push(d.value);
