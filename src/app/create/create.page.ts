@@ -72,13 +72,13 @@ export class CreatePage implements OnInit {
             description: ['test', Validators.required],
             name: ['test', Validators.required],
 
-            frequency_units: ['week'],
+            frequency_units: ['day'],
             frequency_quantity: [1, Validators.required],
-            frequency_times: [[]],
+            frequency_hours: [[]],
             frequency_days: [[null]],
 
-            end_units: ['day'],
-            end_quantity: [90],
+            end_units: ['times'],
+            end_quantity: [2],
             end_date: [null],
 
             start_type: ['today'],
@@ -102,7 +102,6 @@ export class CreatePage implements OnInit {
     private addFormListeners() {
 
         this.form.controls['end_units'].valueChanges.subscribe((f) => {
-            debugger;
             if (this.form.controls['end_units'].value == 'date') {
                 this.presentScheduleModal("end_date");
             }
@@ -132,7 +131,7 @@ export class CreatePage implements OnInit {
     }
 
 
-    private async presentDayScheduleModal(formControl = 'frequency_times') {
+    private async presentDayScheduleModal(formControl = 'frequency_hours') {
         let p =
         {
             showBackdrop: true,

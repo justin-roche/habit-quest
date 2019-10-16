@@ -67,15 +67,23 @@ export class HabitsService {
         }
     }
 
+    maxTimes(h) {
+        // debugger;
+        return h.end_units == 'times' && (h.tasks.length >= h.end_quantity)
+    }
+
+    maxDate(h, next, end) {
+        return h.end_units != 'times' && (next >= end)
+    }
+
     addWeeklyTasks(h, next, end) {
         // for the range of moments between start and end, create tasks and iterate the next moment
         let next = next.startOf('week');
 
-        while (next <= end) {
-            // debugger;
+        while (!this.maxDate(h, next, end) && !this.maxTimes(h)) {
             // repeat for the frequency quantity, eg. three times / day
             for (let i = 0; i < h.frequency_days.length; i++) {
-                // let time = h.frequency_times[i];
+                // let time = h.frequency_hours[i];
                 let task = {
                     date: next.clone().add(h.frequency_days[i], 'day').format(),
                     status: 'AWAITING',
@@ -91,15 +99,21 @@ export class HabitsService {
 
     addDailyTasks(h, next, end) {
         // for the range of moments between start and end, create tasks and iterate the next moment
-        while (next <= end) {
+        while (!this.maxDate(h, next, end) && !this.maxTimes(h)) {
             // repeat for the frequency quantity, eg. three times / day
             for (let i = 0; i < h.frequency_quantity; i++) {
-                let time = h.frequency_times[i];
+                // determine hour of day if hour is set
+                if (h.frequency_hours[i]) {
+                    let time = h.frequency_hours[i];
+                } else {
+                    time = 0;
+                }
                 let task = {
                     date: next.clone().add(time.hour, 'hour').format(),
                     status: 'AWAITING',
                     id: this.guidGenerator()
                 }
+
                 h.tasks.push(task);
             }
             next = next.clone().add(1, h.frequency_units);
