@@ -10,6 +10,7 @@ import { SchedulePage } from '../schedule/schedule.page';
 import { DaySchedulePage } from '../day-schedule/day-schedule.page';
 
 import * as moment from 'moment';
+import { ifStmt } from '@angular/compiler/src/output/output_ast';
 // import { WheelSelector } from '@ionic-native/wheel-selector/ngx';
 
 @Component({
@@ -71,8 +72,10 @@ export class CreatePage implements OnInit {
             description: [null, Validators.required],
             name: [null, Validators.required],
 
-            frequency_units: ['day'],
+            frequency_units: ['week'],
             frequency_quantity: [1, Validators.required],
+            frequency_times: [[]],
+            frequency_days: [['Any']],
 
             end_units: ['day'],
             end_quantity: [90],
@@ -81,7 +84,6 @@ export class CreatePage implements OnInit {
             start_type: ['today'],
             start_date: [null],
 
-            clock_times: [[]],
 
             duration_hours: [1],
             duration_hours_text: ['01'],
@@ -100,7 +102,7 @@ export class CreatePage implements OnInit {
     private addFormListeners() {
 
         this.form.controls['end_units'].valueChanges.subscribe((f) => {
-
+            debugger;
             if (this.form.controls['end_units'].value == 'date') {
                 this.presentScheduleModal("end_date");
             }
@@ -130,7 +132,7 @@ export class CreatePage implements OnInit {
     }
 
 
-    private async presentDayScheduleModal(formControl = 'clock_times') {
+    private async presentDayScheduleModal(formControl = 'frequency_times') {
         let p =
         {
             showBackdrop: true,
@@ -182,8 +184,37 @@ export class CreatePage implements OnInit {
 
     }
 
+    showScheduling() {
+        return true;
+        // return this.form.controls.name.valid && this.form.controls.description.valid;
+    }
+    showCategories() {
+        return true;
+        // return this.form.controls.name.valid && this.form.controls.description.valid;
+    }
 
+    toggleWeekday(d) {
+        let cv = this.form.controls.frequency_days.value;
+        if (cv.indexOf(d.value) != -1) {
+            cv = cv.filter((v) => {
+                return v != d.value;
+            })
+        } else {
+            if (d.value == 'Any') {
+                cv = [];
+            } else {
+                cv = cv.filter((v) => {
+                    return v != 'Any';
+                })
+            }
+            cv.push(d.value);
+        }
+        this.form.controls.frequency_days.setValue(cv);
+    }
 
+    _weekdayColor(d) {
+        return this.form.controls.frequency_days.value.indexOf(d.value) != -1 ? "dark" : "light";
+    }
 
 
 }

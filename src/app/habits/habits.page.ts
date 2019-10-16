@@ -10,7 +10,9 @@ import * as moment from 'moment';
 })
 export class HabitsPage {
     private habits = [];
-    private items = [];
+
+    private incomplete_tasks = [];
+    private complete_tasks = [];
     private allHabits = [];
     private selectedHabits = [];
     private currentDate = moment();
@@ -25,43 +27,67 @@ export class HabitsPage {
                 }
                 this.allHabits = d;
                 console.log('habits', d);
-                this.createItems()
+                this.createTasks()
             }
         })
     }
 
-    createItems() {
-        this.items = this.allHabits.map((h) => {
-            let dayTask = h.tasks.filter((t) => {
+    createTasks() {
+        this.incomplete_tasks = [];
+        this.complete_tasks = [];
+        this.allHabits.forEach((h) => {
+            // filter all habits for tasks occuring on visible date, set incomplete_tasks to applicable tasks
+            let tasks = h.tasks.filter((t) => {
                 return this.currentDate.isSame(t.date, 'd')
-            })[0]
-            if (dayTask) {
+            }).map((t) => {
                 return {
-                    task: dayTask,
-                    habit: h
+                    task: t,
+                    habit: h,
+                    status: t.status,
+                    // the following are used for sorts and time display
+                    hour: moment(t.date).hour(),
+                    _hour: moment(t.date).format('hh:mm')
                 }
-            }
-            return null
-        }).filter((h) => h != null);
-        console.log('filtered items', this.items);
+            })
+            // debugger;
+            let completed = tasks.filter((t) => {
+                return t.status == "COMPLETE";
+            })
+
+            let awaiting = tasks.filter((t) => {
+                return t.status == "AWAITING";
+            })
+            this.incomplete_tasks = this.incomplete_tasks.concat(awaiting);
+            this.complete_tasks = this.complete_tasks.concat(completed);
+        });
+
+        this.complete_tasks = this.complete_tasks.sort((a, b) => {
+            return a.hour - b.hour;
+        })
+
+        this.incomplete_tasks = this.incomplete_tasks.sort((a, b) => {
+            return a.hour - b.hour;
+        })
+
+        console.log('filtered incomplete_tasks', this.incomplete_tasks);
     }
 
     private decrementDate() {
         this.currentDate = this.currentDate.subtract(1, 'day');
-        this.createItems()
+        this.createTasks()
     }
     private incrementDate() {
         this.currentDate = this.currentDate.add(1, 'day');
-        this.createItems()
+        this.createTasks()
     }
 
     completeTask(i) {
-        this.hs.completeTask(i.habit, this.currentDate)
+        this.hs.completeTask(i.habit.id, i.task.id, this.currentDate)
     }
 
     private toggleDeleteMode() {
         if (this.mode == 'list') {
-            this.mode = 'delete';
+            this.mode = 'delete'
         } else {
             this.mode = 'list';
         }

@@ -36,6 +36,8 @@
         </ion-item>
 
         <!-- scheduling -->
+    </ion-list>
+    <ion-list *ngIf="showScheduling()">
         <ion-list-header>
             <ion-label color="tertiary">Scheduling</ion-label>
         </ion-list-header>
@@ -47,6 +49,20 @@
                 <ion-select-option *ngFor="let item of formOptions.start_types" [value]="item.value">{{item.display}}</ion-select-option>
             </ion-select>
         </ion-item>
+        <ion-item>
+
+            <ion-label>Time Required</ion-label>
+
+            <ion-datetime style="" [pickerOptions]="pickerOptions" value="{{getDurationDisplay()}}" hourValues="{{hours.toString()}}" minuteValues="{{minutes.toString()}}" displayFormat="HH:mm">
+            </ion-datetime>
+            <!-- {{getDurationDisplay()}} -->
+        </ion-item>
+        <!-- <ion-item> -->
+        <!-- <ion-label></ion-label> -->
+        <!-- <ion-button slot="end" color="none"> -->
+        <!-- <ion-icon color="dark" slot="icon-only" name="timer"></ion-icon> -->
+        <!-- </ion-button> -->
+        <!-- </ion-item> -->
         <ion-item *ngIf="form.controls['start_date'].value">
             <ion-text slot="end">{{form.controls.start_date.value | date: 'dd/MM/yyyy'}}</ion-text>
         </ion-item>
@@ -54,14 +70,29 @@
             <ion-label>Repeat</ion-label>
             <ion-input slot="end" type="text" style="" style="text-align:right" [formControl]="form.controls.frequency_quantity"></ion-input>
         </ion-item>
+
         <ion-item>
             <ion-label></ion-label>
             <ion-select style="" [formControl]="form.controls.frequency_units" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
                 <ion-select-option *ngFor="let item of formOptions.frequency_units" [value]="item.value">{{item.display}}</ion-select-option>
             </ion-select>
         </ion-item>
-        <ion-item lines="none">
+        <ion-item domflag *ngIf="form.controls.frequency_units.value == 'week'">
+            <ion-button (click)="toggleWeekday(d)" class="weekday" color="{{_weekdayColor(d)}}" *ngFor="let d of formOptions.weekdays">
+                <!-- {{_weekdayColor(d)}} -->
+                {{d.display}}
+            </ion-button>
+        </ion-item>
 
+        <ion-item>
+            <ion-label>
+                Time of day
+            </ion-label>
+            <ion-button (click)="presentDayScheduleModal()" color="none">
+                <ion-icon color="dark" slot="icon-only" name="timer"></ion-icon>
+            </ion-button>
+        </ion-item>
+        <ion-item lines="none">
             <ion-label>
                 End After
             </ion-label>
@@ -75,15 +106,8 @@
                 <ion-select-option *ngFor="let endUnit of formOptions.end_units" [value]="endUnit.value">{{endUnit.display}}</ion-select-option>
             </ion-select>
         </ion-item>
-        <ion-item>
-            <ion-label>
-                Time of day
-            </ion-label>
-            <ion-button (click)="presentDayScheduleModal()" color="none">
-                <ion-icon color="dark" slot="icon-only" name="search"></ion-icon>
-            </ion-button>
-        </ion-item>
-
+    </ion-list>
+    <ion-list *ngIf="showCategories()">
         <!-- category -->
         <ion-list-header>
             <ion-label color="tertiary">Category</ion-label>
@@ -103,15 +127,6 @@
             <ion-select [formControl]="form.controls.difficulty" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
                 <ion-select-option *ngFor="let item of formOptions.difficulties" [value]="item.value">{{item.display}}</ion-select-option>
             </ion-select>
-        </ion-item>
-        <ion-item>
-            <ion-label>Time Required</ion-label>
-            <!-- {{getDurationDisplay()}} -->
-            <ion-datetime [pickerOptions]="pickerOptions" value="{{getDurationDisplay()}}" hourValues="{{hours.toString()}}" minuteValues="{{minutes.toString()}}" displayFormat="HH:mm">
-            </ion-datetime>
-            <ion-button slot="end" color="none">
-                <ion-icon color="dark" slot="icon-only" name="timer"></ion-icon>
-            </ion-button>
         </ion-item>
         <ion-item>
             <ion-label>Priority</ion-label>

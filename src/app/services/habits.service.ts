@@ -43,6 +43,7 @@ export class HabitsService {
     }
 
     addHabit(h) {
+        h.id = this.guidGenerator();
         this.createTasks(h);
         this.createStatistics(h);
         console.log(JSON.stringify(h))
@@ -60,11 +61,17 @@ export class HabitsService {
 
         // for the range of moments between start and end, create tasks and iterate the next moment
         while (next <= end) {
-            let task = {
-                date: next.format(),
-                status: 'AWAITING'
+            // repeat for the frequency quantity, eg. three times / day
+            for (let i = 0; i < h.frequency_quantity; i++) {
+                let time = h.frequency_times[i];
+                let task = {
+                    date: next.clone().add(time.hour, 'hour').format(),
+                    status: 'AWAITING',
+                    id: this.guidGenerator()
+                }
+                h.tasks.push(task);
             }
-            h.tasks.push(task);
+
             next = next.clone().add(1, h.frequency_units);
         }
     }
@@ -75,7 +82,6 @@ export class HabitsService {
         }
         return moment().startOf('day');
     }
-
 
     getEndDate(h, start) {
         if (h.end_date) {
@@ -93,19 +99,25 @@ export class HabitsService {
         this.habits.next(this.h);
     }
 
-    completeTask(h, time) {
-        let task = h.tasks.filter((t) => {
-            return time.isSame(t.date, 'd')
+    completeTask(h_id, t_id, date) {
+        // debugger;
+        // retrieve the reference version of the task
+        let habit = this.h.filter((h) => {
+            return h.id == h_id;
         })[0];
+
+        let task = habit.tasks.filter((t) => {
+            return t.id == t_id;
+        })[0];
+
         task.status = 'COMPLETE'
-        task.completed_time = moment(time).startOf('day').format();
+        task.completed_time = moment(date).startOf('day').format();
 
-        this.updateStatistics(h);
-
-        if (this.allTasksComplete(h)) {
-            h.status = 'COMPLETE'
+        // this.updateStatistics(h);
+        // debugger;
+        if (this.allTasksComplete(habit)) {
+            habit.status = 'COMPLETE'
         }
-        debugger;
         this.habits.next(this.h);
     }
 
@@ -135,6 +147,13 @@ export class HabitsService {
         return h.tasks.every((t) => {
             return t.status == 'COMPLETE'
         })
+    }
+
+    guidGenerator() {
+        var S4 = function() {
+            return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+        };
+        return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
     }
 }
 

@@ -20,7 +20,6 @@ export class DaySchedulePage implements OnInit {
     constructor(private mc: ModalController) { }
 
     newEvent() {
-        debugger;
         let base = {
             title: this.title || 'new habit',
             weekday: null,

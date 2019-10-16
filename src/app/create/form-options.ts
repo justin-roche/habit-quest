@@ -18,6 +18,16 @@ export const options = {
         { display: 'weekly', value: 'week' },
         { display: 'monthly', value: 'month' },
     ],
+    weekdays: [
+        { display: 'Any', value: 'Any' },
+        { display: 'Mon', value: 'Monday' },
+        { display: 'Tue', value: 'Tuesday' },
+        { display: 'Wed', value: 'Wednesday' },
+        { display: 'Thu', value: 'Thursday' },
+        { display: 'Fri', value: 'Friday' },
+        { display: 'Sat', value: 'Saturday' },
+        { display: 'Sun', value: 'Sunday' },
+    ],
     groups: [
         { display: 'health', value: 'health' },
         { display: 'work', value: 'work' },
