@@ -56,7 +56,9 @@ export class HabitsService {
         h.created_on = moment().format();
         h.tasks = [];
         h.status = 'AWAITING';
-        let next = this.getStartDate(h);
+        this.setStartDate(h);
+        debugger;
+        let next = h.start_date;
         const end = this.getEndDate(h, next);
 
         if (h.frequency_units == 'day') {
@@ -66,6 +68,19 @@ export class HabitsService {
             this.addWeeklyTasks(h, next, end);
         }
     }
+
+    getTasksForDate(d) {
+        // a moment date
+        let t = [];
+        this.h.forEach((h) => {
+            let tasks = h.tasks.filter((t) => {
+                return d.isSame(t.date, 'd')
+            });
+            t = t.concat(tasks);
+        });
+        return t;
+    }
+
 
     maxTimes(h) {
         return h.end_units == 'times' && (h.tasks.length >= h.end_quantity)
@@ -119,11 +134,45 @@ export class HabitsService {
         }
     }
 
-    getStartDate(h) {
-        if (h.start_date) {
-            return moment(h.start_date).startOf('day');
+    setStartDate(h) {
+        if (h.start_type == 'auto') {
+            // add habits at 14 day intervals by default
+            let sortedHabits = this.h.sort((a, b) => {
+                return a.start_date.isAfter(b.start_date) ? -1 : 1;
+            })
+
+            let d = moment().startOf('day');
+            let available = false;
+            while (available == false) {
+                if (sortedHabits.every((h) => {
+                    return !moment(h.start_date).isSame(d, 'day');
+                })) {
+                    available = true;
+                } else {
+                    d = d.add(14, 'day');
+                }
+            }
+            console.log('auto date', d);
+
+            h.start_date = d;
+            return d;
+
         }
-        return moment().startOf('day');
+        if (h.start_type == 'first') {
+            // the first day with no habits
+            let available = false;
+            let d = moment().startOf('day');
+            while (available == false) {
+                available = this.getTasksForDate(d).length == 0;
+                d = d.add(1, 'day');
+            }
+            h.start_date = d;
+        }
+
+        if (h.start_type == 'today') {
+            let d = moment().startOf('day');
+            h.start_date = d;
+        }
     }
 
     getEndDate(h, start) {

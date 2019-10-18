@@ -2,9 +2,10 @@
 
 export const options = {
     start_types: [
+        { display: 'auto schedule', value: 'auto' },
         { display: 'today', value: 'today' },
-        { display: 'first available', value: 'first' },
         { display: 'set date', value: 'date' },
+        { display: 'first available', value: 'first' },
     ],
     end_units: [
         { display: 'days', value: 'day' },

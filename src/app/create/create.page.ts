@@ -25,7 +25,7 @@ export class CreatePage implements OnInit {
     private formOptions = options;
     private calendar = {
         currentDate: new Date,
-    }
+    };
     private form: FormGroup;
     private customAlertOptions: any = {
         header: '',
@@ -51,8 +51,7 @@ export class CreatePage implements OnInit {
     }
 
     ngOnInit() {
-        this.pickerOptions =
-            {
+        this.pickerOptions = {
                 buttons: [{
                     text: 'Save',
                     handler: this.onDurationPicked.bind(this)
@@ -63,7 +62,7 @@ export class CreatePage implements OnInit {
                         return false;
                     }
                 }]
-            }
+            };
 
         this.form = this.fb.group({
             description: ['test', Validators.required],
@@ -78,7 +77,7 @@ export class CreatePage implements OnInit {
             end_quantity: [2],
             end_date: [null],
 
-            start_type: ['today'],
+            start_type: ['auto'],
             start_date: [null],
 
 
@@ -91,7 +90,7 @@ export class CreatePage implements OnInit {
             abstinence: [false],
             group: ['health'],
             priority: [1],
-        })
+        });
         this.addFormListeners();
         // this.presentMonthScheduleModal();
 
@@ -99,25 +98,25 @@ export class CreatePage implements OnInit {
 
     private addFormListeners() {
 
-        this.form.controls['end_units'].valueChanges.subscribe((f) => {
-            if (this.form.controls['end_units'].value == 'date') {
-                this.presentMonthScheduleModal("end_date");
+        this.form.controls.end_units.valueChanges.subscribe((f) => {
+            if (this.form.controls.end_units.value == 'date') {
+                this.presentMonthScheduleModal('end_date');
             }
-        })
+        });
 
-        this.form.controls['start_type'].valueChanges.subscribe((f) => {
-            if (this.form.controls['start_type'].value == 'date') {
-                this.presentMonthScheduleModal()
+        this.form.controls.start_type.valueChanges.subscribe((f) => {
+            if (this.form.controls.start_type.value == 'date') {
+                this.presentMonthScheduleModal();
             }
 
-        })
+        });
     }
 
     private trySave() {
-        let habit = this.form.value
+        const habit = this.form.value;
         console.log('habit', habit);
-        this.hs.addHabit(habit)
-        this.nc.navigateBack('')
+        this.hs.addHabit(habit);
+        this.nc.navigateBack('');
     }
 
     private async presentPurposeModal() {
@@ -130,13 +129,12 @@ export class CreatePage implements OnInit {
 
 
     private async presentDayScheduleModal(formControl = 'frequency_hours') {
-        let p =
-        {
+        const p = {
             showBackdrop: true,
             events: this.form.controls[formControl].value,
             title: this.form.controls.name.value,
             duration: this.form.controls.duration_minutes.value + (60 * this.form.controls.duration_hours.value),
-        }
+        };
         console.log('props', p);
 
         const modal = await this.modalController.create({
@@ -145,7 +143,7 @@ export class CreatePage implements OnInit {
         });
         await modal.present();
         const { data } = await modal.onDidDismiss();
-        this.form.controls[formControl].setValue(data)
+        this.form.controls[formControl].setValue(data);
         console.log('return', data, this.form.value);
     }
 
@@ -175,8 +173,8 @@ export class CreatePage implements OnInit {
     }
 
     getDurationDisplay() {
-        return this.form.controls.duration_hours_text.value + ":" +
-            this.form.controls.duration_minutes_text.value
+        return this.form.controls.duration_hours_text.value + ':' +
+            this.form.controls.duration_minutes_text.value;
 
     }
 
@@ -194,14 +192,14 @@ export class CreatePage implements OnInit {
         if (cv.indexOf(d.value) != -1) {
             cv = cv.filter((v) => {
                 return v != d.value;
-            })
+            });
         } else {
             if (d.value == null) {
                 cv = [];
             } else {
                 cv = cv.filter((v) => {
                     return v != null;
-                })
+                });
             }
             cv.push(d.value);
         }
@@ -209,7 +207,7 @@ export class CreatePage implements OnInit {
     }
 
     _weekdayColor(d) {
-        return this.form.controls.frequency_days.value.indexOf(d.value) != -1 ? "dark" : "light";
+        return this.form.controls.frequency_days.value.indexOf(d.value) != -1 ? 'dark' : 'light';
     }
 
 

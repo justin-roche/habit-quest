@@ -1,0 +1,44 @@
+[{
+    "description": "test",
+    "name": "test",
+    "frequency_units": "day",
+    "frequency_quantity": 1,
+    "frequency_hours": [],
+    "frequency_days": [
+        null
+    ],
+    "end_units": "times",
+    "end_quantity": 2,
+    "end_date": null,
+    "start_type": "auto",
+    "start_date": "2019-10-17T17:00:00.000Z",
+    "duration_hours": 1,
+    "duration_hours_text": "01",
+    "duration_minutes": 0,
+    "duration_minutes_text": "00",
+    "difficulty": 1,
+    "abstinence": false,
+    "group": "health",
+    "priority": 1,
+    "id": "85e0403d-cb1c-4caa-f462-72c19caf4884",
+    "created_on": "2019-10-18T21:33:34+07:00",
+    "tasks": [
+        {
+            "date": "2019-10-18T00:00:00+07:00",
+            "status": "AWAITING",
+            "id": "49dbf54e-4341-09de-5edf-ba1fdcc95291"
+        },
+        {
+            "date": "2019-10-19T00:00:00+07:00",
+            "status": "AWAITING",
+            "id": "f05884fe-f299-6412-d750-11202d07b965"
+        }
+    ],
+    "status": "AWAITING",
+    "statistics": {
+        "completed_percentage": 0,
+        "longest_streak": 0,
+        "points": 0,
+        "finished_runs": []
+    }
+}]
