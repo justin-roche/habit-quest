@@ -7,13 +7,12 @@
     <ion-grid color="medium" no-padding no-margin>
         <ion-row no-padding no-margin>
             <!-- left button -->
-            <ion-col size="4" no-padding no-margin ion-justify-content-center style="justify-content:center;text-align:center">
-                <ion-button color="none" (click)="back()" no-padding no-margin style="justify-content:center;text-align:center;height:70%">
+            <ion-col size="4" no-padding no-margin ion-justify-content-center style="text-align:left">
+                <ion-button color="none" (click)="dateBack()" no-padding no-margin style="font-size:20px;height:100%">
                     <ion-icon color="light" name="arrow-back"></ion-icon>
                 </ion-button>
             </ion-col>
             <!-- the date header  -->
-
             <ion-col size="4" color="light" style="">
                 <div style="text-align:center">
                     <div style=" position:relative;top:50%">
@@ -22,8 +21,8 @@
                 </div>
             </ion-col>
             <!-- right button -->
-            <ion-col size="4" no-padding no-margin ion-justify-content-center style="justify-content:center;text-align:center">
-                <ion-button color="none" (click)="back()" no-padding no-margin style="justify-content:center;text-align:center;height:70%">
+            <ion-col size="4" style="text-align:right">
+                <ion-button color="none" (click)="dateNext()" no-padding no-margin style="height:100%;font-size:20px">
                     <ion-icon color="light" name="arrow-forward"></ion-icon>
                 </ion-button>
             </ion-col>
@@ -38,7 +37,7 @@
                 {{view.dates[row*7+col].label}}
             </div>
         </ng-template>
-        <calendar (onTimeSelected)="onTimeSelected($event)" [currentDate]="currentDate" [noEventsLabel]="''" [queryMode]="'local'" [eventSource]="source" [monthviewDisplayEventTemplate]="template" [calendarMode]="'month'" [showEventDetail]="false" [formatMonthTitle]="MMMM">
+        <calendar (onTimeSelected)="onTimeSelected($event)" [currentDate]="currentDate" [autoSelect]="false" [noEventsLabel]="''" [queryMode]="'local'" [eventSource]="source" [monthviewDisplayEventTemplate]="template" [calendarMode]="'month'" [showEventDetail]="false" [formatMonthTitle]="MMMM">
         </calendar>
     </div>
 </ion-content>
@@ -47,7 +46,7 @@
     <ion-button float-left (click)="dismiss()">
         Cancel
     </ion-button>
-    <ion-button float-right (click)="dismiss()">
+    <ion-button float-right (click)="dismiss()" [disabled]="source.length<2">
         Done
     </ion-button>
 </ion-footer>

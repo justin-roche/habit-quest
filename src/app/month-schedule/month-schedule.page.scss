@@ -30,8 +30,12 @@ td {
 }
 .monthview-selected {
     background-color: blue;
-    // color: blue;
+    color: white;
 }
+/* .monthview-selected { */
+    /* background-color: blue; */
+    // color: blue;
+/* } */
 
 .monthview-primary-with-event{
     background-color: transparent !important;

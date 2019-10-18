@@ -64,7 +64,7 @@
         <!-- </ion-button> -->
         <!-- </ion-item> -->
         <ion-item *ngIf="form.controls['start_date'].value">
-            <ion-text slot="end">{{form.controls.start_date.value | date: 'dd/MM/yyyy'}}</ion-text>
+            <ion-text slot="end">{{formatDate(form.controls.start_date.value)}}</ion-text>
         </ion-item>
         <ion-item lines="none">
             <ion-label>Repeat</ion-label>

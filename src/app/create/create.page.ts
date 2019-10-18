@@ -93,7 +93,7 @@ export class CreatePage implements OnInit {
             priority: [1],
         })
         this.addFormListeners();
-        this.presentScheduleModal();
+        // this.presentMonthScheduleModal();
 
     }
 
@@ -101,13 +101,13 @@ export class CreatePage implements OnInit {
 
         this.form.controls['end_units'].valueChanges.subscribe((f) => {
             if (this.form.controls['end_units'].value == 'date') {
-                this.presentScheduleModal("end_date");
+                this.presentMonthScheduleModal("end_date");
             }
         })
 
         this.form.controls['start_type'].valueChanges.subscribe((f) => {
             if (this.form.controls['start_type'].value == 'date') {
-                this.presentScheduleModal()
+                this.presentMonthScheduleModal()
             }
 
         })
@@ -149,15 +149,14 @@ export class CreatePage implements OnInit {
         console.log('return', data, this.form.value);
     }
 
-    private async presentScheduleModal(formControl = 'start_date') {
+    private async presentMonthScheduleModal(formControl = 'start_date') {
         const modal = await this.modalController.create({
             component: MonthSchedulePage,
             componentProps: { showBackdrop: true }
         });
         await modal.present();
         const { data } = await modal.onDidDismiss();
-        this.form.controls[formControl].setValue(data)
-        console.log('return', data, this.form.value);
+        this.form.controls[formControl].setValue(moment(data.startTime));
     }
 
     formatDate(d) {

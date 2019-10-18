@@ -36,11 +36,15 @@
     <ion-header class="subheader" no-border no-margin no-padding>
         <ion-grid color="medium">
             <ion-row style="" color="medium">
+
+                <!-- left button -->
                 <ion-col size="4" class="" style="text-align:left">
                     <ion-button color="none" style="height:100%" (click)="decrementDate()" no-border no-padding no-margin style="font-size:20px;">
                         <ion-icon name="arrow-back" color="light"></ion-icon>
                     </ion-button>
                 </ion-col>
+
+                <!-- the date header  -->
                 <ion-col size="4" color="light" style="">
                     <div style="text-align:center">
                         <div style=" position:relative;top:50%">
@@ -48,8 +52,9 @@
                         </div>
                     </div>
                 </ion-col>
+                <!-- right button -->
                 <ion-col size="4" class="" style="text-align:right">
-                    <ion-button (click)="incrementDate()" color="none" no-padding no-margin style="font-size:20px;;">
+                    <ion-button (click)="incrementDate()" color="none" no-padding no-margin style="font-size:20px;">
                         <ion-icon name="arrow-forward" color="light"></ion-icon>
                     </ion-button>
                 </ion-col>
