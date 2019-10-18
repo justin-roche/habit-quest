@@ -1,7 +1,9 @@
 .monthview{
     background-color: red;
 }
-
+.button {
+    --box-shadow: none;
+}
 .calendar-container td{
     border:none !important;
 }

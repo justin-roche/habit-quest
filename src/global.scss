@@ -15,6 +15,7 @@
 .monthview-datetable td, .monthview-datetable th{
     border: none !important;
 }
+
 .monthview-primary-with-event{
         background-color: transparent !important;
 }
@@ -22,6 +23,11 @@
 .calendar-day {
     border-radius: 30px;
         color: black;
+
+
+&.current {
+border: 3px solid var(--ion-color-medium);
+}
 
     &.primary {
         color: white;
@@ -32,9 +38,9 @@
     }
     
     &.awaiting {
-        border: 3px solid green;
-        
+        border: 3px solid var(--ion-color-tertiary);
     }
+
     &.completed {
         border: 3px solid blue;
                      

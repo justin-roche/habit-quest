@@ -68,12 +68,11 @@ export class HabitsService {
     }
 
     maxTimes(h) {
-        // debugger;
         return h.end_units == 'times' && (h.tasks.length >= h.end_quantity)
     }
 
     maxDate(h, next, end) {
-        return h.end_units != 'times' && (next >= end)
+        return h.end_units != 'times' && (next > end)
     }
 
     addWeeklyTasks(h, next, end) {

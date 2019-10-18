@@ -6,12 +6,11 @@ import { Scheduler } from 'rxjs';
 import { options } from './form-options';
 import { HabitsService } from '../services/habits.service';
 // import moment = require('moment');
-import { SchedulePage } from '../schedule/schedule.page';
+import { MonthSchedulePage } from '../month-schedule/month-schedule.page';
 import { DaySchedulePage } from '../day-schedule/day-schedule.page';
 
 import * as moment from 'moment';
 import { ifStmt } from '@angular/compiler/src/output/output_ast';
-// import { WheelSelector } from '@ionic-native/wheel-selector/ngx';
 
 @Component({
     selector: 'app-create',
@@ -65,8 +64,6 @@ export class CreatePage implements OnInit {
                     }
                 }]
             }
-        console.log('options', this.pickerOptions);
-
 
         this.form = this.fb.group({
             description: ['test', Validators.required],
@@ -96,6 +93,7 @@ export class CreatePage implements OnInit {
             priority: [1],
         })
         this.addFormListeners();
+        this.presentScheduleModal();
 
     }
 
@@ -153,7 +151,7 @@ export class CreatePage implements OnInit {
 
     private async presentScheduleModal(formControl = 'start_date') {
         const modal = await this.modalController.create({
-            component: SchedulePage,
+            component: MonthSchedulePage,
             componentProps: { showBackdrop: true }
         });
         await modal.present();

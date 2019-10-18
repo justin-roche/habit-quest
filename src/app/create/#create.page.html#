@@ -5,7 +5,7 @@
                 <ion-back-button></ion-back-button>
             </ion-buttons>
         </div>
-        <div float-right>
+        <div domflag float-right>
             <ion-buttons>
                 <ion-button [disabled]="form.invalid" slot="end" (click)="trySave()" routerDirection="forward">
                     Done
@@ -18,7 +18,7 @@
 <ion-content>
     <ion-list>
         <!-- <ion-item> -->
-        <ion-list-header domflag>
+        <ion-list-header>
             <ion-label floating color="tertiary">Info</ion-label>
         </ion-list-header>
         <ion-item>
@@ -77,7 +77,7 @@
                 <ion-select-option *ngFor="let item of formOptions.frequency_units" [value]="item.value">{{item.display}}</ion-select-option>
             </ion-select>
         </ion-item>
-        <ion-item domflag *ngIf="form.controls.frequency_units.value == 'week'">
+        <ion-item *ngIf="form.controls.frequency_units.value == 'week'">
             <ion-button (click)="toggleWeekday(d)" class="weekday" color="{{_weekdayColor(d)}}" *ngFor="let d of formOptions.weekdays">
                 <!-- {{_weekdayColor(d)}} -->
                 {{d.display}}

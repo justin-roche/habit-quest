@@ -1,24 +1,28 @@
 <ion-header domflag>
     <ion-toolbar>
         <ion-title>Month Schedule</ion-title>
-
     </ion-toolbar>
 </ion-header>
 <ion-header class="subheader" style="height:5%" no-padding>
     <ion-grid color="medium" no-padding no-margin>
         <ion-row no-padding no-margin>
             <!-- left button -->
-            <ion-col size="2" no-padding no-margin ion-justify-content-center style="justify-content:center;text-align:center">
+            <ion-col size="4" no-padding no-margin ion-justify-content-center style="justify-content:center;text-align:center">
                 <ion-button color="none" (click)="back()" no-padding no-margin style="justify-content:center;text-align:center;height:70%">
                     <ion-icon color="light" name="arrow-back"></ion-icon>
                 </ion-button>
             </ion-col>
             <!-- the date header  -->
-            <ion-col size="8">
-                {{ viewTitle }}
+
+            <ion-col size="4" color="light" style="">
+                <div style="text-align:center">
+                    <div style=" position:relative;top:50%">
+                        <ion-label color="light">{{displayDate.format('MMMM YYYY')}}</ion-label>
+                    </div>
+                </div>
             </ion-col>
             <!-- right button -->
-            <ion-col size="2" no-padding no-margin ion-justify-content-center style="justify-content:center;text-align:center">
+            <ion-col size="4" no-padding no-margin ion-justify-content-center style="justify-content:center;text-align:center">
                 <ion-button color="none" (click)="back()" no-padding no-margin style="justify-content:center;text-align:center;height:70%">
                     <ion-icon color="light" name="arrow-forward"></ion-icon>
                 </ion-button>

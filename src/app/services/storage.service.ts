@@ -4,6 +4,7 @@ import { Storage } from '@ionic/storage';
 import { from } from 'rxjs';
 // let m = require('./mock.json')
 let m = require('./mock2.json')
+let m = require('./2week.json')
 
 @Injectable({
     providedIn: 'root'

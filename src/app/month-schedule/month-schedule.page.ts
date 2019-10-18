@@ -13,6 +13,8 @@ export class MonthSchedulePage implements OnInit {
         currentDate: new Date,
     }
     private selectedDate;
+
+    private displayDate = moment();
     // source for calender
     private source;
     private mode = 'loading';
@@ -41,10 +43,10 @@ export class MonthSchedulePage implements OnInit {
         let d = moment(ev.selectedTime)
         // debugger;
         if (d.date() == moment(this.source[0].startTime).date()) {
-            debugger;
+            // debugger;
         }
         else {
-            debugger;
+            // debugger;
             this.source = this.source.concat(
                 [{
                     title: 'selected',

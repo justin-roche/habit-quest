@@ -10,7 +10,7 @@ import { NgCalendarModule } from 'ionic2-calendar';
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeUS from '@angular/common/locales/en';
-import { SchedulePageModule } from '../schedule/schedule.module';
+import { MonthSchedulePageModule } from '../month-schedule/month-schedule.module';
 import { DaySchedulePageModule } from '../day-schedule/day-schedule.module';
 import { WheelSelector } from '@ionic-native/wheel-selector/ngx';
 registerLocaleData(localeUS);
@@ -27,9 +27,9 @@ const routes: Routes = [
         CommonModule,
         FormsModule,
         IonicModule,
-        PurposePageModule,
+       PurposePageModule,
         DaySchedulePageModule,
-        SchedulePageModule,
+        MonthSchedulePageModule,
         ReactiveFormsModule,
         NgCalendarModule,
         // Forms

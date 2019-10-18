@@ -31,7 +31,7 @@ const routes: Routes = [
                 children: [
                     {
                         path: '',
-                        loadChildren: '../schedule/schedule.module#SchedulePageModule'
+                        loadChildren: '../month-schedule/month-schedule.module#MonthSchedulePageModule'
                     }
                 ]
             },
