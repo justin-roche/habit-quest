@@ -1,0 +1,49 @@
+<ion-header domflag>
+    <ion-toolbar>
+        <ion-title>Month Schedule</ion-title>
+
+    </ion-toolbar>
+</ion-header>
+<ion-header class="subheader" style="height:5%" no-padding>
+    <ion-grid color="medium" no-padding no-margin>
+        <ion-row no-padding no-margin>
+            <!-- left button -->
+            <ion-col size="2" no-padding no-margin ion-justify-content-center style="justify-content:center;text-align:center">
+                <ion-button color="none" (click)="back()" no-padding no-margin style="justify-content:center;text-align:center;height:70%">
+                    <ion-icon color="light" name="arrow-back"></ion-icon>
+                </ion-button>
+            </ion-col>
+            <!-- the date header  -->
+            <ion-col size="8">
+                {{ viewTitle }}
+            </ion-col>
+            <!-- right button -->
+            <ion-col size="2" no-padding no-margin ion-justify-content-center style="justify-content:center;text-align:center">
+                <ion-button color="none" (click)="back()" no-padding no-margin style="justify-content:center;text-align:center;height:70%">
+                    <ion-icon color="light" name="arrow-forward"></ion-icon>
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-header>
+
+<ion-content>
+    <div *ngIf="source" class="calendar-container">
+        <ng-template #template let-view="view" let-row="row" let-col="col">
+            <div class="calendar-day {{ view.dates[row*7+col].events[0]?.color }}">
+                {{view.dates[row*7+col].label}}
+            </div>
+        </ng-template>
+        <calendar (onTimeSelected)="onTimeSelected($event)" [currentDate]="currentDate" [noEventsLabel]="''" [queryMode]="'local'" [eventSource]="source" [monthviewDisplayEventTemplate]="template" [calendarMode]="'month'" [showEventDetail]="false" [formatMonthTitle]="MMMM">
+        </calendar>
+    </div>
+</ion-content>
+
+<ion-footer>
+    <ion-button float-left (click)="dismiss()">
+        Cancel
+    </ion-button>
+    <ion-button float-right (click)="dismiss()">
+        Done
+    </ion-button>
+</ion-footer>

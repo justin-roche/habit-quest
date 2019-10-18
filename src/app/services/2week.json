@@ -1,0 +1,111 @@
+[
+    {
+        "description": "every day 2 weeks",
+        "name": "every day 2 weeks",
+        "frequency_units": "day",
+        "frequency_quantity": 1,
+        "frequency_hours": [],
+        "frequency_days": [
+            null
+        ],
+        "end_units": "week",
+        "end_quantity": 2,
+        "end_date": null,
+        "start_type": "today",
+        "start_date": null,
+        "duration_hours": 1,
+        "duration_hours_text": "01",
+        "duration_minutes": 0,
+        "duration_minutes_text": "00",
+        "difficulty": 1,
+        "abstinence": false,
+        "group": "health",
+        "priority": 1,
+        "id": "a7a38db7-0ebc-84ef-213e-13ce89b1788c",
+        "created_on": "2019-10-16T17:31:40+07:00",
+        "tasks": [
+            {
+                "date": "2019-10-16T00:00:00+07:00",
+                "status": "AWAITING",
+                "id": "fe093f5a-beb0-09c0-0a14-281c602c0b52"
+            },
+            {
+                "date": "2019-10-17T00:00:00+07:00",
+                "status": "AWAITING",
+                "id": "cefd6b61-51cb-19e6-4039-6656b14a0318"
+            },
+            {
+                "date": "2019-10-18T00:00:00+07:00",
+                "status": "AWAITING",
+                "id": "7ace01aa-ebed-a947-3986-5afe35e95286"
+            },
+            {
+                "date": "2019-10-19T00:00:00+07:00",
+                "status": "AWAITING",
+                "id": "20bf59bc-ff4e-ec45-ef5f-f57a14fcd67b"
+            },
+            {
+                "date": "2019-10-20T00:00:00+07:00",
+                "status": "AWAITING",
+                "id": "dfbaee20-7eab-a46c-534d-68b84e30d65a"
+            },
+            {
+                "date": "2019-10-21T00:00:00+07:00",
+                "status": "AWAITING",
+                "id": "38d3d67f-2131-997d-3be7-eefed5b561a3"
+            },
+            {
+                "date": "2019-10-22T00:00:00+07:00",
+                "status": "AWAITING",
+                "id": "52d3550a-b311-e6bc-f189-e39a9a1aab92"
+            },
+            {
+                "date": "2019-10-23T00:00:00+07:00",
+                "status": "AWAITING",
+                "id": "819287b1-b38f-d425-e16a-c5d38a056921"
+            },
+            {
+                "date": "2019-10-24T00:00:00+07:00",
+                "status": "AWAITING",
+                "id": "c443b6af-47d5-55bf-c58c-d6e7dec22434"
+            },
+            {
+                "date": "2019-10-25T00:00:00+07:00",
+                "status": "AWAITING",
+                "id": "434dec74-6cc6-e344-a87a-a68b09a43a5b"
+            },
+            {
+                "date": "2019-10-26T00:00:00+07:00",
+                "status": "AWAITING",
+                "id": "7de1bbd8-6cee-51be-3800-de83e0a3666a"
+            },
+            {
+                "date": "2019-10-27T00:00:00+07:00",
+                "status": "AWAITING",
+                "id": "8100af92-9d77-ffe6-5c9f-5a0a2227a8b7"
+            },
+            {
+                "date": "2019-10-28T00:00:00+07:00",
+                "status": "AWAITING",
+                "id": "1d2c0ba4-b015-a256-8932-c9a3c1c77314"
+            },
+            {
+                "date": "2019-10-29T00:00:00+07:00",
+                "status": "AWAITING",
+                "id": "262e3b05-4f1c-03bb-e458-0d6349d2c9e5"
+            },
+            {
+                "date": "2019-10-30T00:00:00+07:00",
+                "status": "AWAITING",
+                "id": "d43e4a4a-3c5f-5b23-d75d-aa863def8f93"
+            }
+        ],
+        "status": "AWAITING",
+        "statistics": {
+            "completed_percentage": 0,
+            "longest_streak": 0,
+            "points": 0,
+            "finished_runs": []
+        }
+    }
+]
