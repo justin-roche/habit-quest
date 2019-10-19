@@ -8,16 +8,26 @@
 
 <ion-content>
     <ion-list>
+
+        <ion-list-header>
+            <ion-label floating color="tertiary">Scheduling</ion-label>
+        </ion-list-header>
+
         <ion-item>
-            <ion-label>Dark Mode</ion-label>
-            <ion-toggle [ngModel]="darkMode" (ionChange)="toggleDark()"></ion-toggle>
-        </ion-item>
-        <ion-item>
-            <ion-label>Zen Lock</ion-label>
-            <ion-toggle></ion-toggle>
+            <ion-label>Auto-scheduling interval</ion-label>
+            <ion-input [ngModel]="settings.autoScheduleInterval" (ionChange)="onIntervalChange($event)" style="border:1px solid gray" style="text-align:right" type="number"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label>Conserve Willpower</ion-label>
+            <ion-toggle [ngModel]="settings.conserverWillpower"></ion-toggle>
+        </ion-item>
+
+
+        <ion-list-header>
+            <ion-label floating color="tertiary">Motivation</ion-label>
+        </ion-list-header>
+        <ion-item>
+            <ion-label>Zen Lock</ion-label>
             <ion-toggle></ion-toggle>
         </ion-item>
         <ion-item>
@@ -27,6 +37,15 @@
         <ion-item>
             <ion-label>Require new identity PIN</ion-label>
             <ion-toggle></ion-toggle>
+        </ion-item>
+
+        <ion-list-header>
+            <ion-label floating color="tertiary">Appearance</ion-label>
+        </ion-list-header>
+
+        <ion-item>
+            <ion-label>Dark Mode</ion-label>
+            <ion-toggle [ngModel]="settings.darkMode" (ionChange)="toggleDark()"></ion-toggle>
         </ion-item>
     </ion-list>
 </ion-content>

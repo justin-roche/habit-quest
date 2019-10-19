@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { StateService } from '../services/state.service';
+import { SettingsService } from '../services/settings.service';
 
 import { flatMap, map, catchError, delay, throttleTime, concatMap, bufferTime, take, switchMap, toArray } from 'rxjs/operators'
 import { Observable, Subject, pipe, of, from, interval, concat, timer, merge, fromEvent, SubscriptionLike, PartialObserver } from 'rxjs';
@@ -10,20 +10,24 @@ import { Observable, Subject, pipe, of, from, interval, concat, timer, merge, fr
     styleUrls: ['settings.page.scss']
 })
 export class SettingsPage {
-    private darkMode = null;
-    private theme = null;
+    private settings = null;
+    // private darkMode = null;
+    // private theme = null;
 
-    constructor(private ss: StateService) {
-        this.ss.theme.asObservable().pipe(take(1)).subscribe((r) => {
-            this.darkMode = (r == 'dark-theme');
-            console.log('dark', this.darkMode);
+    constructor(private ss: SettingsService) {
+        this.ss.getSettings().pipe(take(1)).subscribe((r) => {
+            this.settings = r;
         })
+    }
 
+    onIntervalChange(e) {
+        console.log('changed interval', e);
+        this.ss.setProperty({ autoScheduleInterval: e.target.value });
     }
 
     toggleDark() {
-        this.ss.setActiveTheme(this.darkMode ? 'light-theme' : 'dark-theme')
-        this.darkMode = !this.darkMode
+        this.ss.toggleDark();
+        // this.darkMode = !this.settingdarkMode
     }
 
 }

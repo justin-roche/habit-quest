@@ -11,6 +11,7 @@ import { DaySchedulePage } from '../day-schedule/day-schedule.page';
 
 import * as moment from 'moment';
 import { ifStmt } from '@angular/compiler/src/output/output_ast';
+import { SettingsService } from '../services/settings.service';
 
 @Component({
     selector: 'app-create',
@@ -19,6 +20,7 @@ import { ifStmt } from '@angular/compiler/src/output/output_ast';
 })
 export class CreatePage implements OnInit {
 
+    private mode = 'loading';
     private hours = Array.apply(0, Array(24)).map(function(_, i) { return i - 1; });
     private minutes = Array.apply(0, Array(60)).map(function(_, i) { return i - 1; });
 
@@ -27,12 +29,7 @@ export class CreatePage implements OnInit {
         currentDate: new Date,
     };
     private form: FormGroup;
-    private customAlertOptions: any = {
-        header: '',
-        subHeader: 'Select your toppings',
-        message: '$1.00 per topping',
-        translucent: true
-    };
+    private settings;
     private pickerOptions = null;
 
     customActionSheetOptions: any = {
@@ -43,26 +40,33 @@ export class CreatePage implements OnInit {
 
         public modalController: ModalController,
         private nc: NavController,
+        private ss: SettingsService,
         private fb: FormBuilder,
         private hs: HabitsService
-    ) { }
+    ) {
+
+        this.ss.getSettings().subscribe((val) => {
+            this.settings = val;
+        })
+    }
 
     ngAfterViewInit() {
+
     }
 
     ngOnInit() {
         this.pickerOptions = {
-                buttons: [{
-                    text: 'Save',
-                    handler: this.onDurationPicked.bind(this)
-                },
-                {
-                    text: 'Cancel',
-                    handler: () => {
-                        return false;
-                    }
-                }]
-            };
+            buttons: [{
+                text: 'Save',
+                handler: this.onDurationPicked.bind(this)
+            },
+            {
+                text: 'Cancel',
+                handler: () => {
+                    return false;
+                }
+            }]
+        };
 
         this.form = this.fb.group({
             description: ['test', Validators.required],
@@ -86,30 +90,47 @@ export class CreatePage implements OnInit {
             duration_minutes: [0],
             duration_minutes_text: ['00'],
 
+
             difficulty: [1],
             abstinence: [false],
             group: ['health'],
             priority: [1],
         });
-        this.addFormListeners();
-        // this.presentMonthScheduleModal();
 
+        this.hs.habits.asObservable().subscribe((d) => {
+            this.mode = 'loading';
+            this.preValidateFormOptions();
+            this.mode = 'ready';
+        })
+
+        this.addFormListeners();
+        // this.mode = 'ready';
+        // this.presentMonthScheduleModal();
+    }
+
+    preValidateFormOptions() {
+        if (this.settings.conserveWillpower) {
+            // disable today from options if any in the past range are true
+            if (this.hs.isBlockedDay(moment().startOf('day'))) {
+                this.formOptions.start_types.forEach((t) => {
+                    if (t.value == 'today') t.disabled = true;
+                })
+            }
+        }
     }
 
     private addFormListeners() {
-
+        this.form.controls.start_type.valueChanges.subscribe((f) => {
+            if (this.form.controls.start_type.value == 'date') {
+                this.presentMonthScheduleModal();
+            }
+        });
         this.form.controls.end_units.valueChanges.subscribe((f) => {
             if (this.form.controls.end_units.value == 'date') {
                 this.presentMonthScheduleModal('end_date');
             }
         });
 
-        this.form.controls.start_type.valueChanges.subscribe((f) => {
-            if (this.form.controls.start_type.value == 'date') {
-                this.presentMonthScheduleModal();
-            }
-
-        });
     }
 
     private trySave() {
@@ -119,51 +140,12 @@ export class CreatePage implements OnInit {
         this.nc.navigateBack('');
     }
 
-    private async presentPurposeModal() {
-        const modal = await this.modalController.create({
-            component: PurposePage,
-            componentProps: { showBackdrop: true }
-        });
-        return await modal.present();
-    }
-
-
-    private async presentDayScheduleModal(formControl = 'frequency_hours') {
-        const p = {
-            showBackdrop: true,
-            events: this.form.controls[formControl].value,
-            title: this.form.controls.name.value,
-            duration: this.form.controls.duration_minutes.value + (60 * this.form.controls.duration_hours.value),
-        };
-        console.log('props', p);
-
-        const modal = await this.modalController.create({
-            component: DaySchedulePage,
-            componentProps: p
-        });
-        await modal.present();
-        const { data } = await modal.onDidDismiss();
-        this.form.controls[formControl].setValue(data);
-        console.log('return', data, this.form.value);
-    }
-
-    private async presentMonthScheduleModal(formControl = 'start_date') {
-        const modal = await this.modalController.create({
-            component: MonthSchedulePage,
-            componentProps: { showBackdrop: true }
-        });
-        await modal.present();
-        const { data } = await modal.onDidDismiss();
-        this.form.controls[formControl].setValue(moment(data.startTime));
-    }
 
     formatDate(d) {
         return moment(d).format('dddd MMMM Do');
     }
 
     onDurationPicked(d) {
-
-
         this.form.controls.duration_minutes.setValue(d.minute.value);
         this.form.controls.duration_hours.setValue(d.hour.value);
         this.form.controls.duration_hours_text.setValue(d.hour.text);
@@ -211,4 +193,40 @@ export class CreatePage implements OnInit {
     }
 
 
+    private async presentDayScheduleModal(formControl = 'frequency_hours') {
+        const p = {
+            showBackdrop: true,
+            events: this.form.controls[formControl].value,
+            title: this.form.controls.name.value,
+            duration: this.form.controls.duration_minutes.value + (60 * this.form.controls.duration_hours.value),
+        };
+        console.log('props', p);
+
+        const modal = await this.modalController.create({
+            component: DaySchedulePage,
+            componentProps: p
+        });
+        await modal.present();
+        const { data } = await modal.onDidDismiss();
+        this.form.controls[formControl].setValue(data);
+        console.log('return', data, this.form.value);
+    }
+
+    private async presentMonthScheduleModal(formControl = 'start_date') {
+        const modal = await this.modalController.create({
+            component: MonthSchedulePage,
+            componentProps: { showBackdrop: true, }
+        });
+        await modal.present();
+        const { data } = await modal.onDidDismiss();
+        this.form.controls[formControl].setValue(moment(data.startTime));
+    }
+
+    private async presentPurposeModal() {
+        const modal = await this.modalController.create({
+            component: PurposePage,
+            componentProps: { showBackdrop: true }
+        });
+        return await modal.present();
+    }
 }

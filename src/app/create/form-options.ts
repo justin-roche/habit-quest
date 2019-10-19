@@ -5,7 +5,7 @@ export const options = {
         { display: 'auto schedule', value: 'auto' },
         { display: 'today', value: 'today' },
         { display: 'set date', value: 'date' },
-        { display: 'first available', value: 'first' },
+        { display: 'first free day', value: 'first' },
     ],
     end_units: [
         { display: 'days', value: 'day' },

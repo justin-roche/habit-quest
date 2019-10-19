@@ -9,7 +9,7 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { StateService } from './services/state.service';
+import { SettingsService } from './services/settings.service';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgCalendarModule } from 'ionic2-calendar';
 import { HabitsService } from './services/habits.service';
@@ -26,7 +26,7 @@ import { StorageService } from './services/storage.service';
     ],
     providers: [
         StatusBar,
-        StateService,
+        SettingsService,
         HabitsService,
         StorageService,
         SplashScreen,

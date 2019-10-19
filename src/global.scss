@@ -16,35 +16,56 @@
     border: none !important;
 }
 
+
+.monthview-secondary-with-event{
+    background-color: transparent !important;
+}
 .monthview-primary-with-event{
         background-color: transparent !important;
 }
 
 .calendar-day {
-    border-radius: 30px;
-        color: black;
+    // border-radius: 30px;
+        // color: black;
 
-
-&.current {
-border: 3px solid var(--ion-color-medium);
-}
-
-    &.primary {
-        color: white;
+    &.blocked {
+        /* text-color: var(--ion-color-medium); */
+        /* color:  var(--ion-color-medium) !important; */
+        /* border-bottom:  3px solid var(--ion-color-medium) !important; */
+            border: 3px solid var(--ion-color-tertiary);
+        text-color: var(--ion-color-medium);
+        /* font-style:  */
     }
 
-    &.failure {
-        border: 3px solid gray;
-    }
-    
-    &.awaiting {
-        border: 3px solid var(--ion-color-tertiary);
+    &.disabled {
+        text-decoration: line-through;
+        text-color: var(--ion-color-medium);
+        color:  var(--ion-color-medium) !important;
     }
 
-    &.completed {
-        border: 3px solid blue;
-                     
-    }
+        &.current {
+            border: 3px solid var(--ion-color-secondary);
+        }
+
+        &.primary {
+            color: white;
+        }
+
+        &.failure {
+            border: 3px solid gray;
+        }
+        
+        &.other {
+            border: 3px solid var(--ion-color-tertiary);
+        }
+
+        &.awaiting {
+            border: 3px solid var(--ion-color-secondary);
+        }
+
+        &.completed {
+            border: 3px solid blue;
+        }
 }
 
 .monthview-selected {

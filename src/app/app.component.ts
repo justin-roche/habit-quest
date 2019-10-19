@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { StateService } from './services/state.service';
+import { SettingsService } from './services/settings.service';
 
 @Component({
     selector: 'app-root',
@@ -15,17 +15,17 @@ export class AppComponent {
         private platform: Platform,
         private splashScreen: SplashScreen,
         private statusBar: StatusBar,
-        private ss: StateService
+        private ss: SettingsService
     ) {
         this.initializeApp();
 
-        this.ss.getActiveTheme().subscribe((val) => {
-            console.log('app', val);
-            this.theme = val;
+        this.ss.getSettings().subscribe((val) => {
+            this.settings = val;
+            console.log('app settings', val);
+            console.log('interval', val.autoScheduleInterval);
         });
 
     }
-
 
     initializeApp() {
         this.platform.ready().then(() => {

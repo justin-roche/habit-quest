@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import * as moment from 'moment';
 import { StorageService } from './storage.service';
+import { SettingsService } from './settings.service';
 
 @Injectable({
     providedIn: 'root'
@@ -10,18 +11,18 @@ export class HabitsService {
 
     private h = [];
     private currentDate = moment();
-
+    private settings;
     public habits: BehaviorSubject<Array<any>>;
     public habitsForDate: BehaviorSubject<Array<any>>;
 
-    constructor(private ss: StorageService) {
-        this.habits = new BehaviorSubject(null);
-        this.loadHabits()
-    }
+    constructor(private storage: StorageService, private ss: SettingsService) {
 
-    loadHabits() {
-        this.ss.load().subscribe((v) => {
-            console.log('loaded storage', v)
+        this.ss.getSettings().subscribe((val) => {
+            this.settings = val;
+        })
+
+        this.habits = new BehaviorSubject(null);
+        this.storage.load().subscribe((v) => {
             this.h = v;
             this.checkForMissedTasks();
             console.log('loaded', this.h)
@@ -57,7 +58,6 @@ export class HabitsService {
         h.tasks = [];
         h.status = 'AWAITING';
         this.setStartDate(h);
-        debugger;
         let next = h.start_date;
         const end = this.getEndDate(h, next);
 
@@ -134,22 +134,55 @@ export class HabitsService {
         }
     }
 
+
+    isBlockedDay(d) {
+        // determine if date is within auto schedule block interval; checking if any prior day is a start date
+        d = d.clone();
+
+        return (this.h.some((h) => {
+            let startInterval = moment(h.start_date).isAfter(d.clone().subtract(this.settings.autoScheduleInterval, 'day'))
+            let hasTask = h.tasks.some((t) => d.isSame(moment(t.date), 'day'));
+            // debugger;
+            console.log('interval//task', startInterval, hasTask, d);
+
+            return startInterval && hasTask;
+        }));
+
+    }
+
+    isStartDate(d) {
+        d = d.clone();
+        // tests that no habit has a start date on d
+
+        // return moment(h.start_date).isSame(d, 'day');
+        // }))
+    }
+
+    isNotStartDay(d) {
+        // tests that no habit has a start date on d
+        return (this.h.every((h) => {
+            return !moment(h.start_date).isSame(d, 'day');
+        }))
+    }
+
+    isNotStartRange(d) {
+        // kj
+    }
+
     setStartDate(h) {
         if (h.start_type == 'auto') {
             // add habits at 14 day intervals by default
-            let sortedHabits = this.h.sort((a, b) => {
-                return a.start_date.isAfter(b.start_date) ? -1 : 1;
-            })
+            // let sortedHabits = this.h.sort((a, b) => {
+            //     return a.start_date.isAfter(b.start_date) ? -1 : 1;
+            // })
 
             let d = moment().startOf('day');
             let available = false;
             while (available == false) {
-                if (sortedHabits.every((h) => {
-                    return !moment(h.start_date).isSame(d, 'day');
-                })) {
+                if (this.isNotStartDay(d)) {
                     available = true;
                 } else {
-                    d = d.add(14, 'day');
+                    d = d.add(this.settings.autoScheduleInterval, 'day');
                 }
             }
             console.log('auto date', d);

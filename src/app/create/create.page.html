@@ -15,14 +15,14 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="mode != 'loading'">
     <ion-list>
         <!-- <ion-item> -->
         <ion-list-header>
             <ion-label floating color="tertiary">Info</ion-label>
         </ion-list-header>
         <ion-item>
-            <ion-label  floating>
+            <ion-label floating>
                 Description
             </ion-label>
             <ion-input slot="end" style="text-align:right" [formControl]="form.controls.description" placeholder="enter description"></ion-input>
@@ -37,7 +37,7 @@
 
         <!-- scheduling -->
     </ion-list>
-    <ion-list *ngIf="showScheduling()">
+    <ion-list *ngIf="mode == 'ready'">
         <ion-list-header>
             <ion-label color="tertiary">Scheduling</ion-label>
         </ion-list-header>
@@ -46,9 +46,10 @@
                 Start On
             </ion-label>
             <ion-select float-right [formControl]="form.controls.start_type" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
-                <ion-select-option *ngFor="let item of formOptions.start_types" [value]="item.value">{{item.display}}</ion-select-option>
+                <ion-select-option *ngFor="let item of formOptions.start_types" [disabled]="item.disabled" [value]="item.value">{{item.display}}</ion-select-option>
             </ion-select>
         </ion-item>
+        <!-- {{formOptions.start_types.length}} -->
         <ion-item>
 
             <ion-label>Time Required</ion-label>

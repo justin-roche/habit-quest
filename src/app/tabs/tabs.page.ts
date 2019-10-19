@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { StateService } from '../services/state.service';
+import { SettingsService } from '../services/settings.service';
 
 @Component({
     selector: 'app-tabs',
@@ -8,6 +8,6 @@ import { StateService } from '../services/state.service';
 })
 export class TabsPage {
 
-    constructor(private ss: StateService) { }
+    constructor(private ss: SettingsService) { }
 
 }
