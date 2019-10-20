@@ -2,16 +2,17 @@
 <ion-header>
     <ion-toolbar ion-justify-content-center class="toolbar ion-justify-content-evenly">
         <ion-buttons ion-justify-content-center class="ion-justify-content-evenly">
-            <ion-button (click)="mode='list'" [disabled]="true" [color]="mode == 'list'? 'primary' : 'medium'">
-                <ion-icon slot="icon-only" name="list"></ion-icon>
+            <ion-button (click)="mode='list'" [color]=" (mode == 'list' || mode == 'empty') ? 'primary' : 'medium'">
+                <ion-icon slot="icon-only" name="list">
+                </ion-icon>
             </ion-button>
-            <ion-button (click)="mode='search'" [color]="mode == 'search'? 'primary' : 'medium'">
+            <ion-button (click)="mode='search'" [disabled]="mode == 'empty'" [color]="mode == 'search'? 'primary' : 'medium'">
                 <ion-icon slot="icon-only" name="search"></ion-icon>
             </ion-button>
-            <ion-button [color]="mode == 'edit'? 'primary' : 'medium'">
+            <ion-button [color]="mode == 'edit'? 'primary' : 'medium'" [disabled]="mode == 'empty'">
                 <ion-icon slot="icon-only" name="create"></ion-icon>
             </ion-button>
-            <ion-button [color]="mode == 'delete'? 'primary' : 'medium'" (click)="toggleDeleteMode()" routerDirection="forward">
+            <ion-button [disabled]="mode == 'empty'" [color]="mode == 'delete'? 'primary' : 'medium'" (click)="toggleDeleteMode()" routerDirection="forward">
                 <ion-icon name="remove-circle-outline"></ion-icon>
             </ion-button>
             <ion-button [color]="mode == 'add'? 'primary' : 'medium'" id="add" [routerLink]="['create']" routerDirection="forward">
@@ -39,8 +40,8 @@
 
                 <!-- left button -->
                 <ion-col size="4" class="" style="text-align:left">
-                    <ion-button color="none" style="height:100%" (click)="decrementDate()" no-border no-padding no-margin style="font-size:20px;">
-                        <ion-icon name="arrow-back" color="light"></ion-icon>
+                    <ion-button color="none" style="height:100%" [disabled]="mode == 'empty'" (click)="decrementDate()" no-border no-padding no-margin style="font-size:20px;">
+                        <ion-icon name="arrow-dropleft" color="light"></ion-icon>
                     </ion-button>
                 </ion-col>
 
@@ -54,8 +55,8 @@
                 </ion-col>
                 <!-- right button -->
                 <ion-col size="4" class="" style="text-align:right">
-                    <ion-button (click)="incrementDate()" color="none" no-padding no-margin style="font-size:20px;">
-                        <ion-icon name="arrow-forward" color="light"></ion-icon>
+                    <ion-button (click)="incrementDate()" color="none" no-padding no-margin style="font-size:20px;" [disabled]="mode == 'empty'">
+                        <ion-icon name="arrow-dropright" color="light"></ion-icon>
                     </ion-button>
                 </ion-col>
             </ion-row>
@@ -84,7 +85,7 @@
                         </ion-label>
                     </ion-col>
                     <ion-col size="4" style="align-content:right;align-items:right; text-align:right">
-                        <ion-button domflag color="transparent" style="align-content:right;align-items:right" *ngIf=" mode=='list' && i.task.status !='COMPLETE'" (click)=" completeTask(i)">
+                        <ion-button color="transparent" style="align-content:right;align-items:right" *ngIf=" mode=='list' && i.task.status !='COMPLETE'" (click)=" completeTask(i)">
                             <ion-icon color="dark" style="font-size:30px" name="checkmark-circle-outline"></ion-icon>
                         </ion-button>
                         <ion-checkbox *ngIf="mode == 'delete'" color="danger" (click)="selectHabit($event,i)"></ion-checkbox>
@@ -110,7 +111,7 @@
                         </ion-label>
                     </ion-col>
                     <ion-col size="4" style="align-content:right;align-items:right; text-align:right">
-                        <ion-button domflag color="transparent" style="align-content:right;align-items:right" (click)=" completeTask(i)">
+                        <ion-button color="transparent" style="align-content:right;align-items:right" (click)=" completeTask(i)">
                             <ion-icon *ngIf=" mode=='list' && i.task.status !='COMPLETE'" color="warning" style="font-size:30px" name="checkmark-circle-outline"></ion-icon>
                         </ion-button>
                         <ion-checkbox *ngIf="mode == 'delete'" color="danger" (click)="selectHabit($event,i)"></ion-checkbox>
@@ -136,7 +137,7 @@
                         </ion-label>
                     </ion-col>
                     <ion-col size="4" style="align-content:right;align-items:right; text-align:right">
-                        <ion-button domflag color="transparent" style="align-content:right;align-items:right" (click)=" completeTask(i)">
+                        <ion-button color="transparent" style="align-content:right;align-items:right" (click)=" completeTask(i)">
                             <ion-icon *ngIf=" mode=='list' && i.task.status !='COMPLETE'" color="dark" style="font-size:30px" name="checkmark-circle-outline"></ion-icon>
                         </ion-button>
                         <ion-checkbox *ngIf="mode == 'delete'" color="danger" (click)="selectHabit($event,i)"></ion-checkbox>

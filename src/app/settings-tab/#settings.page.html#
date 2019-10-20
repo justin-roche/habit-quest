@@ -13,6 +13,13 @@
             <ion-label floating color="tertiary">Scheduling</ion-label>
         </ion-list-header>
 
+
+        <ion-item>
+            <ion-label>Allow creation of past habits</ion-label>
+            <!-- <ion-input [ngModel]="settings.pastCreation" (ionChange)="onPastCreationChange($event)" style="border:1px solid gray" style="text-align:right" type="number"></ion-input> -->
+
+            <ion-toggle [ngModel]="settings.pastCreation"></ion-toggle>
+        </ion-item>
         <ion-item>
             <ion-label>Auto-scheduling interval</ion-label>
             <ion-input [ngModel]="settings.autoScheduleInterval" (ionChange)="onIntervalChange($event)" style="border:1px solid gray" style="text-align:right" type="number"></ion-input>

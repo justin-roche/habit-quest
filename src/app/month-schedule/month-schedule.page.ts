@@ -3,6 +3,7 @@ import { CalendarComponent } from "ionic2-calendar/calendar";
 import { ModalController } from '@ionic/angular';
 import * as moment from 'moment';
 import { HabitsService } from '../services/habits.service';
+import { SettingsService } from '../services/settings.service';
 
 @Component({
     selector: 'app-month-schedule',
@@ -11,18 +12,21 @@ import { HabitsService } from '../services/habits.service';
 })
 export class MonthSchedulePage implements OnInit {
     @ViewChild(CalendarComponent) myCalendar: CalendarComponent;
-
     private calendar = {
         currentDate: new Date,
     }
     private selectedDate;
     private displayDate = moment();
-
-
     private source = []
     private mode = 'loading';
+    private settings;
 
-    constructor(private mc: ModalController, private hs: HabitsService) { }
+    constructor(private mc: ModalController, private ss: SettingsService, private hs: HabitsService) {
+
+        this.ss.getSettings().subscribe((val) => {
+            this.settings = val;
+        })
+    }
 
     ngOnInit() {
         this.source = this.getMonthEvents();
@@ -50,11 +54,10 @@ export class MonthSchedulePage implements OnInit {
             endTime: d.add(1, 'hour').toDate(),
             allDay: false,
             color: null,
-            selectable: false,
+            selectable: true,
         };
 
-
-        if (moment().isAfter(d, 'd')) {
+        if (moment().isAfter(d, 'd') && !this.settings.pastCreation) {
             base.color = 'disabled';
             base.selectable = false;
         } else {

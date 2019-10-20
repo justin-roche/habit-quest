@@ -25,6 +25,7 @@ export class HabitsPage {
             if (d) {
                 if (d.length == 0) {
                     this.presentToast();
+                    this.mode = 'empty';
                 }
                 this.allHabits = d;
                 console.log('habits', d);

@@ -24,13 +24,14 @@ export class HabitsService {
         this.habits = new BehaviorSubject(null);
         this.storage.load().subscribe((v) => {
             this.h = v;
-            this.checkForMissedTasks();
+            this.markMissedTasks();
+            this.updateAllStatistics();
             console.log('loaded', this.h)
             this.habits.next(this.h);
         })
     }
 
-    checkForMissedTasks() {
+    markMissedTasks() {
         this.h.forEach((h) => {
             h.tasks.forEach((t) => {
                 if (this.isMissed(t)) t.status = 'MISSED'
@@ -39,8 +40,7 @@ export class HabitsService {
     }
 
     isMissed(t) {
-        // debugger;
-        return moment(t.date).isBefore(this.currentDate, 'day');
+        return (moment(t.date).isBefore(this.currentDate, 'day') && t.status == 'AWAITING');
     }
 
     addHabit(h) {
@@ -152,7 +152,6 @@ export class HabitsService {
 
     }
 
-
     isNotStartDay(d) {
         // tests that no habit has a start date on d
         return (this.h.every((h) => {
@@ -233,7 +232,7 @@ export class HabitsService {
         task.status = 'COMPLETE'
         task.completed_time = moment(date).startOf('day').format();
 
-        // this.updateStatistics(h);
+        this.updateStatistics(habit);
         // debugger;
         if (this.allTasksComplete(habit)) {
             habit.status = 'COMPLETE'
@@ -245,15 +244,33 @@ export class HabitsService {
         let statistics =
         {
             completed_percentage: 0,
+            total_points: 0,
+            point_value: 0,
+            tasks_missed: 0,
+            tasks_remaining: h.tasks.length,
+            tasks_completed: 0,
+            hours_remaining: h.tasks.length,
+            hours_used: h.tasks.length,
+            habit_strength: "untried",
+            // finished_runs: [],
             longest_streak: 0,
-            points: 0,
-            finished_runs: [],
+            trend_week: 0,
+            trend_month: 0,
         };
         h.statistics = statistics
     }
 
+    // non emitting actions
+    updateAllStatistics() {
+        console.log('updating all stats');
+
+        this.h.forEach((h) => {
+            this.updateStatistics(h);
+        })
+    }
+
     updateStatistics(h) {
-        // derive completed percentage from number of tasks that have been completed
+        // derive completed percentage from number of tasks that have been completed, non emitting
         h.statistics.completed = h.tasks.filter((t) => {
             return t.status == 'COMPLETE';
         }).length
@@ -262,6 +279,8 @@ export class HabitsService {
         }).length
 
         h.statistics.completed_percentage = Math.floor((h.statistics.completed / h.tasks.length) * 100);
+        console.log('updated stats', h.statistics);
+
     }
 
     allTasksComplete(h) {

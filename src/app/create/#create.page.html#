@@ -50,6 +50,10 @@
                 <ion-select-option *ngFor="let item of formOptions.start_types" [disabled]="item.disabled" [value]="item.value">{{item.display}}</ion-select-option>
             </ion-select>
         </ion-item>
+
+        <ion-item *ngIf="form.controls['start_date'].value">
+            <ion-text slot="end">{{formatDate(form.controls.start_date.value)}}</ion-text>
+        </ion-item>
         <!-- {{formOptions.start_types.length}} -->
         <ion-item>
 
@@ -65,9 +69,6 @@
         <!-- <ion-icon color="dark" slot="icon-only" name="timer"></ion-icon> -->
         <!-- </ion-button> -->
         <!-- </ion-item> -->
-        <ion-item *ngIf="form.controls['start_date'].value">
-            <ion-text slot="end">{{formatDate(form.controls.start_date.value)}}</ion-text>
-        </ion-item>
         <ion-item lines="none">
             <ion-label>Repeat</ion-label>
             <ion-input slot="end" type="text" style="" style="text-align:right" [formControl]="form.controls.frequency_quantity"></ion-input>
