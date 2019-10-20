@@ -20,8 +20,8 @@ export class AppComponent {
         this.initializeApp();
 
         this.ss.getSettings().subscribe((val) => {
-            this.settings = val;
-            console.log('app settings', val);
+            // this.settings = val;
+            // console.log('app settings', val);
             console.log('interval', val.autoScheduleInterval);
         });
 

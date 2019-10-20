@@ -90,9 +90,9 @@ export class HabitsService {
         return h.end_units != 'times' && (next > end)
     }
 
-    addWeeklyTasks(h, next, end) {
+    addWeeklyTasks(h, n, end) {
         // for the range of moments between start and end, create tasks and iterate the next moment
-        let next = next.startOf('week');
+        let next = n.startOf('week');
 
         while (!this.maxDate(h, next, end) && !this.maxTimes(h)) {
             // repeat for the frequency quantity, eg. three times / day
@@ -115,11 +115,13 @@ export class HabitsService {
         // for the range of moments between start and end, create tasks and iterate the next moment
         while (!this.maxDate(h, next, end) && !this.maxTimes(h)) {
             // repeat for the frequency quantity, eg. three times / day
+            let time = null;
             for (let i = 0; i < h.frequency_quantity; i++) {
                 // determine hour of day if hour is set
                 if (h.frequency_hours[i]) {
-                    let time = h.frequency_hours[i];
+                    time = h.frequency_hours[i];
                 } else {
+                    // the default daytime for actions is midnight
                     time = 0;
                 }
                 let task = {
@@ -150,13 +152,6 @@ export class HabitsService {
 
     }
 
-    isStartDate(d) {
-        d = d.clone();
-        // tests that no habit has a start date on d
-
-        // return moment(h.start_date).isSame(d, 'day');
-        // }))
-    }
 
     isNotStartDay(d) {
         // tests that no habit has a start date on d
@@ -258,6 +253,7 @@ export class HabitsService {
     }
 
     updateStatistics(h) {
+        // derive completed percentage from number of tasks that have been completed
         h.statistics.completed = h.tasks.filter((t) => {
             return t.status == 'COMPLETE';
         }).length

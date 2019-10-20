@@ -49,6 +49,8 @@ export class MonthSchedulePage implements OnInit {
             startTime: d.toDate(),
             endTime: d.add(1, 'hour').toDate(),
             allDay: false,
+            color: null,
+            selectable: false,
         };
 
 
@@ -61,13 +63,6 @@ export class MonthSchedulePage implements OnInit {
                 base.color = 'blocked';
                 base.selectable = false;
             }
-        }
-
-        if (this.hs.isStartDate(d)) {
-            console.log('start', d);
-
-            base.color = 'other';
-            base.selectable = false;
         }
 
         if (moment().isSame(d, 'd')) {

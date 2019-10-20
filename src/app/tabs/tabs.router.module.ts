@@ -36,11 +36,11 @@ const routes: Routes = [
                 ]
             },
             {
-                path: 'tab3',
+                path: 'reports',
                 children: [
                     {
                         path: '',
-                        loadChildren: '../tab3/tab3.module#Tab3PageModule'
+                        loadChildren: '../reports/reports.module#ReportsPageModule'
                     }
                 ]
             },

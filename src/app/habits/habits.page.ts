@@ -13,6 +13,7 @@ export class HabitsPage {
 
     private incomplete_tasks = [];
     private complete_tasks = [];
+    private missed_tasks = [];
     private allHabits = [];
     private selectedHabits = [];
     private currentDate = moment();
@@ -35,6 +36,7 @@ export class HabitsPage {
     createTasks() {
         this.incomplete_tasks = [];
         this.complete_tasks = [];
+        this.missed_tasks = [];
         this.allHabits.forEach((h) => {
             // filter all habits for tasks occuring on visible date, set incomplete_tasks to applicable tasks
             let tasks = h.tasks.filter((t) => {
@@ -53,11 +55,14 @@ export class HabitsPage {
             let completed = tasks.filter((t) => {
                 return t.status == "COMPLETE";
             })
-
             let awaiting = tasks.filter((t) => {
                 return t.status == "AWAITING";
             })
+            let missed = tasks.filter((t) => {
+                return t.status == "MISSED";
+            })
             this.incomplete_tasks = this.incomplete_tasks.concat(awaiting);
+            this.missed_tasks = this.missed_tasks.concat(missed);
             this.complete_tasks = this.complete_tasks.concat(completed);
         });
 

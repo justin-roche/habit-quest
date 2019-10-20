@@ -113,7 +113,7 @@ export class CreatePage implements OnInit {
             // disable today from options if any in the past range are true
             if (this.hs.isBlockedDay(moment().startOf('day'))) {
                 this.formOptions.start_types.forEach((t) => {
-                    if (t.value == 'today') t.disabled = true;
+                    if (t.value == 'today') (<any>t).disabled = true;
                 })
             }
         }

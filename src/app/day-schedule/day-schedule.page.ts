@@ -31,8 +31,7 @@ export class DaySchedulePage implements OnInit {
 
     newAllDayEvent() {
         let today = moment().startOf('day')
-        let event = this.newEvent()
-
+        let event = this.newEvent() as any;
         event.allDay = true;
         event.startTime = new Date(today.clone().utc().format())
         event.endTime = new Date(today.add(1, 'day').clone().utc().format())
