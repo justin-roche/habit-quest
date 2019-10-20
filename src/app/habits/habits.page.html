@@ -1,4 +1,3 @@
-<div></div>
 <ion-header>
     <ion-toolbar ion-justify-content-center class="toolbar ion-justify-content-evenly">
         <ion-buttons ion-justify-content-center class="ion-justify-content-evenly">
@@ -63,14 +62,7 @@
         </ion-grid>
         <!-- </ion-item> -->
     </ion-header>
-
     <ion-list *ngIf="incomplete_tasks.length > 0">
-        <!-- <ion-list-header no-margin no-padding> -->
-        <!-- go forward/back buttons -->
-        <!-- </ion-list-header> -->
-        <!-- <ion-list-header> -->
-        <!-- <ion-label>Daily Habits</ion-label> -->
-        <!-- </ion-list-header> -->
         <ion-item *ngFor="let i of incomplete_tasks">
             <ion-grid>
                 <ion-row>
@@ -98,6 +90,7 @@
 
     <ion-list *ngIf="missed_tasks.length > 0">
         <ion-item *ngFor="let i of missed_tasks">
+            inocmplete
             <ion-grid>
                 <ion-row>
                     <ion-col size="3" color="light">
@@ -125,6 +118,7 @@
     <ion-list *ngIf="complete_tasks.length > 0">
         <ion-item *ngFor="let i of complete_tasks">
             <ion-grid>
+                inco
                 <ion-row>
                     <ion-col size="3" color="light">
                         <ion-label class="item-text-center" color="medium" floating>
@@ -138,7 +132,7 @@
                     </ion-col>
                     <ion-col size="4" style="align-content:right;align-items:right; text-align:right">
                         <ion-button color="transparent" style="align-content:right;align-items:right" (click)=" completeTask(i)">
-                            <ion-icon *ngIf=" mode=='list' && i.task.status !='COMPLETE'" color="dark" style="font-size:30px" name="checkmark-circle-outline"></ion-icon>
+                            <ion-icon *ngIf="mode=='list' && i.task.status !='COMPLETE'" color="dark" style="font-size:30px" name="checkmark-circle-outline"></ion-icon>
                         </ion-button>
                         <ion-checkbox *ngIf="mode == 'delete'" color="danger" (click)="selectHabit($event,i)"></ion-checkbox>
                     </ion-col>
@@ -149,3 +143,4 @@
     </ion-list>
 
 </ion-content>
+{{mode}}

@@ -135,7 +135,7 @@ export class CreatePage implements OnInit {
 
     private trySave() {
         const habit = this.form.value;
-        console.log('habit', habit);
+        // console.log('habit', habit);
         this.hs.addHabit(habit);
         this.nc.navigateBack('');
     }
@@ -151,7 +151,7 @@ export class CreatePage implements OnInit {
         this.form.controls.duration_hours_text.setValue(d.hour.text);
         this.form.controls.duration_minutes_text.setValue(d.minute.text);
         // debugger;
-        console.log('picked duration', this.form.value);
+        // console.log('picked duration', this.form.value);
     }
 
     getDurationDisplay() {
@@ -200,7 +200,7 @@ export class CreatePage implements OnInit {
             title: this.form.controls.name.value,
             duration: this.form.controls.duration_minutes.value + (60 * this.form.controls.duration_hours.value),
         };
-        console.log('props', p);
+        // console.log('props', p);
 
         const modal = await this.modalController.create({
             component: DaySchedulePage,
@@ -209,7 +209,7 @@ export class CreatePage implements OnInit {
         await modal.present();
         const { data } = await modal.onDidDismiss();
         this.form.controls[formControl].setValue(data);
-        console.log('return', data, this.form.value);
+        // console.log('return', data, this.form.value);
     }
 
     private async presentMonthScheduleModal(formControl = 'start_date') {

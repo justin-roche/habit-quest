@@ -21,14 +21,18 @@ export class HabitsPage {
     private toast;
 
     constructor(private hs: HabitsService, private toastController: ToastController) {
+    }
+
+    ngOnInit() {
         this.hs.habits.asObservable().subscribe((d) => {
             if (d) {
                 if (d.length == 0) {
                     this.presentToast();
                     this.mode = 'empty';
+                } else {
+                    this.mode = 'list';
                 }
                 this.allHabits = d;
-                console.log('habits', d);
                 this.createTasks()
             }
         })

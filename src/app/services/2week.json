@@ -10,7 +10,7 @@
         ],
         "end_units": "week",
         "end_quantity": 2,
-        "end_date": null,
+        "end_date": "2019-10-26T17:00:00.000Z",
         "start_type": "date",
         "start_date": "2019-10-12T17:00:00.000Z",
         "duration_hours": 1,
@@ -21,90 +21,90 @@
         "abstinence": false,
         "group": "health",
         "priority": 1,
-        "id": "615ef065-141a-ebf4-8948-32eb4c96f23e",
-        "created_on": "2019-10-20T14:04:37+07:00",
+        "id": "a4b66313-58fa-a096-25a4-6d41b3337bea",
+        "created_on": "2019-10-20T15:16:17+07:00",
         "tasks": [
             {
                 "date": "2019-10-13T00:00:00+07:00",
                 "status": "AWAITING",
-                "id": "eb83ae42-25b3-2081-9975-ad0a53289d68"
+                "id": "8e82471e-c8ec-17a6-ad65-0af38bc378a3"
             },
             {
                 "date": "2019-10-14T00:00:00+07:00",
                 "status": "AWAITING",
-                "id": "13d9beb8-d4e9-ab0b-0ccc-684c235ad5b1"
+                "id": "205c0fd2-61de-637a-07a2-8d784a5650ec"
             },
             {
                 "date": "2019-10-15T00:00:00+07:00",
                 "status": "AWAITING",
-                "id": "f2e5a15d-1982-75cc-21c6-365aa50672dd"
+                "id": "14aaf1ac-8d9d-e181-618a-7cc14dba4cea"
             },
             {
                 "date": "2019-10-16T00:00:00+07:00",
                 "status": "AWAITING",
-                "id": "0028c69f-ee67-27de-585e-809b125e090a"
+                "id": "da4b3d16-71ea-1205-c522-516357d5e818"
             },
             {
                 "date": "2019-10-17T00:00:00+07:00",
                 "status": "AWAITING",
-                "id": "0c491c81-0b47-a6ef-526d-2236da0b1d4b"
+                "id": "4b5e10b7-1e0f-8433-4129-94516767f5d2"
             },
             {
                 "date": "2019-10-18T00:00:00+07:00",
                 "status": "AWAITING",
-                "id": "11404588-8123-bb09-0768-6d784d5fb8ff"
+                "id": "2e1c94f5-82af-a502-b1de-03a9b5fb99c7"
             },
             {
                 "date": "2019-10-19T00:00:00+07:00",
                 "status": "AWAITING",
-                "id": "ac53fcc9-522a-092f-c98d-d97e93f65772"
+                "id": "b09d182a-d568-af79-5056-76944c310ba7"
             },
             {
                 "date": "2019-10-20T00:00:00+07:00",
                 "status": "AWAITING",
-                "id": "4d57c5fa-5b37-f235-eaac-4a9b5faee723"
+                "id": "7004b66b-5224-9af7-2cb7-00f8e1eff796"
             },
             {
                 "date": "2019-10-21T00:00:00+07:00",
                 "status": "AWAITING",
-                "id": "c335d59e-a7d9-76e4-92f4-2bef4757b274"
+                "id": "5647a985-d35f-bd08-1cb7-5629a827ebfc"
             },
             {
                 "date": "2019-10-22T00:00:00+07:00",
                 "status": "AWAITING",
-                "id": "04f4ab70-bacf-5cd5-e409-84f06409cda9"
+                "id": "bd69cb5b-1b96-57c6-2746-bd425ef5ee72"
             },
             {
                 "date": "2019-10-23T00:00:00+07:00",
                 "status": "AWAITING",
-                "id": "84f7ddd9-15b1-fcb3-e20a-7ba44728b47c"
+                "id": "78dde51b-9a9a-623b-99a7-9fc4e36ef1c1"
             },
             {
                 "date": "2019-10-24T00:00:00+07:00",
                 "status": "AWAITING",
-                "id": "4c12f02d-45f7-b393-a701-c63ff2580d0f"
+                "id": "8513f9d1-8a17-42ef-36ad-5cb76a213695"
             },
             {
                 "date": "2019-10-25T00:00:00+07:00",
                 "status": "AWAITING",
-                "id": "867c2df3-990c-51d1-95b9-4287c639f4d1"
+                "id": "34dd0b2b-600d-a1d4-4c69-12bd7523771f"
             },
             {
                 "date": "2019-10-26T00:00:00+07:00",
                 "status": "AWAITING",
-                "id": "b8bf3125-1e25-b72a-95e9-37e93bf31594"
+                "id": "9fb5dd09-12c6-24d6-fa71-6899c273430a"
             },
             {
                 "date": "2019-10-27T00:00:00+07:00",
                 "status": "AWAITING",
-                "id": "1210b0b9-3e69-c3b4-d186-f7758649a7b7"
+                "id": "3f7be011-3572-781c-67b1-5083a6f7fde4"
             }
         ],
         "status": "AWAITING",
         "statistics": {
             "completed_percentage": 0,
             "total_points": 0,
-            "point_value": 0,
+            "point_value": 3,
             "tasks_missed": 0,
             "tasks_remaining": 15,
             "tasks_completed": 0,

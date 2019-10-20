@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import * as moment from 'moment';
 import { StorageService } from './storage.service';
 import { SettingsService } from './settings.service';
+let m = require('./form.json');
 
 @Injectable({
     providedIn: 'root'
@@ -20,15 +21,17 @@ export class HabitsService {
         this.ss.getSettings().subscribe((val) => {
             this.settings = val;
         })
+        // this.addHabit(m);
 
         this.habits = new BehaviorSubject(null);
         this.storage.load().subscribe((v) => {
             this.h = v;
             this.markMissedTasks();
             this.updateAllStatistics();
-            console.log('loaded', this.h)
+            // console.log('loaded', this.h)
             this.habits.next(this.h);
         })
+
     }
 
     markMissedTasks() {
@@ -44,10 +47,10 @@ export class HabitsService {
     }
 
     addHabit(h) {
+        // console.log(JSON.stringify(h))
         h.id = this.guidGenerator();
         this.createTasks(h);
         this.createStatistics(h);
-        console.log(JSON.stringify(h))
         this.h.push(h);
         this.habits.next(this.h);
     }
@@ -60,6 +63,7 @@ export class HabitsService {
         this.setStartDate(h);
         let next = h.start_date;
         const end = this.getEndDate(h, next);
+        h.end_date = end;
 
         if (h.frequency_units == 'day') {
             this.addDailyTasks(h, next, end);
@@ -99,11 +103,11 @@ export class HabitsService {
             for (let i = 0; i < h.frequency_days.length; i++) {
                 // let time = h.frequency_hours[i];
                 let task = {
-                    date: next.clone().add(h.frequency_days[i], 'day').format(),
+                    date: moment(next).clone().add(h.frequency_days[i], 'day').format(),
                     status: 'AWAITING',
                     id: this.guidGenerator()
                 }
-                console.log('created task', task);
+                // console.log('created task', task);
 
                 h.tasks.push(task);
             }
@@ -145,7 +149,7 @@ export class HabitsService {
             let startInterval = moment(h.start_date).isAfter(d.clone().subtract(this.settings.autoScheduleInterval, 'day'))
             let hasTask = h.tasks.some((t) => d.isSame(moment(t.date), 'day'));
             // debugger;
-            console.log('interval//task', startInterval, hasTask, d);
+            // console.log('interval//task', startInterval, hasTask, d);
 
             return startInterval && hasTask;
         }));
@@ -166,7 +170,7 @@ export class HabitsService {
     setStartDate(h) {
         if (h.start_type == 'auto') {
             // add habits at 14 day intervals by default
-            // let sortedHabits = this.h.sort((a, b) => {
+            // let sorted Habits = this.h.sort((a, b) => {
             //     return a.start_date.isAfter(b.start_date) ? -1 : 1;
             // })
 
@@ -179,7 +183,7 @@ export class HabitsService {
                     d = d.add(this.settings.autoScheduleInterval, 'day');
                 }
             }
-            console.log('auto date', d);
+            // console.log('auto date', d);
 
             h.start_date = d;
             return d;
@@ -206,7 +210,7 @@ export class HabitsService {
         if (h.end_date) {
             return moment(h.end_date).startOf('day');
         }
-        return start.clone().add(h.end_quantity, h.end_units);
+        return moment(start).clone().add(h.end_quantity, h.end_units);
     }
 
     removeSelectedHabits(hs) {
@@ -219,7 +223,6 @@ export class HabitsService {
     }
 
     completeTask(h_id, t_id, date) {
-        // debugger;
         // retrieve the reference version of the task
         let habit = this.h.filter((h) => {
             return h.id == h_id;
@@ -233,19 +236,20 @@ export class HabitsService {
         task.completed_time = moment(date).startOf('day').format();
 
         this.updateStatistics(habit);
-        // debugger;
-        if (this.allTasksComplete(habit)) {
-            habit.status = 'COMPLETE'
-        }
+        if (this.allTasksComplete(habit)) habit.status = 'COMPLETE'
+
         this.habits.next(this.h);
     }
 
     createStatistics(h) {
+        let points = this.createPointValue(h);
+
         let statistics =
         {
             completed_percentage: 0,
-            total_points: 0,
-            point_value: 0,
+            point_total: 0,
+            point_value: points * h.tasks.length,
+            points_per_task: points,
             tasks_missed: 0,
             tasks_remaining: h.tasks.length,
             tasks_completed: 0,
@@ -260,10 +264,13 @@ export class HabitsService {
         h.statistics = statistics
     }
 
+    createPointValue(h) {
+        // adjust points according to selected profile here (in relation to schedule)
+        return h.difficulty + h.priority + (h.abstinence ? 0 : 1);
+    }
+
     // non emitting actions
     updateAllStatistics() {
-        console.log('updating all stats');
-
         this.h.forEach((h) => {
             this.updateStatistics(h);
         })
@@ -271,16 +278,26 @@ export class HabitsService {
 
     updateStatistics(h) {
         // derive completed percentage from number of tasks that have been completed, non emitting
-        h.statistics.completed = h.tasks.filter((t) => {
+        h.statistics.tasks_completed = h.tasks.filter((t) => {
             return t.status == 'COMPLETE';
         }).length
-        h.statistics.missed = h.tasks.filter((t) => {
+
+        h.statistics.hours_used = this.getDurationMinutes(h);
+
+        h.statistics.tasks_missed = h.tasks.filter((t) => {
             return t.status == 'MISSED';
         }).length
 
-        h.statistics.completed_percentage = Math.floor((h.statistics.completed / h.tasks.length) * 100);
-        console.log('updated stats', h.statistics);
+        h.statistics.point_total = h.statistics.tasks_completed * h.statistics.points_per_task;
 
+        h.statistics.completed_percentage = Math.floor((h.statistics.tasks_completed / h.tasks.length) * 100);
+        // console.log('updated stats', h.statistics);
+
+    }
+
+    getDurationMinutes(h) {
+        let tm = h.statistics.tasks_completed * ((h.duration_hours * 60) + h.duration_minutes) / 60;
+        return tm;
     }
 
     allTasksComplete(h) {
