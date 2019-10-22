@@ -1,0 +1,74 @@
+[{
+    "description": "w",
+    "name": "w",
+    "frequency_units": "day",
+    "frequency_quantity": 1,
+    "frequency_hours": [],
+    "frequency_days": [
+        null
+    ],
+    "end_units": "week",
+    "end_quantity": 1,
+    "end_date": null,
+    "start_type": "date",
+    "start_date": "2019-10-20T17:00:00.000Z",
+    "duration_hours": 1,
+    "duration_hours_text": "01",
+    "duration_minutes": 0,
+    "duration_minutes_text": "00",
+    "difficulty": 1,
+    "abstinence": false,
+    "group": "health",
+    "priority": 1,
+    "id": "3d3f8c79-4879-e438-62a7-c9d6c6a30364",
+    "created_on": "2019-10-19T19:56:36+07:00",
+    "tasks": [
+        {
+            "date": "2019-10-21T00:00:00+07:00",
+            "status": "AWAITING",
+            "id": "03e89b8b-549a-cd1b-8409-d07525fd41c3"
+        },
+        {
+            "date": "2019-10-22T00:00:00+07:00",
+            "status": "AWAITING",
+            "id": "2c5e121b-cb6d-4375-4920-73eeb02e6f11"
+        },
+        {
+            "date": "2019-10-23T00:00:00+07:00",
+            "status": "AWAITING",
+            "id": "d28f9620-4c92-3d61-600b-3763364880fd"
+        },
+        {
+            "date": "2019-10-24T00:00:00+07:00",
+            "status": "AWAITING",
+            "id": "7adb8e23-24a3-53b9-fdd6-bca9675615f3"
+        },
+        {
+            "date": "2019-10-25T00:00:00+07:00",
+            "status": "AWAITING",
+            "id": "4fd8ea22-cfb3-5ddd-a036-4741711cc80c"
+        },
+        {
+            "date": "2019-10-26T00:00:00+07:00",
+            "status": "AWAITING",
+            "id": "b815e8b9-8ed2-6b5f-fbc3-fa23586af3b3"
+        },
+        {
+            "date": "2019-10-27T00:00:00+07:00",
+            "status": "AWAITING",
+            "id": "216e50df-84e3-7dbc-8893-23ad89fe356c"
+        },
+        {
+            "date": "2019-10-28T00:00:00+07:00",
+            "status": "AWAITING",
+            "id": "6ddc712b-d018-2714-1e26-eadf3cfd67ae"
+        }
+    ],
+    "status": "AWAITING",
+    "statistics": {
+        "completed_percentage": 0,
+        "longest_streak": 0,
+        "points": 0,
+        "finished_runs": []
+    }
+}]

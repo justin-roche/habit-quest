@@ -77,7 +77,7 @@ export class CreatePage implements OnInit {
             frequency_hours: [[]],
             frequency_days: [[null]],
 
-            end_units: ['times'],
+            end_units: ['week'],
             end_quantity: [2],
             end_date: [null],
 

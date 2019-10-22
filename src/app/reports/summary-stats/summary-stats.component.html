@@ -1,0 +1,22 @@
+
+<ion-select [value]="selectedHabit" (ionChange)="selectHabit($event.target.value)" interface="popover" placeholder="Select One">
+    <ion-select-option *ngFor="let item of habits" [value]="item">{{item.name}}</ion-select-option>
+</ion-select>
+
+<ion-header class="subheader" style="height:5%" no-padding>
+</ion-header>
+<!-- </calendar> -->
+<!-- </ion-content> -->
+
+<!-- <div class="ion-padding">
+     <ion-card>
+     <ion-card-header>
+     Bar Chart
+     </ion-card-header>
+     <ion-card-content>
+     <canvas #barCanvas></canvas>
+     </ion-card-content>
+     </ion-card>
+     </div>
+     <!-- </ion-content> --> -->
+<!-- <ion-content> -->

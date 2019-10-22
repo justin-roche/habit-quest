@@ -21,17 +21,18 @@ export class HabitsService {
         this.ss.getSettings().subscribe((val) => {
             this.settings = val;
         })
-        // this.addHabit(m);
 
         this.habits = new BehaviorSubject(null);
-        this.storage.load().subscribe((v) => {
-            this.h = v;
-            this.markMissedTasks();
-            this.updateAllStatistics();
-            // console.log('loaded', this.h)
-            this.habits.next(this.h);
-        })
+        // this.storage.load().subscribe(this.onLoad.bind(this));
+        this.addHabit(m);
 
+    }
+
+    onLoad() {
+        this.h = v;
+        this.markMissedTasks();
+        this.updateAllStatistics();
+        this.habits.next(this.h);
     }
 
     markMissedTasks() {
@@ -47,11 +48,13 @@ export class HabitsService {
     }
 
     addHabit(h) {
-        // console.log(JSON.stringify(h))
+        h.start_date = moment(h.start_date);
         h.id = this.guidGenerator();
         this.createTasks(h);
         this.createStatistics(h);
         this.h.push(h);
+        this.markMissedTasks();
+        this.updateAllStatistics();
         this.habits.next(this.h);
     }
 
@@ -84,7 +87,6 @@ export class HabitsService {
         });
         return t;
     }
-
 
     maxTimes(h) {
         return h.end_units == 'times' && (h.tasks.length >= h.end_quantity)
@@ -139,7 +141,6 @@ export class HabitsService {
             next = next.clone().add(1, h.frequency_units);
         }
     }
-
 
     isBlockedDay(d) {
         // determine if date is within auto schedule block interval; checking if any prior day is a start date
@@ -238,6 +239,12 @@ export class HabitsService {
         this.updateStatistics(habit);
         if (this.allTasksComplete(habit)) habit.status = 'COMPLETE'
 
+        // change data references to trigger change detection for @input
+        this.h = this.h.map((h) => {
+            h.statistics = Object.assign({},h.statistics);
+            return Object.assign({}, h);
+        });
+
         this.habits.next(this.h);
     }
 
@@ -246,20 +253,48 @@ export class HabitsService {
 
         let statistics =
         {
-            completed_percentage: 0,
-            point_total: 0,
-            point_value: points * h.tasks.length,
-            points_per_task: points,
-            tasks_missed: 0,
-            tasks_remaining: h.tasks.length,
-            tasks_completed: 0,
-            hours_remaining: h.tasks.length,
-            hours_used: h.tasks.length,
-            habit_strength: "untried",
+            completion: {
+                // completion objects for historical days
+                totals: [],
+                months: [],
+                weeks: [],
+                // completion objects for present day
+                total: {
+                    total: 0,
+                    completed: 0,
+                    percent: 0
+                },
+                month: {
+                    total: 0,
+                    completed: 0,
+                    percent: 0
+                },
+                week: {
+                    total: 0,
+                    completed: 0,
+                    percent: 0
+                },
+                tasks_completed: 0,
+                tasks_remaining: h.tasks.length,
+                hours_remaining: h.tasks.length,
+                hours_used: h.tasks.length,
+            },
+            strength: {
+                current_streak: 0,
+                longest_streak: 0,
+                success_current: 0,
+                habit_strength: 0,
+                tasks_missed: 0,
+                trend_week: 0,
+                trend_month: 0,
+            },
+            points: {
+                point_total: 0,
+                total_point_value: points * h.tasks.length,
+                points_per_task: points,
+            }
+
             // finished_runs: [],
-            longest_streak: 0,
-            trend_week: 0,
-            trend_month: 0,
         };
         h.statistics = statistics
     }
@@ -278,25 +313,109 @@ export class HabitsService {
 
     updateStatistics(h) {
         // derive completed percentage from number of tasks that have been completed, non emitting
-        h.statistics.tasks_completed = h.tasks.filter((t) => {
-            return t.status == 'COMPLETE';
-        }).length
+        this.updateCompletion(h);
+        this.updateStrength(h);
+        this.updatePoints(h);
+    }
 
-        h.statistics.hours_used = this.getDurationMinutes(h);
+    getSuccessRatesByPeriod(h, period, referenceTime) {
+        // given a reference time, calculate the success rates for a period preceeding it
+        let n = moment(referenceTime) || moment();
 
-        h.statistics.tasks_missed = h.tasks.filter((t) => {
+        let range = h.tasks.filter((t) => {
+            // if period provided, calculate on all tasks in same period and prior
+            if (period) {
+                return n.isSame(t.date, period) && n.isSameOrAfter(t.date);
+            }
+            // if no period (all prior) test if task is not in the future 
+            return n.isSameOrAfter(t.date)
+
+        });
+
+        let complete = range.filter((t) =>
+            t.status == 'COMPLETE');
+
+        let rate = ((complete.length / range.length) * 100).toFixed(1);
+
+        return {
+            total: range.length,
+            complete: complete.length,
+            rate: rate,
+            time: n.format(),
+            id: h.id
+        };
+    }
+
+    updateCompletion(h) {
+        let comp = h.statistics.completion;
+
+        comp.total = this.getSuccessRatesByPeriod(h);
+        comp.month = this.getSuccessRatesByPeriod(h, 'month');
+        comp.week = this.getSuccessRatesByPeriod(h, 'week');
+
+        // historical values for completion data; operates on tasks (which all have unique dates 
+        let ts = h.tasks.filter((t) => {
+            return moment(t.date).isBefore(moment());
+        })
+        // debugger;
+
+        comp.totals = [];
+        comp.weeks = [];
+        comp.months = [];
+
+        ts.forEach((t) => {
+            let historical = {};
+            let historicalTime = t.date;
+            // calculate the rates for historical reference times
+
+            let total = this.getSuccessRatesByPeriod(h, null, historicalTime);
+            let month = this.getSuccessRatesByPeriod(h, 'month', historicalTime);
+            let week = this.getSuccessRatesByPeriod(h, 'week', historicalTime);
+
+            comp.totals.push(total);
+            comp.months.push(month);
+            comp.weeks.push(week);
+        })
+        console.log('updated historical', comp, h);
+
+        comp.hours_used = this.getDurationMinutes(h);
+    }
+
+    updateStrength(h) {
+        let { longest, current } = this.getStreaks(h)
+
+        // console.log('streaks', longest, current);
+        h.statistics.strength.current_streak = current;
+        h.statistics.strength.longest_streak = current;
+        h.statistics.strength.tasks_missed = h.tasks.filter((t) => {
             return t.status == 'MISSED';
         }).length
+    }
 
-        h.statistics.point_total = h.statistics.tasks_completed * h.statistics.points_per_task;
+    updatePoints(h) {
 
-        h.statistics.completed_percentage = Math.floor((h.statistics.tasks_completed / h.tasks.length) * 100);
-        // console.log('updated stats', h.statistics);
+        h.statistics.points.point_total = h.statistics.completion.tasks_completed * h.statistics.points.points_per_task;
+    }
 
+    getStreaks(h) {
+        let longest = 0;
+        let current = 0;
+
+        h.tasks.filter((t) => {
+            return (moment(t.date).isBefore(this.currentDate.clone().add(1, 'day'), 'day'));
+        }).forEach((t) => {
+            if (t.status == "COMPLETE") {
+                current += 1;
+            } else {
+                current = 0;
+            }
+            if (current > longest) longest = current;
+        });
+        return { current, longest }
     }
 
     getDurationMinutes(h) {
-        let tm = h.statistics.tasks_completed * ((h.duration_hours * 60) + h.duration_minutes) / 60;
+        let tm = h.statistics.completion.tasks_completed * ((h.duration_hours * 60) + h.duration_minutes) / 60;
         return tm;
     }
 

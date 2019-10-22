@@ -1,0 +1,81 @@
+<ion-header>
+
+    <ion-toolbar ion-justify-content-center class="toolbar ion-justify-content-evenly">
+        <ion-buttons ion-justify-content-center class="ion-justify-content-evenly">
+            <ion-button [color]="mode == 'single'? 'primary' : 'medium'" (click)="mode = 'single'">
+                <ion-icon name="bookmark"></ion-icon>
+                <ion-label>habits</ion-label>
+            </ion-button>
+            <ion-button [color]="mode == 'summary'? 'primary' : 'medium'" (click)="mode = 'summary'">
+                <ion-icon name="bookmarks"></ion-icon>
+                <ion-label>summary</ion-label>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<!-- <ion-content> -->
+
+<!-- <ion-content *ngIf="this.habits.length == 0"> -->
+<!-- </ion-content> -->
+<!-- Default Progressbar -->
+<!-- <ion-progress-bar></ion-progress-bar> -->
+
+<!-- Default Progressbar with 50 percent -->
+<!-- <ion-progress-bar value="0.5"></ion-progress-bar> -->
+
+<!-- Colorize Progressbar -->
+<!-- <ion-progress-bar color="secondary" value="0.5"></ion-progress-bar> -->
+
+<!-- Other types -->
+<!-- <ion-progress-bar value="0.25" buffer="0.5"></ion-progress-bar> -->
+<!-- <ion-progress-bar type="indeterminate"></ion-progress-bar> -->
+<!-- <ion-progress-bar type="indeterminate" reversed="true"></ion-progress-bar> -->
+<ion-content *ngIf="this.habits.length > 0 && mode == 'single'">
+    <ion-select [value]="selectedHabit" (ionChange)="selectHabit($event.target.value)" interface="popover" placeholder="Select One">
+        <ion-select-option *ngFor="let item of habits" [value]="item">{{item.name}}</ion-select-option>
+    </ion-select>
+
+    <ion-header class="subheader" style="height:5%" no-padding>
+        <ion-grid color="medium" no-padding no-margin>
+            <ion-row no-padding no-margin>
+                <!-- left button -->
+                <ion-col size="4" no-padding no-margin ion-justify-content-center style="text-align:left">
+                    <ion-button color="none" (click)="dateSwipe(-1)" no-padding no-margin style="font-size:20px;height:100%">
+                        <ion-icon color="light" name="arrow-back"></ion-icon>
+                    </ion-button>
+                </ion-col>
+                <!-- the date header  -->
+                <ion-col size="4" color="light" style="">
+                    <div style="text-align:center">
+                        <div style=" position:relative;top:50%">
+                            <ion-label color="light">{{displayDate.format('MMMM YYYY')}}</ion-label>
+                        </div>
+                    </div>
+                </ion-col>
+                <!-- right button -->
+                <ion-col size="4" style="text-align:right">
+                    <ion-button color="none" (click)="dateSwipe(1)" no-padding no-margin style="height:100%;font-size:20px">
+                        <ion-icon color="light" name="arrow-forward"></ion-icon>
+                    </ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-header>
+    <div *ngIf="source && cal" class="calendar-container">
+        <ng-template #template let-view="view" let-row="row" let-col="col">
+            <div class="calendar-day {{ view.dates[row*7+col].events[0]?.color }}">
+                {{view.dates[row*7+col].label}}
+            </div>
+        </ng-template>
+
+        <calendar [currentDate]="currentDate" [noEventsLabel]="''" [queryMode]="'local'" [eventSource]="source" [monthviewDisplayEventTemplate]="template" [calendarMode]="'month'" [showEventDetail]="false" [formatMonthTitle]="'MMMM'">
+        </calendar>
+    </div>
+
+    <habit-stats *ngIf="mode == 'single' " [habit]="selectedHabit">
+    </habit-stats>
+
+    <!-- <ion-content *ngIf="mode == 'summary'"> -->
+    <!-- <summary-stats></summary-stats> -->
+    <!-- </ion-content> -->
+</ion-content>

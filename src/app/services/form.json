@@ -1,0 +1,23 @@
+{
+    "description": "test",
+    "name": "test",
+    "frequency_units": "day",
+    "frequency_quantity": 1,
+    "frequency_hours": [],
+    "frequency_days": [
+        null
+    ],
+    "end_units": "week",
+    "end_quantity": 2,
+    "end_date": null,
+    "start_type": "date",
+    "start_date": "2019-10-12T17:00:00.000Z",
+    "duration_hours": 1,
+    "duration_hours_text": "01",
+    "duration_minutes": 0,
+    "duration_minutes_text": "00",
+    "difficulty": 1,
+    "abstinence": false,
+    "group": "health",
+    "priority": 1
+}

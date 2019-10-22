@@ -12,64 +12,69 @@
 @import "theme/theme.dark";
 @import "theme/theme.light";
 
-.monthview-datetable td, .monthview-datetable th{
+.monthview-datetable td,
+.monthview-datetable th {
     border: none !important;
 }
 
 
-.monthview-secondary-with-event{
+.button {
+    --box-shadow: none;
+}
+
+.monthview-secondary-with-event {
     background-color: transparent !important;
 }
-.monthview-primary-with-event{
-        background-color: transparent !important;
-        color: black !important;
+
+.monthview-primary-with-event {
+    background-color: transparent !important;
+    color: black !important;
+}
+
+.text-muted {
+    background-color:  !important gray;
 }
 
 .calendar-day {
-    // border-radius: 30px;
-        // color: black;
+    border-radius: 30px;
 
     &.blocked {
-        /* text-color: var(--ion-color-medium); */
-        /* color:  var(--ion-color-medium) !important; */
-        /* border-bottom:  3px solid var(--ion-color-medium) !important; */
-            border: 3px solid var(--ion-color-tertiary);
+        border: 3px solid var(--ion-color-tertiary);
         text-color: var(--ion-color-medium);
-        /* font-style:  */
     }
 
     &.disabled {
         text-decoration: line-through;
         text-color: var(--ion-color-medium);
-        color:  var(--ion-color-medium) !important;
+        color: var(--ion-color-medium) !important;
     }
 
-        &.current {
-            border: 3px solid var(--ion-color-secondary);
-        }
+    &.current {
+        border: 3px solid var(--ion-color-secondary);
+    }
 
-        &.primary {
-            // color: white;
-        }
+    &.primary {
+        // color: white;
+    }
 
-        &.failure {
-            border: 3px solid gray;
-        }
-        
-        &.other {
-            border: 3px solid var(--ion-color-tertiary);
-        }
+    &.failure {
+        border: 3px solid var(--ion-color-warning);
+    }
 
-        &.awaiting {
-            border: 3px solid var(--ion-color-secondary);
-        }
+    &.other {
+        border: 3px solid var(--ion-color-tertiary);
+    }
 
-        &.completed {
-            border: 3px solid blue;
-        }
+    &.awaiting {
+        border: 3px solid var(--ion-color-secondary);
+    }
+
+    &.completed {
+        border: 3px solid var(--ion-color-success);
+    }
 }
 
 .monthview-selected {
-    background-color: blue;
+    // background-color: blue;
     // color: white;
 }
