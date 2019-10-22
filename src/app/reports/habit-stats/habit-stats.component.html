@@ -10,19 +10,19 @@
                           value: stats.completion.total.rate + '%',
                           progress: stats.completion.total.rate/100}"></stat-row>
 
-    <success-chart [data]="stats.completion.totals" [options]="{title: 'Daily Success'}"></success-chart>
+    <success-chart [data]="stats.completion.totals" [options]="{title: 'Daily Success', dataSelector: 'rate'}"></success-chart>
 
     <stat-row [data]="{name:  'Month success rate',
                           value: stats.completion.month.rate + '%',
                           progress: stats.completion.month.rate/100}"></stat-row>
 
-    <success-chart [data]="stats.completion.months" [options]="{title: 'Monthly Success'}"></success-chart>
+    <success-chart [data]="stats.completion.months" [options]="{title: 'Monthly Success', dataSelector: 'rate'}"></success-chart>
 
     <stat-row [data]="{name:  'Week success rate',
                       value: stats.completion.week.rate + '%',
                       progress: stats.completion.week.rate/100}"></stat-row>
 
-    <success-chart [data]="stats.completion.weeks" [options]="{title: 'Weekly Success'}"></success-chart>
+    <success-chart [data]="stats.completion.weeks" [options]="{title: 'Weekly Success', dataSelector: 'rate'}"></success-chart>
 
     <stat-row [data]="{name:  'Times complete',
                           value: stats.completion.total.complete + '/' + stats.completion.total.total,
@@ -48,6 +48,8 @@
             <ion-label floating color="primary">Points</ion-label>
         </ion-col>
     </ion-row>
+
+    <success-chart [data]="stats.strength.streaks" [options]="{title: 'Current Streak', dataSelector: 'current'}"></success-chart>
 
     <stat-row [data]="{name:  'Points gained',
                           value: stats.points.point_total}"></stat-row>

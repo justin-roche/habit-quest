@@ -24,11 +24,10 @@ export class SuccessChartComponent implements OnInit {
     ngOnInit() { }
 
     createChart() {
-        // debugger;
         let data = this.d.map((t, i) => {
-            return t.rate;
+            return t[this.options.dataSelector];
         });
-        // console.log('rates', this.d);
+        console.log('chart data', data, this.d, this.options);
 
         let bgcolors = data.map((d) => {
             return "rgba(54, 162, 235, 0.2)";
@@ -54,26 +53,18 @@ export class SuccessChartComponent implements OnInit {
                 lineTension: 0,
             }]
         }
+
         const scales = {
             xAxes: [{
                 type: 'time',
-                // display: true,
-                // scaleLabel: {
-                // display: true,
-                // labelString: "Date",
-                // }
             }],
             yAxes: [{
                 ticks: {
                     beginAtZero: true,
                 },
-                // display: true,
-                // scaleLabel: {
-                // display: true,
-                // labelString: "Page Views",
-                // }
             }]
         }
+
         const options = {
             type: 'line',
             data: data,
@@ -85,7 +76,6 @@ export class SuccessChartComponent implements OnInit {
                 scales: scales
             }
         }
-        // const chart = new Chart(ctx, options);
 
         this.barChart = new Chart(this.barCanvas.nativeElement, options);
     }

@@ -417,18 +417,19 @@ export class HabitsService {
         strength.streak = _.last(strength.streaks);
     }
 
-    getHistoricalStreak(h, refTime) {
+    getHistoricalStreak(h, time) {
         let longest = 0;
         let current = 0;
 
-        h.tasks.filter((t) => (moment(t.date).isSameOrBefore(moment(refTime))))
+        h.tasks.filter((t) => (moment(t.date).isSameOrBefore(moment(time))))
             // reduce the longest streak up to the provided time
             .forEach((t) => {
                 current = t.status == "COMPLETE" ? current += 1 : 0;
                 if (current > longest) longest = current;
             });
 
-        return { current, longest }
+        // time must be included to add labels in charts
+        return { current, longest, time }
     }
 
     updatePoints(h) {
