@@ -43,9 +43,6 @@ export class MonthSchedulePage implements OnInit {
             last = last.clone().add(1, 'day').startOf('day');
         }
 
-
-
-
         return range;
     }
 
@@ -112,12 +109,7 @@ export class MonthSchedulePage implements OnInit {
 
     onTimeSelected(ev: { selectedTime: Date, events: any[] }) {
         let d = moment(ev.selectedTime)
-        // if (d.date() == moment(this.source[0].startTime).date()) {
-
-        // }
-        // else {
         this.selectDate(ev)
-        // }
     };
 
     dismiss() {

@@ -15,7 +15,7 @@ import { Chart } from "chart.js";
 
 export class ReportsPage {
 
-    currentDate = new Date
+    private currentDate = new Date
     private habits = [];
     private selectedHabit = null;
     private habitNames = [];
@@ -26,16 +26,11 @@ export class ReportsPage {
         currentDate: new Date,
     }
     private toast;
-    private selectedDate;
-    private displayDate = moment();
-    private colorMap = {
-        'COMPLETE': 'completed',
-        'MISSED': 'failure',
-        'AWAITING': 'awaiting',
-    }
-    private barChart: Chart;
+    // private selectedDate;
+    // private barChart: Chart;
 
     constructor(private change: ChangeDetectorRef, private toastController: ToastController, private hs: HabitsService) {
+
     }
 
     ngOnInit() {
@@ -45,46 +40,19 @@ export class ReportsPage {
     }
 
     handleHabits(hs) {
+        // set up habit selection dropdown
         if (hs.length == 0) {
             this.presentToast();
         } else {
             this.habits = hs
-            this.habitNames = hs.map((h) => {
-                return h.name;
-            })
+            this.habitNames = hs.map((h) => h.name);
             this.selectHabit(this.habits[0])
         }
     }
 
-    ionViewWillEnter() {
-        // console.log('will enter', this.h);
-        // this.mode = 'loading'
-    }
-
-    ionViewDidEnter() {
-
-        // console.log('did enter', this.h);
-        // this.mode = 'single'
-    }
-
     selectHabit(h) {
-        console.log('eq?', h === this.selectedHabit);
-
+        // console.log('eq?', h === this.selectedHabit);
         this.selectedHabit = h;
-
-        let s = []
-        h.tasks.forEach((t) => {
-            s.push({
-                title: h.name,
-                startTime: new Date(t.date),
-                endTime: new Date(moment(t.date).add(1, 'hour').format()),
-                allDay: false,
-                // the color used by calendar template, provides classes as referenced in global.scss
-                color: this.colorMap[t.status],
-            })
-        })
-        this.source = s;
-        // console.log('selected h', this.selectedHabit);
     }
 
     async presentToast() {

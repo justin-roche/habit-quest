@@ -10,6 +10,7 @@ import { HabitStatsComponent } from './habit-stats/habit-stats.component';
 import { SummaryStatsComponent } from './summary-stats/summary-stats.component';
 import { StatRowComponent } from './stat-row/stat-row.component';
 import { SuccessChartComponent } from './success-chart/success-chart.component';
+import { ReportCalendarComponent } from './report-calendar/report-calendar.component';
 
 @NgModule({
 
@@ -26,6 +27,7 @@ import { SuccessChartComponent } from './success-chart/success-chart.component';
         , SummaryStatsComponent
         , StatRowComponent
         , SuccessChartComponent
+        , ReportCalendarComponent
     ]
 })
 export class ReportsPageModule { }

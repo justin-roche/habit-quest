@@ -28,7 +28,7 @@ export class SuccessChartComponent implements OnInit {
         let data = this.d.map((t, i) => {
             return t.rate;
         });
-        console.log('rates', this.d);
+        // console.log('rates', this.d);
 
         let bgcolors = data.map((d) => {
             return "rgba(54, 162, 235, 0.2)";

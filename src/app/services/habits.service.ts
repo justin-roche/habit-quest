@@ -223,8 +223,7 @@ export class HabitsService {
         this.habits.next(this.h);
     }
 
-    completeTask(h_id, t_id, date) {
-        // retrieve the reference version of the task
+    setTaskStatus(h_id, t_id, date, status) {
         let habit = this.h.filter((h) => {
             return h.id == h_id;
         })[0];
@@ -233,20 +232,52 @@ export class HabitsService {
             return t.id == t_id;
         })[0];
 
-        task.status = 'COMPLETE'
-        task.completed_time = moment(date).startOf('day').format();
+        task.status = status;
+        if (status == 'COMPLETE') {
+            task.completed_time = moment(date).startOf('day').format();
+        }
 
         this.updateStatistics(habit);
         if (this.allTasksComplete(habit)) habit.status = 'COMPLETE'
+        console.log('updating with status', status);
 
-        // change data references to trigger change detection for @input
+        // debugger;
+        this.broadcastHabits();
+    }
+
+    broadcastHabits() {
+        // change data references to trigger change detection for @input where the binding is outside the angular binding context
         this.h = this.h.map((h) => {
-            h.statistics = Object.assign({},h.statistics);
+            h.statistics = Object.assign({}, h.statistics);
             return Object.assign({}, h);
         });
-
         this.habits.next(this.h);
     }
+
+    // completeTask(h_id, t_id, date) {
+    //     // retrieve the reference version of the task
+    //     let habit = this.h.filter((h) => {
+    //         return h.id == h_id;
+    //     })[0];
+
+    //     let task = habit.tasks.filter((t) => {
+    //         return t.id == t_id;
+    //     })[0];
+
+    //     task.status = 'COMPLETE'
+    //     task.completed_time = moment(date).startOf('day').format();
+
+    //     this.updateStatistics(habit);
+    //     if (this.allTasksComplete(habit)) habit.status = 'COMPLETE'
+
+    //     // change data references to trigger change detection for @input where the binding is outside the angular binding context
+    //     this.h = this.h.map((h) => {
+    //         h.statistics = Object.assign({}, h.statistics);
+    //         return Object.assign({}, h);
+    //     });
+
+    //     this.habits.next(this.h);
+    // }
 
     createStatistics(h) {
         let points = this.createPointValue(h);
@@ -376,7 +407,7 @@ export class HabitsService {
             comp.months.push(month);
             comp.weeks.push(week);
         })
-        console.log('updated historical', comp, h);
+        // console.log('updated historical', comp, h);
 
         comp.hours_used = this.getDurationMinutes(h);
     }

@@ -55,10 +55,11 @@
 
     &.primary {
         // color: white;
+
     }
 
     &.failure {
-        border: 3px solid var(--ion-color-warning);
+        border: 3px solid var(--ion-color-danger);
     }
 
     &.other {
@@ -66,7 +67,7 @@
     }
 
     &.awaiting {
-        border: 3px solid var(--ion-color-secondary);
+        border: 3px solid var(--ion-color-primary);
     }
 
     &.completed {
@@ -74,7 +75,37 @@
     }
 }
 
+
 .monthview-selected {
-    // background-color: blue;
-    // color: white;
+    background-color: transparent !important;
+    color: black !important;
+}
+
+td-selected {
+    background-color: !important purple;
+    color: !important purple;
+}
+td .monthview-selected {
+    background-color: !important purple;
+    color: !important purple;
+}
+
+.subheader {
+    // background-color: var(--ion-color-medium);
+    border-bottom: none;
+    // font-color: black;
+    // text-color: black;
+}
+
+.date-button {
+    height:100%;
+    background-color:transparent;
+    background: transparent;
+}
+
+.date-heading {
+    position:relative;
+    top:50%;
+    // font-color: var(--ion-color-tertiary);
+    color: var(--ion-color-primary);
 }

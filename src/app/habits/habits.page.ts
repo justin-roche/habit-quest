@@ -92,7 +92,7 @@ export class HabitsPage {
     }
 
     completeTask(i) {
-        this.hs.completeTask(i.habit.id, i.task.id, this.currentDate)
+        this.hs.setTaskStatus(i.habit.id, i.task.id, this.currentDate, 'COMPLETE');
     }
 
     private toggleDeleteMode() {
