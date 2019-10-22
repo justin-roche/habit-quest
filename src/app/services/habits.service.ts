@@ -1,3 +1,4 @@
+import * as _ from 'underscore';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import * as moment from 'moment';
@@ -254,31 +255,6 @@ export class HabitsService {
         this.habits.next(this.h);
     }
 
-    // completeTask(h_id, t_id, date) {
-    //     // retrieve the reference version of the task
-    //     let habit = this.h.filter((h) => {
-    //         return h.id == h_id;
-    //     })[0];
-
-    //     let task = habit.tasks.filter((t) => {
-    //         return t.id == t_id;
-    //     })[0];
-
-    //     task.status = 'COMPLETE'
-    //     task.completed_time = moment(date).startOf('day').format();
-
-    //     this.updateStatistics(habit);
-    //     if (this.allTasksComplete(habit)) habit.status = 'COMPLETE'
-
-    //     // change data references to trigger change detection for @input where the binding is outside the angular binding context
-    //     this.h = this.h.map((h) => {
-    //         h.statistics = Object.assign({}, h.statistics);
-    //         return Object.assign({}, h);
-    //     });
-
-    //     this.habits.next(this.h);
-    // }
-
     createStatistics(h) {
         let points = this.createPointValue(h);
 
@@ -311,11 +287,16 @@ export class HabitsService {
                 hours_used: h.tasks.length,
             },
             strength: {
-                current_streak: 0,
-                longest_streak: 0,
-                success_current: 0,
+                streak: {
+                    current: 0,
+                    longest: 0
+                },
+                streaks: [],
+
                 habit_strength: 0,
                 tasks_missed: 0,
+                trends: {
+                },
                 trend_week: 0,
                 trend_month: 0,
             },
@@ -397,7 +378,7 @@ export class HabitsService {
         ts.forEach((t) => {
             let historical = {};
             let historicalTime = t.date;
-            // calculate the rates for historical reference times
+            // calculate the rates for historical reference times, can be more efficient by only calculating historical data for times in the future of the triggering change, instead of recalculating all historical values for every change.
 
             let total = this.getSuccessRatesByPeriod(h, null, historicalTime);
             let month = this.getSuccessRatesByPeriod(h, 'month', historicalTime);
@@ -413,36 +394,45 @@ export class HabitsService {
     }
 
     updateStrength(h) {
-        let { longest, current } = this.getStreaks(h)
+        this.getHistoricalStreaks(h);
 
-        // console.log('streaks', longest, current);
-        h.statistics.strength.current_streak = current;
-        h.statistics.strength.longest_streak = current;
+        // calculate missed metrics 
         h.statistics.strength.tasks_missed = h.tasks.filter((t) => {
             return t.status == 'MISSED';
         }).length
     }
 
-    updatePoints(h) {
+    getHistoricalStreaks(h) {
+        let strength = h.statistics.strength;
+        strength.streaks = [];
 
-        h.statistics.points.point_total = h.statistics.completion.tasks_completed * h.statistics.points.points_per_task;
+        h.tasks.forEach((t) => {
+            let historicalTime = t.date;
+            // calculate the streaks for historical reference times, can be more efficient by only calculating historical data for times in the future of the triggering change, instead of recalculating all historical values for every change.
+
+            let streakData = this.getHistoricalStreak(h, historicalTime);
+            strength.streaks.push(streakData);
+        })
+        // console.log('streaks', strength.streaks);
+        strength.streak = _.last(strength.streaks);
     }
 
-    getStreaks(h) {
+    getHistoricalStreak(h, refTime) {
         let longest = 0;
         let current = 0;
 
-        h.tasks.filter((t) => {
-            return (moment(t.date).isBefore(this.currentDate.clone().add(1, 'day'), 'day'));
-        }).forEach((t) => {
-            if (t.status == "COMPLETE") {
-                current += 1;
-            } else {
-                current = 0;
-            }
-            if (current > longest) longest = current;
-        });
+        h.tasks.filter((t) => (moment(t.date).isSameOrBefore(moment(refTime))))
+            // reduce the longest streak up to the provided time
+            .forEach((t) => {
+                current = t.status == "COMPLETE" ? current += 1 : 0;
+                if (current > longest) longest = current;
+            });
+
         return { current, longest }
+    }
+
+    updatePoints(h) {
+        h.statistics.points.point_total = h.statistics.completion.tasks_completed * h.statistics.points.points_per_task;
     }
 
     getDurationMinutes(h) {
