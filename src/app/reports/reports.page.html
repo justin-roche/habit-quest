@@ -1,33 +1,33 @@
 <ion-content>
-<!-- single/summary selector -->
-<ion-header>
-    <ion-toolbar ion-justify-content-center class="toolbar ion-justify-content-evenly">
-        <ion-buttons ion-justify-content-center class="ion-justify-content-evenly">
-            <ion-button [color]="mode == 'single'? 'primary' : 'medium'" (click)="mode = 'single'">
-                <ion-icon name="bookmark"></ion-icon>
-                <ion-label>habits</ion-label>
-            </ion-button>
-            <ion-button [color]="mode == 'summary'? 'primary' : 'medium'" (click)="mode = 'summary'">
-                <ion-icon name="bookmarks"></ion-icon>
-                <ion-label>summary</ion-label>
-            </ion-button>
-        </ion-buttons>
-    </ion-toolbar>
-</ion-header>
+    <!-- single/summary selector -->
+    <ion-header>
+        <ion-toolbar ion-justify-content-center class="toolbar ion-justify-content-evenly">
+            <ion-buttons ion-justify-content-center class="ion-justify-content-evenly">
+                <ion-button [color]="mode == 'single'? 'primary' : 'medium'" (click)="mode = 'single'">
+                    <ion-icon name="bookmark"></ion-icon>
+                    <ion-label>habits</ion-label>
+                </ion-button>
+                <ion-button [color]="mode == 'summary'? 'primary' : 'medium'" (click)="mode = 'summary'">
+                    <ion-icon name="bookmarks"></ion-icon>
+                    <ion-label>summary</ion-label>
+                </ion-button>
+            </ion-buttons>
+        </ion-toolbar>
+    </ion-header>
 
-<!-- habit selector -->
-<div style="border-bottom:2px solid black;" *ngIf="this.habits.length > 0 && mode == 'single'">
-    <ion-select [value]="selectedHabit" (ionChange)="selectHabit($event.target.value)" interface="popover" placeholder="Select One">
-        <ion-select-option *ngFor="let item of habits" [value]="item">{{item.name}}</ion-select-option>
-    </ion-select>
-</div>
+    <!-- habit selector -->
+    <div style="border-bottom:2px solid black;" *ngIf="this.habits.length > 0 && mode == 'single'">
+        <ion-select [value]="h.name" (ionChange)="selectHabit($event.target.value)" interface="popover" placeholder="Select One">
+            <ion-select-option *ngFor="let item of habitNames" [value]="item">{{item}}</ion-select-option>
+        </ion-select>
+    </div>
 
-<!-- calendar -->
-<report-calendar [habit]="selectedHabit"> </report-calendar>
+    <!-- calendar -->
+    <report-calendar *ngIf="h" [habit]="h"> </report-calendar>
 
-<!-- stats list -->
+    <!-- stats list -->
 
-    <habit-stats *ngIf="mode == 'single' " [habit]="selectedHabit">
+    <habit-stats *ngIf="mode == 'single' && h" [habit]="h">
     </habit-stats>
 </ion-content>
 

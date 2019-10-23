@@ -27,7 +27,7 @@ export class SuccessChartComponent implements OnInit {
         let data = this.d.map((t, i) => {
             return t[this.options.dataSelector];
         });
-        console.log('chart data', data, this.d, this.options);
+        // console.log('chart data', data, this.d, this.options);
 
         let bgcolors = data.map((d) => {
             return "rgba(54, 162, 235, 0.2)";

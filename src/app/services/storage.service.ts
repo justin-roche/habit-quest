@@ -7,8 +7,8 @@ import { from } from 'rxjs';
 // let m = require('./2week.json')
 // let m = require('./2day.json')
 // let m = require('./1weektask.json')
-// let m = require('./mock2.json')
-let m = [];
+let m = require('./2habits.json')
+// let m = [];
 
 @Injectable({
     providedIn: 'root'

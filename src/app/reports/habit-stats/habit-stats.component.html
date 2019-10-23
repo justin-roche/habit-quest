@@ -28,14 +28,11 @@
                           value: stats.completion.total.complete + '/' + stats.completion.total.total,
                           progress: null}"></stat-row>
 
-
-
     <ion-row no-padding no-margin>
         <ion-col style="text-align:center">
             <ion-label floating color="primary">Habit Strength</ion-label>
         </ion-col>
     </ion-row>
-
 
     <stat-row [data]="{name:  'Current streak',
                           value: stats.strength.streak.current,
@@ -43,13 +40,13 @@
     <stat-row [data]="{name:  'Longest streak',
                           value: stats.strength.streak.longest}"></stat-row>
 
+    <success-chart [data]="stats.strength.streaks" [options]="{title: 'Current Streak', dataSelector: 'current'}"></success-chart>
+
     <ion-row no-padding no-margin>
         <ion-col style="text-align:center">
             <ion-label floating color="primary">Points</ion-label>
         </ion-col>
     </ion-row>
-
-    <success-chart [data]="stats.strength.streaks" [options]="{title: 'Current Streak', dataSelector: 'current'}"></success-chart>
 
     <stat-row [data]="{name:  'Points gained',
                           value: stats.points.point_total}"></stat-row>

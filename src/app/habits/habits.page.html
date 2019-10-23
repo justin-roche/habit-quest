@@ -40,22 +40,22 @@
                 <!-- left button -->
                 <ion-col size="4" class="" style="text-align:left">
                     <ion-button color="none" style="height:100%" [disabled]="mode == 'empty'" (click)="decrementDate()" no-border no-padding no-margin style="font-size:20px;">
-                        <ion-icon name="arrow-dropleft" color="light"></ion-icon>
+                        <ion-icon name="arrow-dropleft" color="primary"></ion-icon>
                     </ion-button>
                 </ion-col>
 
                 <!-- the date header  -->
-                <ion-col size="4" color="light" style="">
+                <ion-col size="4" color="primary" style="">
                     <div style="text-align:center">
                         <div style=" position:relative;top:50%">
-                            <ion-label color="light">{{currentDate.format('dddd MMMM Do')}}</ion-label>
+                            <ion-label color="primary">{{currentDate.format('dddd MMMM Do')}}</ion-label>
                         </div>
                     </div>
                 </ion-col>
                 <!-- right button -->
                 <ion-col size="4" class="" style="text-align:right">
                     <ion-button (click)="incrementDate()" color="none" no-padding no-margin style="font-size:20px;" [disabled]="mode == 'empty'">
-                        <ion-icon name="arrow-dropright" color="light"></ion-icon>
+                        <ion-icon name="arrow-dropright" color="primary"></ion-icon>
                     </ion-button>
                 </ion-col>
             </ion-row>
@@ -141,4 +141,3 @@
     </ion-list>
 
 </ion-content>
-{{mode}}

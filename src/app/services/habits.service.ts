@@ -23,14 +23,19 @@ export class HabitsService {
             this.settings = val;
         })
 
+        // the initial set value, emitted as first value to all subscribers
         this.habits = new BehaviorSubject(null);
-        // this.storage.load().subscribe(this.onLoad.bind(this));
-        this.addHabit(m);
+        let self = this;
+        window.ph = function() {
+            console.log('habits', JSON.stringify(self.h));
+        }
+        this.storage.load().subscribe(this.handleLoad.bind(this));
+        // this.addHabit(m);
 
     }
 
-    onLoad() {
-        this.h = v;
+    handleLoad(value) {
+        this.h = value;
         this.markMissedTasks();
         this.updateAllStatistics();
         this.habits.next(this.h);
@@ -56,7 +61,8 @@ export class HabitsService {
         this.h.push(h);
         this.markMissedTasks();
         this.updateAllStatistics();
-        this.habits.next(this.h);
+        this.broadcastHabits();
+        // this.habits.next(this.h);
     }
 
     createTasks(h) {

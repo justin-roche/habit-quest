@@ -24,17 +24,14 @@ export class HabitsPage {
     }
 
     ngOnInit() {
-        this.hs.habits.asObservable().subscribe((d) => {
-            if (d) {
-                if (d.length == 0) {
-                    this.presentToast();
-                    this.mode = 'empty';
-                } else {
-                    this.mode = 'list';
-                }
-                this.allHabits = d;
+        this.hs.habits.asObservable().subscribe((habits) => {
+            if (habits) {
+                this.mode = habits.length == 0 ? 'empty' : 'list';
+                this.allHabits = habits;
                 this.createTasks()
             }
+            if (!habits) this.presentToast();
+
         })
     }
 
