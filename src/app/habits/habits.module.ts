@@ -4,6 +4,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HabitsPage } from './habits.page';
+import { TaskListComponent } from './task-list/task-list.component';
+import { HabitsToolbarComponent } from './habits-toolbar/habits-toolbar.component';
 
 @NgModule({
     imports: [
@@ -23,6 +25,6 @@ import { HabitsPage } from './habits.page';
             }
         ])
     ],
-    declarations: [HabitsPage]
+    declarations: [HabitsPage, TaskListComponent, HabitsToolbarComponent]
 })
 export class HabitsPageModule { }

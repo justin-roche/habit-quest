@@ -154,7 +154,6 @@ export class HabitsService {
         }
     }
 
-
     isNotStartDay(d) {
         // tests that no habit has a start date on d
         return (this.h.every((h) => {
@@ -209,13 +208,13 @@ export class HabitsService {
         return moment(start).clone().add(h.end_quantity, h.end_units);
     }
 
-    removeSelectedHabits(hs) {
-        this.h = this.h.filter((h) => {
-            return this.h.every((_h) => {
-                return _h.name != h.name;
-            })
-        })
-        this.habits.next(this.h);
+    deleteHabit(id) {
+        // debugger;
+        this.h = this.h.filter((h) => h.id != id);
+
+        // duplicated elsewhwere
+        this.updateAggregateStatistics();
+        this.broadcastHabits();
     }
 
     setTaskStatus(h_id, t_id, date, status) {
@@ -302,7 +301,7 @@ export class HabitsService {
     }
 
     createStatisticsForHabit(h) {
-        console.log('creating stats', h);
+        // console.log('creating stats', h);
 
         let points = this.createPointValue(h);
         let statistics = this.getStatisticsTemplate();
@@ -330,6 +329,8 @@ export class HabitsService {
         this.updateCompletion(h);
         this.updateStrength(h);
         this.updatePoints(h);
+        console.log('updated stats', h.statistics);
+
     }
 
     updateAggregateStatistics() {
@@ -346,7 +347,7 @@ export class HabitsService {
 
         this.as.completion.weeks = this.getAggregateSuccessRatesByPeriod('weeks');
         this.as.completion.week = _.last(this.as.completion.weeks);
-        console.log('aggregate stats', this.as);
+        // console.log('aggregate stats', this.as);
     }
 
     getAggregateSuccessRatesByPeriod(period) {
@@ -400,6 +401,7 @@ export class HabitsService {
             return n.isSameOrAfter(t.date)
 
         });
+        // console.log('range', range.length, range);
 
         let complete = range.filter((t) =>
             t.status == 'COMPLETE');
@@ -419,6 +421,7 @@ export class HabitsService {
         let comp = h.statistics.completion;
 
         comp.total = this.getSuccessRatesByPeriod(h);
+        // debugger;
         comp.month = this.getSuccessRatesByPeriod(h, 'month');
         comp.week = this.getSuccessRatesByPeriod(h, 'week');
 

@@ -11,9 +11,9 @@ import * as moment from 'moment';
 export class HabitsPage {
     private habits = [];
 
-    private incomplete_tasks = [];
-    private complete_tasks = [];
-    private missed_tasks = [];
+    private incompleteTasks = [];
+    private completeTasks = [];
+    private missedTasks = [];
     private allHabits = [];
     private selectedHabits = [];
     private currentDate = moment();
@@ -26,21 +26,23 @@ export class HabitsPage {
     ngOnInit() {
         this.hs.habits.asObservable().subscribe((habits) => {
             if (habits) {
-                this.mode = habits.length == 0 ? 'empty' : 'list';
+                // if just deleted last habit, set to list view
+                if (habits.length == 0) this.mode = 'list';
                 this.allHabits = habits;
+                console.log('got new habs', this.allHabits);
+
                 this.createTasks()
             }
             // if (!habits) this.presentToast();
-
         })
     }
 
     createTasks() {
-        this.incomplete_tasks = [];
-        this.complete_tasks = [];
-        this.missed_tasks = [];
+        this.incompleteTasks = [];
+        this.completeTasks = [];
+        this.missedTasks = [];
         this.allHabits.forEach((h) => {
-            // filter all habits for tasks occuring on visible date, set incomplete_tasks to applicable tasks
+            // filter all habits for tasks occuring on visible date, set incompleteTasks to applicable tasks
             let tasks = h.tasks.filter((t) => {
                 return this.currentDate.isSame(t.date, 'd')
             }).map((t) => {
@@ -63,20 +65,20 @@ export class HabitsPage {
             let missed = tasks.filter((t) => {
                 return t.status == "MISSED";
             })
-            this.incomplete_tasks = this.incomplete_tasks.concat(awaiting);
-            this.missed_tasks = this.missed_tasks.concat(missed);
-            this.complete_tasks = this.complete_tasks.concat(completed);
+            this.incompleteTasks = this.incompleteTasks.concat(awaiting);
+            this.missedTasks = this.missedTasks.concat(missed);
+            this.completeTasks = this.completeTasks.concat(completed);
         });
 
-        this.complete_tasks = this.complete_tasks.sort((a, b) => {
+        this.completeTasks = this.completeTasks.sort((a, b) => {
             return a.hour - b.hour;
         })
 
-        this.incomplete_tasks = this.incomplete_tasks.sort((a, b) => {
+        this.incompleteTasks = this.incompleteTasks.sort((a, b) => {
             return a.hour - b.hour;
         })
 
-        console.log('filtered incomplete_tasks', this.incomplete_tasks);
+        console.log('filtered incompleteTasks', this.incompleteTasks);
     }
 
     private decrementDate() {
@@ -89,6 +91,8 @@ export class HabitsPage {
     }
 
     completeTask(i) {
+        console.log('completing', i);
+
         this.hs.setTaskStatus(i.habit.id, i.task.id, this.currentDate, 'COMPLETE');
     }
 
@@ -98,6 +102,11 @@ export class HabitsPage {
         } else {
             this.mode = 'list';
         }
+    }
+
+    setMode(m) {
+        console.log('mode', m);
+        this.mode = m;
     }
 
     selectHabit(e, h) {
@@ -111,9 +120,9 @@ export class HabitsPage {
         }
     }
 
-    removeSelectedHabits() {
-        this.hs.removeSelectedHabits(this.selectedHabits);
-        this.mode = 'list'
+    deleteTask(t) {
+        this.hs.deleteHabit(t.habit.id);
+        // this.mode = 'list'
     }
 
     async presentToast() {
