@@ -30,7 +30,7 @@ export class HabitsPage {
                 this.allHabits = habits;
                 this.createTasks()
             }
-            if (!habits) this.presentToast();
+            // if (!habits) this.presentToast();
 
         })
     }

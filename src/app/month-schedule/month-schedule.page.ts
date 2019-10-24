@@ -4,6 +4,8 @@ import { ModalController } from '@ionic/angular';
 import * as moment from 'moment';
 import { HabitsService } from '../services/habits.service';
 import { SettingsService } from '../services/settings.service';
+import { ScheduleService } from '../services/schedule.service';
+import { ifError } from 'assert';
 
 @Component({
     selector: 'app-month-schedule',
@@ -15,13 +17,15 @@ export class MonthSchedulePage implements OnInit {
     private calendar = {
         currentDate: new Date,
     }
+    private viewTitle;
     private selectedDate;
-    private displayDate = moment();
+    // private displayDate = moment();
     private source = []
+    private schedule = []
     private mode = 'loading';
     private settings;
 
-    constructor(private mc: ModalController, private ss: SettingsService, private hs: HabitsService) {
+    constructor(private mc: ModalController, private ss: SettingsService, private hs: HabitsService, private sc: ScheduleService) {
 
         this.ss.getSettings().subscribe((val) => {
             this.settings = val;
@@ -29,56 +33,26 @@ export class MonthSchedulePage implements OnInit {
     }
 
     ngOnInit() {
-        this.source = this.getMonthEvents();
         this.mode = 'ready';
     }
 
-    getMonthEvents() {
+    getMonthEvents(m) {
         // if the first of current month is sunday, it is the beginnnig of display range, otherwise find previous sunday. Display adds 35 days to the first displayed date
-        let d = this.displayDate.clone().startOf('month');
+        let d = moment().month(m).startOf('month');
+        // console.log('month day', d);
         let last = d.day() != 0 ? d.subtract(d.day(), 'day') : d;
         let range = [];
         for (let i = 0; i < 42; i++) {
-            range.push(this.createEventForDate(last));
-            last = last.clone().add(1, 'day').startOf('day');
+            // range.push(this.createEventForDate(last));
+            // last = last.clone().add(1, 'day').startOf('day');
         }
 
         return range;
     }
 
-    createEventForDate(d) {
-        // create source for calendar including color and status
-        let base = {
-            title: d.format(),
-            startTime: d.toDate(),
-            endTime: d.add(1, 'hour').toDate(),
-            allDay: false,
-            color: null,
-            selectable: true,
-        };
-
-        if (moment().isAfter(d, 'd') && !this.settings.pastCreation) {
-            base.color = 'disabled';
-            base.selectable = false;
-        } else {
-            if (this.hs.isBlockedDay(d)) {
-                // console.log('is blocked', d);
-                base.color = 'blocked';
-                base.selectable = false;
-            }
-        }
-
-        if (moment().isSame(d, 'd')) {
-            base.color = 'current';
-        }
-
-        return base;
-    }
-
     dateSwipe(dir) {
         var s = document.querySelector('.swiper-container')['swiper'];
         dir == 1 ? s.slideNext() : s.slidePrev();
-        this.displayDate = dir == 1 ? moment(this.displayDate).add(1, 'month') : this.displayDate = moment(this.displayDate).subtract(1, 'month');
         this.source = this.getMonthEvents();
         // console.log('new source', this.source);
     }
@@ -86,36 +60,64 @@ export class MonthSchedulePage implements OnInit {
     selectDate(d) {
         // respond to clicks
         let e = d.events[0];
-        if (e.selectable != false) {
+        // console.log('e', e);
+        if (e.startInterval == false) {
             if (!e.selected) {
                 // untoggle all other selections if they are selected
                 this.source = this.source.map((e) => {
                     if (e.selected) {
                         e.selected = false;
-                        e.color = null;
+                        e.style = '';
                     }
                     return e;
                 });
                 this.myCalendar.loadEvents();
-                console.log('set source', this.source);
                 e.selected = true;
-                e.color = 'awaiting';
+                e.style = 'awaiting';
             } else {
                 e.selected = false;
-                e.color = null;
+                e.style = '';
             }
         }
+        console.log('changed e', e);
     }
 
-    onTimeSelected(ev: { selectedTime: Date, events: any[] }) {
-        let d = moment(ev.selectedTime)
-        this.selectDate(ev)
-    };
+    setColors() {
+        this.schedule = this.schedule.map((d) => {
+        let s = [];
+            if (d.tasks.length > 0) {
+                if (d.tasks.some((t) => t.status == 'COMPLETE')) s.push('complete')
+                if (d.tasks.some((t) => t.status == 'MISSED')) s.push('failure')
+                if (d.startInterval) s.push('blocked');
+            }
+            if (d.today) s.push('current');
+            d.style = s.join(' ');
+            return d;
+        });
+        console.log('shedule', this.schedule);
+
+        // disable past creation
+
+    }
+
+    onViewTitleChanged(title: string) {
+        // date component does not render changed title; render outside
+        if (this.viewTitle != title) {
+            this.viewTitle = title;
+            // console.log('title', this.viewTitle, title);
+            this.schedule = this.sc.getMonthSchedule(title);
+            this.setColors();
+            this.source = this.schedule;
+        }
+
+    }
 
     dismiss() {
-        this.mc.dismiss(this.source.filter((d) => {
+        let selected = this.source.filter((d) => {
             return d.selected;
-        })[0]);
+        })[0];
+
+        this.mc.dismiss(selected.date.format());
     }
 
     canSubmit() {
@@ -123,5 +125,4 @@ export class MonthSchedulePage implements OnInit {
             return d.selected;
         });
     }
-
 }

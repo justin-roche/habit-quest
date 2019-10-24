@@ -8,6 +8,7 @@ import { NgCalendarModule } from 'ionic2-calendar';
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeUS from '@angular/common/locales/en';
+import { SharedModule } from '../shared/shared.module';
 registerLocaleData(localeUS);
 
 const routes: Routes = [
@@ -20,6 +21,7 @@ const routes: Routes = [
 @NgModule({
     imports: [
         CommonModule,
+        SharedModule,
         FormsModule,
         IonicModule,
         NgCalendarModule,

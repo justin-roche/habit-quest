@@ -1,64 +1,64 @@
-.monthview{
-    background-color: red;
-}
-.button {
-    --box-shadow: none;
-}
-.calendar-container td{
-    border:none !important;
-}
-.calendar-container > td{
-    border:none !important;
-    background-color: red;
-}
-.table-bordered > td{
-    border:none !important;
-}
+// .monthview{
+//     background-color: red;
+// }
+// .button {
+//     --box-shadow: none;
+// }
+// .calendar-container td{
+//     border:none !important;
+// }
+// .calendar-container > td{
+//     border:none !important;
+//     background-color: red;
+// }
+// .table-bordered > td{
+//     border:none !important;
+// }
 
-.monthview-datetable td, .monthview-datetable th{
-    border: none !important;
-}
+// .monthview-datetable td, .monthview-datetable th{
+//     border: none !important;
+// }
 
-td {
-    background-color: blue !important;
-    // color: blue;
-}
-.monthview-current {
-    background-color: blue !important;
-    background: blue;
-    // color: blue;
-}
-.monthview-selected {
-    background-color: blue;
-    color: white;
-}
-/* .monthview-selected { */
-    /* background-color: blue; */
-    // color: blue;
-/* } */
+// td {
+//     background-color: blue !important;
+//     // color: blue;
+// }
+// .monthview-current {
+//     background-color: blue !important;
+//     background: blue;
+//     // color: blue;
+// }
+// .monthview-selected {
+//     background-color: blue;
+//     color: white;
+// }
+// /* .monthview-selected { */
+//     /* background-color: blue; */
+//     // color: blue;
+// /* } */
 
-.monthview-primary-with-event{
-    background-color: transparent !important;
-}
+// .monthview-primary-with-event{
+//     background-color: transparent !important;
+// }
 
-.calendar-day {
-    border-radius: 30px;
-    color: black;
+// .calendar-day {
+//     border-radius: 30px;
+//     color: black;
 
-    &.primary {
-        color: white;
-    }
+//     &.primary {
+//         color: white;
+//     }
 
-    &.failure {
-        border: 3px solid gray;
-    }
+//     // &.failure {
+//         // border: 3px solid gray;
+//     // }
     
-    &.awaiting {
-        border: 3px solid green;
+//     // &.awaiting {
+//         border: 3px solid green;
         
-    }
-    &.completed {
-        border: 3px solid blue;
+//     // }
+//     // &.completed {
+//         // border: 3px solid blue;
         
-    }
-}
+//     // }
+// }

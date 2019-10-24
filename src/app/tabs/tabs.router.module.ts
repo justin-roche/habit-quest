@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
+import { SharedModule } from '../shared/shared.module';
 
 const routes: Routes = [
     {
@@ -78,6 +79,7 @@ const routes: Routes = [
 
 @NgModule({
     imports: [
+        SharedModule, 
         RouterModule.forChild(routes)
     ],
     exports: [RouterModule]

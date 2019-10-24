@@ -10,11 +10,13 @@ let m = require('./form.json');
     providedIn: 'root'
 })
 export class HabitsService {
-
+    // the primary variables, habits array and aggregate statistics
     private h = [];
-    private currentDate = moment();
+    private as = null;
     private settings;
+
     public habits: BehaviorSubject<Array<any>>;
+    public aggregate: BehaviorSubject<any>;
     public habitsForDate: BehaviorSubject<Array<any>>;
 
     constructor(private storage: StorageService, private ss: SettingsService) {
@@ -25,6 +27,8 @@ export class HabitsService {
 
         // the initial set value, emitted as first value to all subscribers
         this.habits = new BehaviorSubject(null);
+        this.aggregate = new BehaviorSubject(null);
+
         let self = this;
         window.ph = function() {
             console.log('habits', JSON.stringify(self.h));
@@ -38,7 +42,8 @@ export class HabitsService {
         this.h = value;
         this.markMissedTasks();
         this.updateAllStatistics();
-        this.habits.next(this.h);
+        this.broadcastHabits();
+        // this.habits.next(this.h);
     }
 
     markMissedTasks() {
@@ -50,14 +55,14 @@ export class HabitsService {
     }
 
     isMissed(t) {
-        return (moment(t.date).isBefore(this.currentDate, 'day') && t.status == 'AWAITING');
+        return (moment(t.date).isBefore(moment(), 'day') && t.status == 'AWAITING');
     }
 
     addHabit(h) {
         h.start_date = moment(h.start_date);
         h.id = this.guidGenerator();
         this.createTasks(h);
-        this.createStatistics(h);
+        this.createStatisticsForHabit(h);
         this.h.push(h);
         this.markMissedTasks();
         this.updateAllStatistics();
@@ -149,20 +154,6 @@ export class HabitsService {
         }
     }
 
-    isBlockedDay(d) {
-        // determine if date is within auto schedule block interval; checking if any prior day is a start date
-        d = d.clone();
-
-        return (this.h.some((h) => {
-            let startInterval = moment(h.start_date).isAfter(d.clone().subtract(this.settings.autoScheduleInterval, 'day'))
-            let hasTask = h.tasks.some((t) => d.isSame(moment(t.date), 'day'));
-            // debugger;
-            // console.log('interval//task', startInterval, hasTask, d);
-
-            return startInterval && hasTask;
-        }));
-
-    }
 
     isNotStartDay(d) {
         // tests that no habit has a start date on d
@@ -178,9 +169,6 @@ export class HabitsService {
     setStartDate(h) {
         if (h.start_type == 'auto') {
             // add habits at 14 day intervals by default
-            // let sorted Habits = this.h.sort((a, b) => {
-            //     return a.start_date.isAfter(b.start_date) ? -1 : 1;
-            // })
 
             let d = moment().startOf('day');
             let available = false;
@@ -246,9 +234,7 @@ export class HabitsService {
 
         this.updateStatistics(habit);
         if (this.allTasksComplete(habit)) habit.status = 'COMPLETE'
-        console.log('updating with status', status);
-
-        // debugger;
+        this.updateAggregateStatistics();
         this.broadcastHabits();
     }
 
@@ -259,13 +245,14 @@ export class HabitsService {
             return Object.assign({}, h);
         });
         this.habits.next(this.h);
+        // as above, to trigger update on charts of summary page 
+        this.as = Object.assign({}, this.as);
+        this.aggregate.next(this.as);
     }
 
-    createStatistics(h) {
-        let points = this.createPointValue(h);
-
-        let statistics =
-        {
+    getStatisticsTemplate() {
+        // let h = this.h;
+        return {
             completion: {
                 // completion objects for historical days
                 totals: [],
@@ -288,9 +275,9 @@ export class HabitsService {
                     percent: 0
                 },
                 tasks_completed: 0,
-                tasks_remaining: h.tasks.length,
-                hours_remaining: h.tasks.length,
-                hours_used: h.tasks.length,
+                // tasks_remaining: h.tasks.length,
+                // hours_remaining: h.tasks.length,
+                // hours_used: h.tasks.length,
             },
             strength: {
                 streak: {
@@ -308,13 +295,21 @@ export class HabitsService {
             },
             points: {
                 point_total: 0,
-                total_point_value: points * h.tasks.length,
-                points_per_task: points,
+                total_point_value: 0,
+                points_per_task: 0,
             }
+        }
+    }
 
-            // finished_runs: [],
-        };
+    createStatisticsForHabit(h) {
+        console.log('creating stats', h);
+
+        let points = this.createPointValue(h);
+        let statistics = this.getStatisticsTemplate();
+        statistics.points.total_point_value = points = h.tasks.length;
+        statistics.points.points_per_task = points;
         h.statistics = statistics
+        console.log('stats', h.statistics);
     }
 
     createPointValue(h) {
@@ -322,11 +317,12 @@ export class HabitsService {
         return h.difficulty + h.priority + (h.abstinence ? 0 : 1);
     }
 
-    // non emitting actions
+    // UPDATE STATISTICS
     updateAllStatistics() {
         this.h.forEach((h) => {
             this.updateStatistics(h);
-        })
+        });
+        this.updateAggregateStatistics();
     }
 
     updateStatistics(h) {
@@ -334,6 +330,61 @@ export class HabitsService {
         this.updateCompletion(h);
         this.updateStrength(h);
         this.updatePoints(h);
+    }
+
+    updateAggregateStatistics() {
+        this.as = this.getStatisticsTemplate();
+
+        // reduce h.statistics.completion.totals by date to aggregate
+
+        this.as.completion.totals = this.getAggregateSuccessRatesByPeriod('totals');
+        this.as.completion.total = _.last(this.as.completion.totals);
+        // the last item of a historical series is the current value
+
+        this.as.completion.months = this.getAggregateSuccessRatesByPeriod('months');
+        this.as.completion.month = _.last(this.as.completion.months);
+
+        this.as.completion.weeks = this.getAggregateSuccessRatesByPeriod('weeks');
+        this.as.completion.week = _.last(this.as.completion.weeks);
+        console.log('aggregate stats', this.as);
+    }
+
+    getAggregateSuccessRatesByPeriod(period) {
+
+        let aggregateSeries = [];
+        // the aggregateSeries for the period contains the results for all habits, eg. totals, months, weeks
+        this.h.forEach((h) => {
+            // iterate all habits
+            h.statistics.completion[period].forEach((taskStat) => {
+                // iterate the period value series for a single habit, test to see if an aggregate for this date exists
+                let aggregate = _.find(aggregateSeries, (testAggregate) => {
+                    return moment(testAggregate.time).isSame(taskStat.time);
+                });
+                if (!aggregate) {
+                    // if no aggregate for the date, create one
+                    // set the time for the aggregate to the first located task on that day
+                    aggregateSeries.push({
+                        values: [taskStat],
+                        time: taskStat.time
+                    });
+                } else {
+                    aggregate.values.push(taskStat);
+                }
+            });
+        });
+
+        aggregateSeries.forEach((dayAggregate) => {
+            // for each day in the aggregate series, derive an average rate for all active habits
+            dayAggregate.averageRate = dayAggregate.values.reduce((acc, v) => {
+                return Number(v.rate) + acc;
+            }, 0) / dayAggregate.values.length;
+        })
+
+        aggregateSeries = aggregateSeries.sort((dt1, dt2) => {
+            return moment(dt1.time).isBefore(dt2.time) ? -1 : 1;
+        })
+
+        return aggregateSeries;
     }
 
     getSuccessRatesByPeriod(h, period, referenceTime) {
@@ -395,7 +446,6 @@ export class HabitsService {
             comp.weeks.push(week);
         })
         // console.log('updated historical', comp, h);
-
         comp.hours_used = this.getDurationMinutes(h);
     }
 

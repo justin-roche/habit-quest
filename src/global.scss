@@ -17,13 +17,27 @@
     border: none !important;
 }
 
-
 .button {
     --box-shadow: none;
 }
 
+//other months
+.text-muted {
+    background-color:  transparent !important;
+    color:  gray !important;
+    folt-color:  gray !important;
+
+    // targets the date text
+    div {
+        color:  gray !important;
+    }
+}
+
+    // other months
 .monthview-secondary-with-event {
-    background-color: transparent !important;
+    // background-color: purple !important;
+    text-color: gray !important;
+    color: gray !important;
 }
 
 .monthview-primary-with-event {
@@ -31,16 +45,12 @@
     color: black !important;
 }
 
-.text-muted {
-    background-color:  !important gray;
-}
-
 .calendar-day {
     border-radius: 30px;
 
     &.blocked {
-        border: 3px solid var(--ion-color-tertiary);
-        text-color: var(--ion-color-medium);
+        color:  var(--ion-color-medium) !important;
+        border: 1px solid var(--ion-color-medium);
     }
 
     &.disabled {
@@ -50,7 +60,8 @@
     }
 
     &.current {
-        border: 3px solid var(--ion-color-secondary);
+        // border: 3px solid var(--ion-color-secondary);
+        color: var(--ion-color-primary) !important;
     }
 
     &.primary {
@@ -59,7 +70,7 @@
     }
 
     &.failure {
-        border: 3px solid var(--ion-color-danger);
+        border: 3px solid var(--ion-color-danger) !important;
     }
 
     &.other {

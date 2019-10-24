@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HabitsService } from 'src/app/services/habits.service';
 
 @Component({
     selector: 'summary-stats',
@@ -6,9 +7,18 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./summary-stats.component.scss'],
 })
 export class SummaryStatsComponent implements OnInit {
+    private stats;
+    private hs;
 
-    constructor() { }
+    constructor(private hs: HabitsService) {
+        this.hs.aggregate.asObservable().subscribe((as) => {
+            if (as) this.handleStats(as)
+        })
+    }
 
-    ngOnInit() { }
+    handleStats(stats) {
+        console.log('received in summary page', stats, 'eq?', stats === this.stats);
+        this.stats = stats;
+    }
 
 }

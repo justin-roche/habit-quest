@@ -1,14 +1,36 @@
+<ion-grid color="medium" *ngIf="stats">
+    <ion-row no-padding no-margin>
+        <ion-col style="text-align:center">
+            <ion-label floating color="primary">Success rate across all activities</ion-label>
+        </ion-col>
+    </ion-row>
 
-<ion-select [value]="selectedHabit" (ionChange)="selectHabit($event.target.value)" interface="popover" placeholder="Select One">
-    <ion-select-option *ngFor="let item of habits" [value]="item">{{item.name}}</ion-select-option>
-</ion-select>
 
-<ion-header class="subheader" style="height:5%" no-padding>
-</ion-header>
-<!-- </calendar> -->
-<!-- </ion-content> -->
 
-<!-- <div class="ion-padding">
+
+    <stat-row [data]="{name:  'Daily success rate',
+                      value: stats.completion.total.averageRate + '%',
+                      progress: stats.completion.total.averageRate/100}"></stat-row>
+
+    <success-chart [data]="stats.completion.totals" [options]="{title: 'Daily Success', dataSelector: 'averageRate'}"></success-chart>
+
+    <stat-row [data]="{name:  'Monthly success rate',
+                      value: stats.completion.month.averageRate + '%',
+                      progress: stats.completion.month.averageRate/100}"></stat-row>
+
+    <success-chart [data]="stats.completion.months" [options]="{title: 'Monthly success for all tasks', dataSelector: 'averageRate'}"></success-chart>
+
+    <stat-row [data]="{name:  'Weekly success rate',
+                  value: stats.completion.week.averageRate + '%',
+                  progress: stats.completion.week.averageRate/100}"></stat-row>
+
+    <success-chart [data]="stats.completion.weeks" [options]="{title: 'Weekly success for all tasks', dataSelector: 'averageRate'}"></success-chart>
+
+    
+    <!-- </calendar> -->
+    <!-- </ion-content> -->
+
+    <!-- <div class="ion-padding">
      <ion-card>
      <ion-card-header>
      Bar Chart
@@ -18,5 +40,5 @@
      </ion-card-content>
      </ion-card>
      </div>
-     <!-- </ion-content> --> -->
-<!-- <ion-content> -->
+     <!-- </ion-content> -->
+</ion-grid>

@@ -15,11 +15,13 @@ import { NgCalendarModule } from 'ionic2-calendar';
 import { HabitsService } from './services/habits.service';
 import { StorageService } from './services/storage.service';
 import { ScheduleService } from './services/schedule.service';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
     declarations: [AppComponent],
     entryComponents: [],
     imports: [
+        SharedModule,
         BrowserModule,
         IonicModule.forRoot(),
         AppRoutingModule,
@@ -32,7 +34,6 @@ import { ScheduleService } from './services/schedule.service';
         StorageService,
         ScheduleService,
         SplashScreen,
-
         NgCalendarModule,
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
     ],

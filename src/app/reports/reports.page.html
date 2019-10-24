@@ -16,21 +16,19 @@
     </ion-header>
 
     <!-- habit selector -->
-    <div style="border-bottom:2px solid black;" *ngIf="this.habits.length > 0 && mode == 'single'">
+    <div style="border-bottom:2px solid black;" *ngIf="mode == 'single' && h">
         <ion-select [value]="h.name" (ionChange)="selectHabit($event.target.value)" interface="popover" placeholder="Select One">
             <ion-select-option *ngFor="let item of habitNames" [value]="item">{{item}}</ion-select-option>
         </ion-select>
     </div>
 
     <!-- calendar -->
-    <report-calendar *ngIf="h" [habit]="h"> </report-calendar>
+    <report-calendar *ngIf="mode == 'single' && h" [habit]="h"> </report-calendar>
 
     <!-- stats list -->
 
     <habit-stats *ngIf="mode == 'single' && h" [habit]="h">
     </habit-stats>
-</ion-content>
 
-<!-- <ion-content *ngIf="mode == 'summary'"> -->
-<!-- <summary-stats></summary-stats> -->
-<!-- </ion-content> -->
+    <summary-stats *ngIf="mode == 'summary'"></summary-stats>
+</ion-content>

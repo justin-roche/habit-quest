@@ -36,15 +36,14 @@ export class CreatePage implements OnInit {
         header: 'Colors',
         subHeader: 'Select your favorite color'
     };
-    constructor(
 
+    constructor(
         public modalController: ModalController,
         private nc: NavController,
         private ss: SettingsService,
         private fb: FormBuilder,
         private hs: HabitsService
     ) {
-
         this.ss.getSettings().subscribe((val) => {
             this.settings = val;
         })
@@ -54,7 +53,7 @@ export class CreatePage implements OnInit {
 
     }
 
-    ngOnInit() {
+    ionViewDidEnter() {
         this.pickerOptions = {
             buttons: [{
                 text: 'Save',
@@ -84,12 +83,10 @@ export class CreatePage implements OnInit {
             start_type: ['auto'],
             start_date: [null],
 
-
             duration_hours: [1],
             duration_hours_text: ['01'],
             duration_minutes: [0],
             duration_minutes_text: ['00'],
-
 
             difficulty: [1],
             abstinence: [false],
@@ -99,13 +96,13 @@ export class CreatePage implements OnInit {
 
         this.hs.habits.asObservable().subscribe((d) => {
             this.mode = 'loading';
-            this.preValidateFormOptions();
+            // this.preValidateFormOptions();
             this.mode = 'ready';
         })
 
         this.addFormListeners();
         // this.mode = 'ready';
-        // this.presentMonthScheduleModal();
+        this.presentMonthScheduleModal();
     }
 
     preValidateFormOptions() {
@@ -139,7 +136,6 @@ export class CreatePage implements OnInit {
         this.hs.addHabit(habit);
         this.nc.navigateBack('');
     }
-
 
     formatDate(d) {
         return moment(d).format('dddd MMMM Do');
@@ -192,7 +188,6 @@ export class CreatePage implements OnInit {
         return this.form.controls.frequency_days.value.indexOf(d.value) != -1 ? 'dark' : 'light';
     }
 
-
     private async presentDayScheduleModal(formControl = 'frequency_hours') {
         const p = {
             showBackdrop: true,
@@ -219,7 +214,8 @@ export class CreatePage implements OnInit {
         });
         await modal.present();
         const { data } = await modal.onDidDismiss();
-        this.form.controls[formControl].setValue(moment(data.startTime));
+        this.form.controls[formControl].setValue(data);
+        console.log('selected from modal', this.form.value);
     }
 
     private async presentPurposeModal() {
