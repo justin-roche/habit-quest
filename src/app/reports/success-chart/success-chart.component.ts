@@ -10,6 +10,7 @@ export class SuccessChartComponent implements OnInit {
 
     @ViewChild("barCanvas") barCanvas: ElementRef;
     private d;
+    private barChart;
     @Input() period;
     @Input() options;
     // @Data() period;
@@ -24,16 +25,15 @@ export class SuccessChartComponent implements OnInit {
     ngOnInit() { }
 
     createChart() {
-        let data = this.d.map((t, i) => {
+        let inputData = this.d.map((t, i) => {
             return t[this.options.dataSelector];
         });
-        // console.log('chart data', data, this.d, this.options);
 
-        let bgcolors = data.map((d) => {
+        let bgcolors = inputData.map((d) => {
             return "rgba(54, 162, 235, 0.2)";
         });
 
-        let bordercolors = data.map((d) => {
+        let bordercolors = inputData.map((d) => {
             return "rgba(255,99,132,1)";
         });
 
@@ -41,13 +41,12 @@ export class SuccessChartComponent implements OnInit {
             return d.time;
         });
 
-        // console.log('data', data, 'labels', labels);
         const data = {
             labels: labels,
             datasets: [{
                 fill: false,
                 // label: 'Page Views',
-                data: data,
+                data: inputData,
                 borderColor: '#fe8b36',
                 backgroundColor: '#fe8b36',
                 lineTension: 0,

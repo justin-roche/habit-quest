@@ -1,0 +1,30 @@
+<ion-header no-border class="subheader" style="" no-padding>
+    <ion-grid no-border>
+        <ion-row no-border>
+            <!-- left button -->
+            <ion-col size="4" style="text-align:left">
+                <ion-button color="none" (click)="dateSwipe(-1)" style="" class="date-button">
+                    <ion-icon color="dark" name="arrow-back"></ion-icon>
+                </ion-button>
+            </ion-col>
+            <!-- the date header  -->
+            <ion-col size="4" style="">
+                <div style="text-align:center">
+                    <div class="date-heading" style=" position:relative;top:50%">
+                        {{viewTitle}}
+                    </div>
+                </div>
+            </ion-col>
+            <ion-col size="4" style="text-align:right">
+                <ion-button color="none" (click)="dateSwipe(1)" class="date-button">
+                    <ion-icon color="dark" name="arrow-forward"></ion-icon>
+                </ion-button>
+            </ion-col>
+            <!-- right button -->
+        </ion-row>
+    </ion-grid>
+</ion-header>
+
+<div class="calendar-container">
+    <ng-content></ng-content>
+</div>

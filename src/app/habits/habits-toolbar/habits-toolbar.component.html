@@ -1,0 +1,22 @@
+<ion-header>
+    <ion-toolbar ion-justify-content-center class="toolbar ion-justify-content-evenly">
+        <ion-buttons ion-justify-content-center class="ion-justify-content-evenly">
+            <ion-button (click)="emitAction('list')" [color]=" (mode == 'list' || mode == 'empty') ? 'primary' : 'medium'">
+                <ion-icon slot="icon-only" name="list">
+                </ion-icon>
+            </ion-button>
+            <!-- <ion-button [disabled]="true" [color]="mode == 'search'? 'primary' : 'medium'"> -->
+            <!-- <ion-icon slot="icon-only" name="search"></ion-icon> -->
+            <!-- </ion-button> -->
+            <!-- <ion-button [color]="mode == 'edit'? 'primary' : 'medium'" [disabled]="true"> -->
+            <!-- <ion-icon slot="icon-only" name="create"></ion-icon> -->
+            <!-- </ion-button> -->
+            <ion-button [disabled]="mode == 'empty'" [color]="mode == 'delete'? 'primary' : 'medium'" (click)="emitAction('delete')" routerDirection="forward">
+                <ion-icon name="remove-circle-outline"></ion-icon>
+            </ion-button>
+            <ion-button [color]="mode == 'add'? 'primary' : 'medium'" id="add" [routerLink]="['create']" routerDirection="forward">
+                <ion-icon name="add-circle-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>

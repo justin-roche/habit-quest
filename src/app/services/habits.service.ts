@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import * as moment from 'moment';
 import { StorageService } from './storage.service';
 import { SettingsService } from './settings.service';
-let m = require('./form.json');
+// let m = require('./form.json');
 
 @Injectable({
     providedIn: 'root'
@@ -30,7 +30,7 @@ export class HabitsService {
         this.aggregate = new BehaviorSubject(null);
 
         let self = this;
-        window.ph = function() {
+        (<any>window).ph = function() {
             console.log('habits', JSON.stringify(self.h));
         }
         this.storage.load().subscribe(this.handleLoad.bind(this));
@@ -420,10 +420,10 @@ export class HabitsService {
     updateCompletion(h) {
         let comp = h.statistics.completion;
 
-        comp.total = this.getSuccessRatesByPeriod(h);
+        comp.total = this.getSuccessRatesByPeriod(h, null, null);
         // debugger;
-        comp.month = this.getSuccessRatesByPeriod(h, 'month');
-        comp.week = this.getSuccessRatesByPeriod(h, 'week');
+        comp.month = this.getSuccessRatesByPeriod(h, 'month', null);
+        comp.week = this.getSuccessRatesByPeriod(h, 'week', null);
 
         // historical values for completion data; operates on tasks (which all have unique dates 
         let ts = h.tasks.filter((t) => {

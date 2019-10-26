@@ -6,9 +6,8 @@ import { HabitsService } from 'src/app/services/habits.service';
     templateUrl: './summary-stats.component.html',
     styleUrls: ['./summary-stats.component.scss'],
 })
-export class SummaryStatsComponent implements OnInit {
+export class SummaryStatsComponent {
     private stats;
-    private hs;
 
     constructor(private hs: HabitsService) {
         this.hs.aggregate.asObservable().subscribe((as) => {

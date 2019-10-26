@@ -1,0 +1,401 @@
+[
+    {
+        "description": "test",
+        "name": "test",
+        "frequency_units": "day",
+        "frequency_quantity": 1,
+        "frequency_hours": [],
+        "frequency_days": [
+            null
+        ],
+        "end_units": "week",
+        "end_quantity": 2,
+        "end_date": "2019-10-30T18:00:00.000Z",
+        "start_type": "date",
+        "start_date": "2019-10-16T18:00:00.000Z",
+        "duration_hours": 1,
+        "duration_hours_text": "01",
+        "duration_minutes": 0,
+        "duration_minutes_text": "00",
+        "difficulty": 1,
+        "abstinence": false,
+        "group": "health",
+        "priority": 1,
+        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63",
+        "created_on": "2019-10-24T14:37:23+07:00",
+        "tasks": [
+            {
+                "date": "2019-10-17T01:00:00+07:00",
+                "status": "MISSED",
+                "id": "4f404b02-c321-544b-27c4-027b779a54e9"
+            },
+            {
+                "date": "2019-10-18T01:00:00+07:00",
+                "status": "MISSED",
+                "id": "f72093c4-b645-1b9e-6699-f240ad631804"
+            },
+            {
+                "date": "2019-10-19T01:00:00+07:00",
+                "status": "MISSED",
+                "id": "d889b43c-cacb-6bda-85fa-636672023e30"
+            },
+            {
+                "date": "2019-10-20T01:00:00+07:00",
+                "status": "MISSED",
+                "id": "e21a8485-09e0-0983-5a30-88f79a6bdb24"
+            },
+            {
+                "date": "2019-10-21T01:00:00+07:00",
+                "status": "MISSED",
+                "id": "53202af4-f7c7-b9f3-3757-9f0fc2ccaf64"
+            },
+            {
+                "date": "2019-10-22T01:00:00+07:00",
+                "status": "MISSED",
+                "id": "03290d6d-e817-fd1b-72d1-aa04154f7ece"
+            },
+            {
+                "date": "2019-10-23T01:00:00+07:00",
+                "status": "MISSED",
+                "id": "a8838311-3b9e-ed3b-58bc-7d9c39e5d23f"
+            },
+            {
+                "date": "2019-10-24T01:00:00+07:00",
+                "status": "AWAITING",
+                "id": "e08fe731-66a3-5f60-5414-0dccf71b6859"
+            },
+            {
+                "date": "2019-10-25T01:00:00+07:00",
+                "status": "AWAITING",
+                "id": "15d50255-81fb-4655-e8e1-1f0119cb7d24"
+            },
+            {
+                "date": "2019-10-26T01:00:00+07:00",
+                "status": "AWAITING",
+                "id": "3e76f28f-f176-5977-3256-218fa85ea3a5"
+            },
+            {
+                "date": "2019-10-27T01:00:00+07:00",
+                "status": "AWAITING",
+                "id": "eb4ca725-d43e-454e-afef-d8e868be7eca"
+            },
+            {
+                "date": "2019-10-28T01:00:00+07:00",
+                "status": "AWAITING",
+                "id": "2bed2c26-76cd-00a6-213e-898e031f1cd2"
+            },
+            {
+                "date": "2019-10-29T01:00:00+07:00",
+                "status": "AWAITING",
+                "id": "ff1d149e-57ee-5fa8-46ab-bad2c14d1998"
+            },
+            {
+                "date": "2019-10-30T01:00:00+07:00",
+                "status": "AWAITING",
+                "id": "bdb9b1ad-19ec-ed9c-08b2-5f6b73e29291"
+            },
+            {
+                "date": "2019-10-31T01:00:00+07:00",
+                "status": "AWAITING",
+                "id": "5886b635-cd73-fc46-2d87-7e36980d35c5"
+            }
+        ],
+        "status": "AWAITING",
+        "statistics": {
+            "completion": {
+                "totals": [
+                    {
+                        "total": 1,
+                        "complete": 0,
+                        "rate": "0.0",
+                        "time": "2019-10-17T01:00:00+07:00",
+                        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                    },
+                    {
+                        "total": 2,
+                        "complete": 0,
+                        "rate": "0.0",
+                        "time": "2019-10-18T01:00:00+07:00",
+                        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                    },
+                    {
+                        "total": 3,
+                        "complete": 0,
+                        "rate": "0.0",
+                        "time": "2019-10-19T01:00:00+07:00",
+                        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                    },
+                    {
+                        "total": 4,
+                        "complete": 0,
+                        "rate": "0.0",
+                        "time": "2019-10-20T01:00:00+07:00",
+                        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                    },
+                    {
+                        "total": 5,
+                        "complete": 0,
+                        "rate": "0.0",
+                        "time": "2019-10-21T01:00:00+07:00",
+                        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                    },
+                    {
+                        "total": 6,
+                        "complete": 0,
+                        "rate": "0.0",
+                        "time": "2019-10-22T01:00:00+07:00",
+                        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                    },
+                    {
+                        "total": 7,
+                        "complete": 0,
+                        "rate": "0.0",
+                        "time": "2019-10-23T01:00:00+07:00",
+                        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                    },
+                    {
+                        "total": 8,
+                        "complete": 0,
+                        "rate": "0.0",
+                        "time": "2019-10-24T01:00:00+07:00",
+                        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                    }
+                ],
+                "months": [
+                    {
+                        "total": 1,
+                        "complete": 0,
+                        "rate": "0.0",
+                        "time": "2019-10-17T01:00:00+07:00",
+                        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                    },
+                    {
+                        "total": 2,
+                        "complete": 0,
+                        "rate": "0.0",
+                        "time": "2019-10-18T01:00:00+07:00",
+                        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                    },
+                    {
+                        "total": 3,
+                        "complete": 0,
+                        "rate": "0.0",
+                        "time": "2019-10-19T01:00:00+07:00",
+                        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                    },
+                    {
+                        "total": 4,
+                        "complete": 0,
+                        "rate": "0.0",
+                        "time": "2019-10-20T01:00:00+07:00",
+                        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                    },
+                    {
+                        "total": 5,
+                        "complete": 0,
+                        "rate": "0.0",
+                        "time": "2019-10-21T01:00:00+07:00",
+                        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                    },
+                    {
+                        "total": 6,
+                        "complete": 0,
+                        "rate": "0.0",
+                        "time": "2019-10-22T01:00:00+07:00",
+                        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                    },
+                    {
+                        "total": 7,
+                        "complete": 0,
+                        "rate": "0.0",
+                        "time": "2019-10-23T01:00:00+07:00",
+                        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                    },
+                    {
+                        "total": 8,
+                        "complete": 0,
+                        "rate": "0.0",
+                        "time": "2019-10-24T01:00:00+07:00",
+                        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                    }
+                ],
+                "weeks": [
+                    {
+                        "total": 1,
+                        "complete": 0,
+                        "rate": "0.0",
+                        "time": "2019-10-17T01:00:00+07:00",
+                        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                    },
+                    {
+                        "total": 2,
+                        "complete": 0,
+                        "rate": "0.0",
+                        "time": "2019-10-18T01:00:00+07:00",
+                        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                    },
+                    {
+                        "total": 3,
+                        "complete": 0,
+                        "rate": "0.0",
+                        "time": "2019-10-19T01:00:00+07:00",
+                        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                    },
+                    {
+                        "total": 1,
+                        "complete": 0,
+                        "rate": "0.0",
+                        "time": "2019-10-20T01:00:00+07:00",
+                        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                    },
+                    {
+                        "total": 2,
+                        "complete": 0,
+                        "rate": "0.0",
+                        "time": "2019-10-21T01:00:00+07:00",
+                        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                    },
+                    {
+                        "total": 3,
+                        "complete": 0,
+                        "rate": "0.0",
+                        "time": "2019-10-22T01:00:00+07:00",
+                        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                    },
+                    {
+                        "total": 4,
+                        "complete": 0,
+                        "rate": "0.0",
+                        "time": "2019-10-23T01:00:00+07:00",
+                        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                    },
+                    {
+                        "total": 5,
+                        "complete": 0,
+                        "rate": "0.0",
+                        "time": "2019-10-24T01:00:00+07:00",
+                        "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                    }
+                ],
+                "total": {
+                    "total": 8,
+                    "complete": 0,
+                    "rate": "0.0",
+                    "time": "2019-10-24T14:37:24+07:00",
+                    "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                },
+                "month": {
+                    "total": 8,
+                    "complete": 0,
+                    "rate": "0.0",
+                    "time": "2019-10-24T14:37:24+07:00",
+                    "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                },
+                "week": {
+                    "total": 5,
+                    "complete": 0,
+                    "rate": "0.0",
+                    "time": "2019-10-24T14:37:24+07:00",
+                    "id": "dd4574d9-85f3-8eed-bbf7-4701533bac63"
+                },
+                "tasks_completed": 0,
+                "hours_used": 0
+            },
+            "strength": {
+                "streak": {
+                    "current": 0,
+                    "longest": 0,
+                    "time": "2019-10-31T01:00:00+07:00"
+                },
+                "streaks": [
+                    {
+                        "current": 0,
+                        "longest": 0,
+                        "time": "2019-10-17T01:00:00+07:00"
+                    },
+                    {
+                        "current": 0,
+                        "longest": 0,
+                        "time": "2019-10-18T01:00:00+07:00"
+                    },
+                    {
+                        "current": 0,
+                        "longest": 0,
+                        "time": "2019-10-19T01:00:00+07:00"
+                    },
+                    {
+                        "current": 0,
+                        "longest": 0,
+                        "time": "2019-10-20T01:00:00+07:00"
+                    },
+                    {
+                        "current": 0,
+                        "longest": 0,
+                        "time": "2019-10-21T01:00:00+07:00"
+                    },
+                    {
+                        "current": 0,
+                        "longest": 0,
+                        "time": "2019-10-22T01:00:00+07:00"
+                    },
+                    {
+                        "current": 0,
+                        "longest": 0,
+                        "time": "2019-10-23T01:00:00+07:00"
+                    },
+                    {
+                        "current": 0,
+                        "longest": 0,
+                        "time": "2019-10-24T01:00:00+07:00"
+                    },
+                    {
+                        "current": 0,
+                        "longest": 0,
+                        "time": "2019-10-25T01:00:00+07:00"
+                    },
+                    {
+                        "current": 0,
+                        "longest": 0,
+                        "time": "2019-10-26T01:00:00+07:00"
+                    },
+                    {
+                        "current": 0,
+                        "longest": 0,
+                        "time": "2019-10-27T01:00:00+07:00"
+                    },
+                    {
+                        "current": 0,
+                        "longest": 0,
+                        "time": "2019-10-28T01:00:00+07:00"
+                    },
+                    {
+                        "current": 0,
+                        "longest": 0,
+                        "time": "2019-10-29T01:00:00+07:00"
+                    },
+                    {
+                        "current": 0,
+                        "longest": 0,
+                        "time": "2019-10-30T01:00:00+07:00"
+                    },
+                    {
+                        "current": 0,
+                        "longest": 0,
+                        "time": "2019-10-31T01:00:00+07:00"
+                    }
+                ],
+                "habit_strength": 0,
+                "tasks_missed": 7,
+                "trends": {
+                },
+                "trend_week": 0,
+                "trend_month": 0
+            },
+            "points": {
+                "point_total": 0,
+                "total_point_value": 15,
+                "points_per_task": 15
+            }
+        }
+    }
+]

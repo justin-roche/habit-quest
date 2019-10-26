@@ -1,7 +1,6 @@
 import { ToastController } from '@ionic/angular';
 import { HabitsService } from '../services/habits.service';
 import * as moment from 'moment';
-import { Chart } from 'chart.js';
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from "@angular/core";
 import { Chart } from "chart.js";
 

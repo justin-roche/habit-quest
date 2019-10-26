@@ -53,7 +53,7 @@ export class MonthSchedulePage implements OnInit {
     dateSwipe(dir) {
         var s = document.querySelector('.swiper-container')['swiper'];
         dir == 1 ? s.slideNext() : s.slidePrev();
-        this.source = this.getMonthEvents();
+        // this.source = this.getMonthEvents();
         // console.log('new source', this.source);
     }
 
@@ -84,7 +84,7 @@ export class MonthSchedulePage implements OnInit {
 
     setColors() {
         this.schedule = this.schedule.map((d) => {
-        let s = [];
+            let s = [];
             if (d.tasks.length > 0) {
                 if (d.tasks.some((t) => t.status == 'COMPLETE')) s.push('complete')
                 if (d.tasks.some((t) => t.status == 'MISSED')) s.push('failure')

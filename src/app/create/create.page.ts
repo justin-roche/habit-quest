@@ -18,7 +18,7 @@ import { SettingsService } from '../services/settings.service';
     templateUrl: './create.page.html',
     styleUrls: ['./create.page.scss'],
 })
-export class CreatePage implements OnInit {
+export class CreatePage {
 
     private mode = 'loading';
     private hours = Array.apply(0, Array(24)).map(function(_, i) { return i - 1; });
@@ -47,10 +47,6 @@ export class CreatePage implements OnInit {
         this.ss.getSettings().subscribe((val) => {
             this.settings = val;
         })
-    }
-
-    ngAfterViewInit() {
-
     }
 
     ionViewDidEnter() {
@@ -108,11 +104,11 @@ export class CreatePage implements OnInit {
     preValidateFormOptions() {
         if (this.settings.conserveWillpower) {
             // disable today from options if any in the past range are true
-            if (this.hs.isBlockedDay(moment().startOf('day'))) {
-                this.formOptions.start_types.forEach((t) => {
-                    if (t.value == 'today') (<any>t).disabled = true;
-                })
-            }
+            // if (this.hs.isBlockedDay(moment().startOf('day'))) {
+                // this.formOptions.start_types.forEach((t) => {
+                    // if (t.value == 'today') (<any>t).disabled = true;
+                // })
+            // }
         }
     }
 
