@@ -90,10 +90,16 @@ export class HabitsPage {
         this.createTasks()
     }
 
-    completeTask(i) {
-        console.log('completing', i);
-
-        this.hs.setTaskStatus(i.habit.id, i.task.id, this.currentDate, 'COMPLETE');
+    completeTask(t) {
+        if (t.status == 'COMPLETE') {
+            if (moment().isAfter(t.task.date, 'd')) {
+                this.hs.setTaskStatus(t.habit.id, t.task.id, this.currentDate, 'MISSED');
+            } else {
+                this.hs.setTaskStatus(t.habit.id, t.task.id, this.currentDate, 'AWAITING');
+            }
+        } else {
+            this.hs.setTaskStatus(t.habit.id, t.task.id, this.currentDate, 'COMPLETE');
+        }
     }
 
     private toggleDeleteMode() {

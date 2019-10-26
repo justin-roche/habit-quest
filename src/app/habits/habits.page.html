@@ -38,7 +38,7 @@
     <task-list (action)="completeTask($event)" (deleteAction)="deleteTask($event)" [tasks]="incompleteTasks" [mode]="mode" [options]="{color:'dark',buttonColor: 'primary',actionIcon:'checkmark-circle-outline'}">
     </task-list>
 
-    <task-list (action)="completeTask($event)" (deleteAction)="deleteTask($event)" [mode]="mode" [tasks]="completeTasks" [options]="{color:'medium',actionIcon:'checkmark-circle-outline'}">
+    <task-list (action)="completeTask($event)" (deleteAction)="deleteTask($event)" [mode]="mode" [tasks]="completeTasks" [options]="{color:'success',actionIcon:'checkmark-circle-outline'}">
     </task-list>
 
     <task-list (action)="completeTask($event)" (deleteAction)="deleteTask($event)" [mode]="mode" [tasks]="missedTasks" [options]="{color:'danger',actionIcon:'checkmark-circle-outline'}">

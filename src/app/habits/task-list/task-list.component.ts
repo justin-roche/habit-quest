@@ -20,7 +20,6 @@ export class TaskListComponent implements OnInit {
     }
 
     formatHour(h) {
-        console.log('hour', h);
         return moment(h, 'HH:mm').format('h:mm a');
     }
 
