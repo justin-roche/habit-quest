@@ -12,12 +12,12 @@ import { SettingsService } from './settings.service';
 export class HabitsService {
     // the primary variables, habits array and aggregate statistics
     private h = [];
+    private expired = [];
     private as = null;
     private settings;
 
     public habits: BehaviorSubject<Array<any>>;
     public aggregate: BehaviorSubject<any>;
-    public habitsForDate: BehaviorSubject<Array<any>>;
 
     constructor(private storage: StorageService, private ss: SettingsService) {
 
@@ -43,7 +43,6 @@ export class HabitsService {
         this.markMissedTasks();
         this.updateAllStatistics();
         this.broadcastHabits();
-        // this.habits.next(this.h);
     }
 
     markMissedTasks() {
@@ -228,7 +227,7 @@ export class HabitsService {
 
         task.status = status;
         if (status == 'COMPLETE') {
-            task.completed_time = moment(date).startOf('day').format();
+            task.completed_time = date;
         }
 
         this.updateStatistics(habit);
@@ -247,6 +246,7 @@ export class HabitsService {
         // as above, to trigger update on charts of summary page 
         this.as = Object.assign({}, this.as);
         this.aggregate.next(this.as);
+        this.storage.set(this.h);
     }
 
     getStatisticsTemplate() {
@@ -391,7 +391,7 @@ export class HabitsService {
     getSuccessRatesByPeriod(h, period, referenceTime) {
         // given a reference time, calculate the success rates for a period preceeding it
         let n;
-        if(referenceTime){
+        if (referenceTime) {
             n = moment(referenceTime)
         } else {
             n = moment()
@@ -470,7 +470,10 @@ export class HabitsService {
         let strength = h.statistics.strength;
         strength.streaks = [];
 
-        h.tasks.forEach((t) => {
+        h.tasks.filter((t) => {
+            // only use data from past tasks
+            return moment().isSameOrAfter(t.date);
+        }).forEach((t) => {
             let historicalTime = t.date;
             // calculate the streaks for historical reference times, can be more efficient by only calculating historical data for times in the future of the triggering change, instead of recalculating all historical values for every change.
 

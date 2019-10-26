@@ -51,27 +51,27 @@ export class HabitsPage {
                     habit: h,
                     status: t.status,
                     // the following are used for sorts and time display
-                    hour: moment(t.date).hour(),
+                    // hour: moment(t.date).hour(),
                     _hour: moment(t.date).format('hh:mm')
                 }
             })
-            // debugger;
-            let completed = tasks.filter((t) => {
-                return t.status == "COMPLETE";
-            })
-            let awaiting = tasks.filter((t) => {
-                return t.status == "AWAITING";
-            })
-            let missed = tasks.filter((t) => {
-                return t.status == "MISSED";
-            })
+
+            let completed = tasks.filter((t) => t.status == "COMPLETE")
+            let awaiting = tasks.filter((t) => t.status == "AWAITING")
+            let missed = tasks.filter((t) => t.status == "MISSED")
+
             this.incompleteTasks = this.incompleteTasks.concat(awaiting);
             this.missedTasks = this.missedTasks.concat(missed);
             this.completeTasks = this.completeTasks.concat(completed);
         });
 
-        this.completeTasks = this.completeTasks.sort((a, b) => {
-            return a.hour - b.hour;
+        // display and sort complete tasks by completed time
+        this.completeTasks = this.completeTasks.map((t) => {
+            console.log('ct', t);
+            t._hour = t.task.completed_time;
+            return t;
+        }).sort((a, b) => {
+            return a._hour - b._hour;
         })
 
         this.incompleteTasks = this.incompleteTasks.sort((a, b) => {
@@ -90,16 +90,27 @@ export class HabitsPage {
         this.createTasks()
     }
 
-    completeTask(t) {
+    toggleTaskStatus(t) {
+        // determine the time to associated with completion, for present-day tasks the time is the time it is marked. For tasks that are retroactively marked, prompt...
+        let markedTime = t.task.date;
+        if (moment().isSame(t.task.date, 'd')) {
+            markedTime = moment().format('hh:mm');
+            console.log('mt', markedTime);
+
+        }
+
+        let newStatus = null;
         if (t.status == 'COMPLETE') {
             if (moment().isAfter(t.task.date, 'd')) {
-                this.hs.setTaskStatus(t.habit.id, t.task.id, this.currentDate, 'MISSED');
+                newStatus = 'MISSED';
             } else {
-                this.hs.setTaskStatus(t.habit.id, t.task.id, this.currentDate, 'AWAITING');
+                newStatus = 'AWAITING';
             }
         } else {
-            this.hs.setTaskStatus(t.habit.id, t.task.id, this.currentDate, 'COMPLETE');
+            newStatus = 'COMPLETE';
         }
+        // debugger;
+        this.hs.setTaskStatus(t.habit.id, t.task.id, markedTime, newStatus);
     }
 
     private toggleDeleteMode() {

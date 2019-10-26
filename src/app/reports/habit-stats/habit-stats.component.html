@@ -10,23 +10,23 @@
                           value: stats.completion.total.rate + '%',
                           progress: stats.completion.total.rate/100}"></stat-row>
 
-    <success-chart [data]="stats.completion.totals" [options]="{title: 'Daily Success', dataSelector: 'rate'}"></success-chart>
-
     <stat-row [data]="{name:  'Month success rate',
                           value: stats.completion.month.rate + '%',
                           progress: stats.completion.month.rate/100}"></stat-row>
-
-    <success-chart [data]="stats.completion.months" [options]="{title: 'Monthly Success', dataSelector: 'rate'}"></success-chart>
 
     <stat-row [data]="{name:  'Week success rate',
                       value: stats.completion.week.rate + '%',
                       progress: stats.completion.week.rate/100}"></stat-row>
 
-    <success-chart [data]="stats.completion.weeks" [options]="{title: 'Weekly Success', dataSelector: 'rate'}"></success-chart>
-
     <stat-row [data]="{name:  'Times complete',
                           value: stats.completion.total.complete + '/' + stats.completion.total.total,
                           progress: null}"></stat-row>
+
+    <success-chart [data]="stats.completion.totals" [options]="{title: 'Daily Success', dataSelector: 'rate'}"></success-chart>
+
+    <success-chart [data]="stats.completion.months" [options]="{title: 'Monthly Success', dataSelector: 'rate'}"></success-chart>
+
+    <success-chart [data]="stats.completion.weeks" [options]="{title: 'Weekly Success', dataSelector: 'rate'}"></success-chart>
 
     <ion-row no-padding no-margin>
         <ion-col style="text-align:center">
@@ -40,7 +40,7 @@
     <stat-row [data]="{name:  'Longest streak',
                           value: stats.strength.streak.longest}"></stat-row>
 
-    <success-chart [data]="stats.strength.streaks" [options]="{title: 'Current Streak', dataSelector: 'current'}"></success-chart>
+    <success-chart [data]="stats.strength.streaks" [options]="{title: 'Current Streak', dataSelector: 'current', style: 'streak'}"></success-chart>
 
     <ion-row no-padding no-margin>
         <ion-col style="text-align:center">

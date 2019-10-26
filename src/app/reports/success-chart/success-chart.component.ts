@@ -9,22 +9,43 @@ import { Chart } from 'chart.js';
 export class SuccessChartComponent implements OnInit {
 
     @ViewChild("barCanvas") barCanvas: ElementRef;
-    private d;
-    private barChart;
     @Input() period;
     @Input() options;
-    // @Data() period;
+    private d;
+    private barChart;
 
     @Input() set data(value) {
         // bind to input change to run listener
         this.d = value;
-        this.createChart();
+        // console.log('style', this.style);
+
+        if (this.options.style == 'streak') {
+            // console.log('streak data', this.d);
+            this.getStreakChart();
+        } else {
+            this.getSuccessChart();
+        }
     }
+
     constructor() { }
 
     ngOnInit() { }
 
-    createChart() {
+    getSuccessChart() {
+        let o = this.getChartBase();
+        this.barChart = new Chart(this.barCanvas.nativeElement, o);
+    }
+
+    getStreakChart() {
+        let o = this.getChartBase();
+        console.log('options', JSON.parse(JSON.stringify(o)));
+        delete o.options.scales.yAxes[0].ticks.suggestedMax;
+        o.options.scales.yAxes[0].ticks.stepSize = 1;
+
+        this.barChart = new Chart(this.barCanvas.nativeElement, o);
+    }
+
+    getChartBase() {
         let inputData = this.d.map((t, i) => {
             return t[this.options.dataSelector];
         });
@@ -51,17 +72,23 @@ export class SuccessChartComponent implements OnInit {
                 data: inputData,
                 borderColor: '#3880ff',
                 backgroundColor: '#3880ff',
-                lineTension: 0,
+                lineTension: 0.5,
             }]
         }
 
         const scales = {
             xAxes: [{
                 type: 'time',
+                time: {
+                    unit: 'day',
+                    bounds: 'ticks'
+                }
+
             }],
             yAxes: [{
                 ticks: {
                     beginAtZero: true,
+                    suggestedMax: 100,
                 },
             }]
         }
@@ -78,6 +105,6 @@ export class SuccessChartComponent implements OnInit {
             }
         }
 
-        this.barChart = new Chart(this.barCanvas.nativeElement, options);
+        return options;
     }
 }

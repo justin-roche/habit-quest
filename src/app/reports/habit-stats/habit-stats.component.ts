@@ -10,7 +10,7 @@ export class HabitStatsComponent implements OnInit {
     private h;
     @Input() set habit(value) {
         // bind to input change to run listener
-        console.log('updating stats', this.h);
+        // console.log('updating stats', this.h);
         this.h = value;
 
         this.handleHabit();

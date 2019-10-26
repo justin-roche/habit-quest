@@ -5,40 +5,20 @@
         </ion-col>
     </ion-row>
 
-
-
-
     <stat-row [data]="{name:  'Daily success rate',
                       value: stats.completion.total.averageRate + '%',
                       progress: stats.completion.total.averageRate/100}"></stat-row>
 
-    <success-chart [data]="stats.completion.totals" [options]="{title: 'Daily Success', dataSelector: 'averageRate'}"></success-chart>
 
     <stat-row [data]="{name:  'Monthly success rate',
                       value: stats.completion.month.averageRate + '%',
                       progress: stats.completion.month.averageRate/100}"></stat-row>
 
-    <success-chart [data]="stats.completion.months" [options]="{title: 'Monthly success for all tasks', dataSelector: 'averageRate'}"></success-chart>
-
     <stat-row [data]="{name:  'Weekly success rate',
                   value: stats.completion.week.averageRate + '%',
                   progress: stats.completion.week.averageRate/100}"></stat-row>
 
+    <success-chart [data]="stats.completion.totals" [options]="{title: 'Daily Success', dataSelector: 'averageRate'}"></success-chart>
+    <success-chart [data]="stats.completion.months" [options]="{title: 'Monthly success for all tasks', dataSelector: 'averageRate'}"></success-chart>
     <success-chart [data]="stats.completion.weeks" [options]="{title: 'Weekly success for all tasks', dataSelector: 'averageRate'}"></success-chart>
-
-    
-    <!-- </calendar> -->
-    <!-- </ion-content> -->
-
-    <!-- <div class="ion-padding">
-     <ion-card>
-     <ion-card-header>
-     Bar Chart
-     </ion-card-header>
-     <ion-card-content>
-     <canvas #barCanvas></canvas>
-     </ion-card-content>
-     </ion-card>
-     </div>
-     <!-- </ion-content> -->
 </ion-grid>

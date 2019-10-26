@@ -22,6 +22,11 @@ export class StorageService {
         s.set('habits', m);
     }
 
+    set(h) {
+        console.log('setting storage', h);
+        this.s.set('habits', h);
+    }
+
     load() {
         return from(this.s.get('habits'))
     }
