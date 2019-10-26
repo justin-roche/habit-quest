@@ -1,28 +1,35 @@
-<ion-header>
-    <ion-toolbar>
-        <ion-title>Month Schedule</ion-title>
+    <ion-toolbar  style="text-align:center" >
+
+        <!-- <ion-grid> -->
+        <!-- <ion-row> -->
+        <!-- <ion-col s></ion-col> -->
+        <!-- <ion-col size="3" attr.color={{options.color}}> -->
+        <ion-label class="modal-head">Month Schedule</ion-label>
+        <!-- </ion-col> -->
+        <!-- </ion-row> -->
+        <!-- </ion-grid> -->
     </ion-toolbar>
-</ion-header>
-<!-- {{viewTitle}} -->
-<ion-content>
-    <!-- template will not project into ng content if split from it(this must go here and not in app calendar)-->
 
-    <app-calendar *ngIf="mode == 'ready'" [viewTitle]="viewTitle">
-        <ng-template #template let-view="view" let-row="row" let-col="col">
-            <div class="calendar-day {{ view.dates[row*7+col].events[0]?.style }}">
-                {{view.dates[row*7+col].label}}
-            </div>
-        </ng-template>
-        <calendar (onTitleChanged)="onViewTitleChanged($event)" (onTimeSelected)="selectDate($event)" [currentDate]="currentDate" [autoSelect]="false" [noEventsLabel]="''" [queryMode]="'local'" [eventSource]="source" [monthviewDisplayEventTemplate]="template" [calendarMode]="'month'" [showEventDetail]="false" [formatMonthTitle]="'MMMM yyyy'">
-        </calendar>
-    </app-calendar>
-</ion-content>
 
-<ion-footer>
-    <ion-button float-left (click)="dismiss()">
-        Cancel
-    </ion-button>
-    <ion-button float-right (click)="dismiss()" [disabled]="!canSubmit()">
-        Done
-    </ion-button>
-</ion-footer>
+    <ion-content>
+        <!-- template will not project into ng content if split from it(this must go here and not in app calendar)-->
+
+        <app-calendar *ngIf="mode == 'ready'" [viewTitle]="viewTitle">
+            <ng-template #template let-view="view" let-row="row" let-col="col">
+                <div class="calendar-day {{ view.dates[row*7+col].events[0]?.style }}">
+                    {{view.dates[row*7+col].label}}
+                </div>
+            </ng-template>
+            <calendar (onTitleChanged)="onViewTitleChanged($event)" (onTimeSelected)="selectDate($event)" [currentDate]="currentDate" [autoSelect]="false" [noEventsLabel]="''" [queryMode]="'local'" [eventSource]="source" [monthviewDisplayEventTemplate]="template" [calendarMode]="'month'" [showEventDetail]="false" [formatMonthTitle]="'MMMM yyyy'">
+            </calendar>
+        </app-calendar>
+    </ion-content>
+
+    <ion-footer>
+        <ion-button float-left (click)="dismiss()">
+            Cancel
+        </ion-button>
+        <ion-button float-right (click)="dismiss()" [disabled]="!canSubmit()">
+            Done
+        </ion-button>
+    </ion-footer>

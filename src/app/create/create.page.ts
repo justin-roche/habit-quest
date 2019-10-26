@@ -98,16 +98,16 @@ export class CreatePage {
 
         this.addFormListeners();
         // this.mode = 'ready';
-        this.presentMonthScheduleModal();
+        // this.presentMonthScheduleModal();
     }
 
     preValidateFormOptions() {
         if (this.settings.conserveWillpower) {
             // disable today from options if any in the past range are true
             // if (this.hs.isBlockedDay(moment().startOf('day'))) {
-                // this.formOptions.start_types.forEach((t) => {
-                    // if (t.value == 'today') (<any>t).disabled = true;
-                // })
+            // this.formOptions.start_types.forEach((t) => {
+            // if (t.value == 'today') (<any>t).disabled = true;
+            // })
             // }
         }
     }

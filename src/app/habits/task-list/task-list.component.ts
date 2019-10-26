@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import * as moment from 'moment';
 
 @Component({
     selector: 'task-list',
@@ -12,17 +13,15 @@ export class TaskListComponent implements OnInit {
     @Output() action = new EventEmitter<any>();
     @Output() deleteAction = new EventEmitter<any>();
 
-    // {
-    //     color: 'light',
-    // };
-
-    // private t = [];
-
     constructor() { }
 
     ngOnInit() {
         console.log('options', this.options);
+    }
 
+    formatHour(h) {
+        console.log('hour', h);
+        return moment(h, 'HH:mm').format('h:mm a');
     }
 
     emitAction(d) {

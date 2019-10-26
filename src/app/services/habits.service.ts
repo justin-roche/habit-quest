@@ -390,7 +390,12 @@ export class HabitsService {
 
     getSuccessRatesByPeriod(h, period, referenceTime) {
         // given a reference time, calculate the success rates for a period preceeding it
-        let n = moment(referenceTime) || moment();
+        let n;
+        if(referenceTime){
+            n = moment(referenceTime)
+        } else {
+            n = moment()
+        }
 
         let range = h.tasks.filter((t) => {
             // if period provided, calculate on all tasks in same period and prior

@@ -30,11 +30,13 @@ export class SuccessChartComponent implements OnInit {
         });
 
         let bgcolors = inputData.map((d) => {
-            return "rgba(54, 162, 235, 0.2)";
+            // return "rgba(54, 162, 235, 0.2)";
+            return "green";
         });
 
         let bordercolors = inputData.map((d) => {
-            return "rgba(255,99,132,1)";
+            // return "rgba(255,99,132,1)";
+            return "green";
         });
 
         let labels = this.d.map((d) => {
@@ -47,8 +49,8 @@ export class SuccessChartComponent implements OnInit {
                 fill: false,
                 // label: 'Page Views',
                 data: inputData,
-                borderColor: '#fe8b36',
-                backgroundColor: '#fe8b36',
+                borderColor: '#3880ff',
+                backgroundColor: '#3880ff',
                 lineTension: 0,
             }]
         }

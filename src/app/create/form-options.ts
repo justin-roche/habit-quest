@@ -2,7 +2,7 @@
 
 export const options = {
     start_types: [
-        { display: 'auto schedule', value: 'auto' },
+        { display: 'auto', value: 'auto' },
         { display: 'today', value: 'today' },
         { display: 'set date', value: 'date' },
         { display: 'first free day', value: 'first' },

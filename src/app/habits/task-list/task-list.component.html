@@ -4,7 +4,7 @@
             <ion-row>
                 <ion-col size="3" attr.color={{options.color}}>
                     <ion-label class="item-text-center" [attr.color]="options.color" floating>
-                        {{i._hour}}
+                        {{formatHour(i._hour)}}
                     </ion-label>
                 </ion-col>
                 <ion-col size="5" class="" attr.color={{options.color}}>
@@ -12,14 +12,12 @@
                         {{i.habit.name}}
                     </ion-label>
                 </ion-col>
-                j
-
                 <ion-col size="4" style="align-content:right;align-items:right; text-align:right">
                     <ion-button *ngIf="mode != 'delete'" color="transparent" style="align-content:right;align-items:right" (click)="emitAction(i)">
-                        <ion-icon color={{options.color}} style="font-size:30px" name="{{options.actionIcon}}"></ion-icon>
+                        <ion-icon [color]="options.buttonColor || options.color" style="font-size:30px" name="{{options.actionIcon}}"></ion-icon>
                     </ion-button>
                     <ion-button *ngIf="mode == 'delete'" color="transparent" style="align-content:right;align-items:right" (click)="emitDelete(i)">
-                        <ion-icon color={{options.color}} style="font-size:30px" name="remove-circle-outline"></ion-icon>
+                        <ion-icon [color]="options.buttonColor || options.color" style="font-size:30px" name="remove-circle-outline"></ion-icon>
                     </ion-button>
                 </ion-col>
             </ion-row>

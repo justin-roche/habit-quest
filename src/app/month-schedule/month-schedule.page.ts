@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CalendarComponent } from "ionic2-calendar/calendar";
 import { ModalController } from '@ionic/angular';
-import * as moment from 'moment';
 import { HabitsService } from '../services/habits.service';
 import { SettingsService } from '../services/settings.service';
 import { ScheduleService } from '../services/schedule.service';
 import { ifError } from 'assert';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-month-schedule',
@@ -116,8 +116,11 @@ export class MonthSchedulePage implements OnInit {
         let selected = this.source.filter((d) => {
             return d.selected;
         })[0];
-
-        this.mc.dismiss(selected.date.format());
+        if (selected) {
+            selected = selected.date.format();
+        }
+        // returns undefined if nothing selected
+        this.mc.dismiss(selected);
     }
 
     canSubmit() {
