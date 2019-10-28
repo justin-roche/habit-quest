@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CalendarComponent } from "ionic2-calendar/calendar";
+import { CalendarComponent } from 'ionic2-calendar/calendar';
 import { ModalController } from '@ionic/angular';
 import { HabitsService } from '../services/habits.service';
 import { SettingsService } from '../services/settings.service';
 import { ScheduleService } from '../services/schedule.service';
-import { ifError } from 'assert';
 import * as moment from 'moment';
 
 @Component({
@@ -14,14 +13,10 @@ import * as moment from 'moment';
 })
 export class MonthSchedulePage implements OnInit {
     @ViewChild(CalendarComponent) myCalendar: CalendarComponent;
-    private calendar = {
-        currentDate: new Date,
-    }
     private viewTitle;
-    private selectedDate;
     // private displayDate = moment();
-    private source = []
-    private schedule = []
+    private source = [];
+    private schedule = [];
     private mode = 'loading';
     private settings;
 
@@ -29,7 +24,7 @@ export class MonthSchedulePage implements OnInit {
 
         this.ss.getSettings().subscribe((val) => {
             this.settings = val;
-        })
+        });
     }
 
     ngOnInit() {
@@ -38,10 +33,10 @@ export class MonthSchedulePage implements OnInit {
 
     getMonthEvents(m) {
         // if the first of current month is sunday, it is the beginnnig of display range, otherwise find previous sunday. Display adds 35 days to the first displayed date
-        let d = moment().month(m).startOf('month');
+        // const d = moment().month(m).startOf('month');
         // console.log('month day', d);
-        let last = d.day() != 0 ? d.subtract(d.day(), 'day') : d;
-        let range = [];
+        // const last = d.day() != 0 ? d.subtract(d.day(), 'day') : d;
+        const range = [];
         for (let i = 0; i < 42; i++) {
             // range.push(this.createEventForDate(last));
             // last = last.clone().add(1, 'day').startOf('day');
@@ -51,17 +46,17 @@ export class MonthSchedulePage implements OnInit {
     }
 
     dateSwipe(dir) {
-        var s = document.querySelector('.swiper-container')['swiper'];
-        dir == 1 ? s.slideNext() : s.slidePrev();
+        let s = document.querySelector('.swiper-container')['swiper'];
+        dir === 1 ? s.slideNext() : s.slidePrev();
         // this.source = this.getMonthEvents();
         // console.log('new source', this.source);
     }
 
     selectDate(d) {
         // respond to clicks
-        let e = d.events[0];
+        const e = d.events[0];
         // console.log('e', e);
-        if (e.startInterval == false) {
+        if (e.startInterval === false) {
             if (!e.selected) {
                 // untoggle all other selections if they are selected
                 this.source = this.source.map((e) => {

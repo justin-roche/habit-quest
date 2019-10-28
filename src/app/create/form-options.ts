@@ -1,6 +1,16 @@
 // let options = [1, 2, 3];
 
 export const options = {
+
+    hours: Array.apply(0, Array(24))
+        .map(function(_, i) { return i - 1; }),
+    minutes: Array.apply(0, Array(60))
+        .map(function(_, i) { return i - 1; }),
+
+    type: [
+        { display: 'habit', value: 'habit' },
+        { display: 'incident', value: 'incident' },
+    ],
     start_types: [
         { display: 'auto', value: 'auto' },
         { display: 'today', value: 'today' },
@@ -46,7 +56,5 @@ export const options = {
         { display: '3', value: 3 }
     ],
 };
-
-
 
 // export { options };

@@ -1,11 +1,11 @@
 <!-- <ion-content> -->
-    <app-calendar *ngIf="source" [viewTitle]="viewTitle">
-        <ng-template #template let-view="view" let-row="row" let-col="col">
-            <div class="calendar-day {{ view.dates[row*7+col].events[0]?.style }}">
-                {{view.dates[row*7+col].label}}
-            </div>
-        </ng-template>
-        <calendar (onTimeSelected)="onClick($event)" (onTitleChanged)="onViewTitleChanged($event)" [autoSelect]="false" [currentDate]="currentDate" [noEventsLabel]="''" [queryMode]="'local'" [eventSource]="source" [monthviewDisplayEventTemplate]="template" [calendarMode]="'month'" [showEventDetail]="false" [formatMonthTitle]="'MMMM yyyy'">
-        </calendar>
-    </app-calendar>
-    <!-- </ion-content> -->
+<app-calendar *ngIf="source" [viewTitle]="viewTitle">
+    <ng-template #template let-view="view" let-row="row" let-col="col">
+        <div id="{{view.dates[row*7+col].label}}-div" class="calendar-day {{ view.dates[row*7+col].events[0]?.style }}">
+            {{view.dates[row*7+col].label}}
+        </div>
+    </ng-template>
+    <calendar (onTimeSelected)="onClick($event)" (onTitleChanged)="onViewTitleChanged($event)" [autoSelect]="false" [currentDate]="currentDate" [noEventsLabel]="''" [queryMode]="'local'" [eventSource]="source" [monthviewDisplayEventTemplate]="template" [calendarMode]="'month'" [showEventDetail]="false" [formatMonthTitle]="'MMMM yyyy'">
+    </calendar>
+</app-calendar>
+<!-- </ion-content> -->

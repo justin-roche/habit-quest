@@ -1,13 +1,13 @@
 <ion-row *ngIf="data">
-    <ion-col size="6" ion-justify-content-center style="text-align:left">
+    <ion-col size="4" ion-justify-content-center style="text-align:left">
         <ion-label>{{data.name}}</ion-label>
     </ion-col>
-    <ion-col size="4">
+    <ion-col size="5">
         <div *ngIf="data.progress" style="border:1px solid blue">
             <ion-progress-bar style="height:12px; width:50%" [color]="data.progressColor || 'primary'" [value]="data.progress"></ion-progress-bar>
         </div>
     </ion-col>
-    <ion-col size="2" ion-justify-content-center style="text-align:right">
+    <ion-col size="3" id="{{data.name.split(' ')[0]}}-stat" ion-justify-content-center style="text-align:right">
         <ion-label>{{data.value}}</ion-label>
     </ion-col>
 </ion-row>

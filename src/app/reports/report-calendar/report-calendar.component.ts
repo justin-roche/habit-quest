@@ -3,6 +3,7 @@ import * as moment from 'moment';
 import { HabitsService } from 'src/app/services/habits.service';
 import { SettingsService } from 'src/app/services/settings.service';
 import { ScheduleService } from 'src/app/services/schedule.service';
+import { CypressAdapterService } from 'src/app/services/cypress-adapter.service';
 
 @Component({
     selector: 'report-calendar',
@@ -30,9 +31,11 @@ export class ReportCalendarComponent {
         }
     }
 
-    constructor(private scs: ScheduleService,
+    constructor(private cas: CypressAdapterService,
+                private scs: ScheduleService,
         private ss: SettingsService,
         private hs: HabitsService) {
+        this.cas.register('report-calendar', this);
         this.ss.getSettings().subscribe((val) => {
             this.settings = val;
         })
@@ -59,16 +62,18 @@ export class ReportCalendarComponent {
     }
 
     onClick(d) {
-        // respond to clicks
         let e = d.events[0];
-        if (e && e.task && moment(e.task.date).isSameOrBefore(moment())) {
-            let task = e.task;
-            if (e.task.status != 'COMPLETE') {
+        if (e && e.task) this.toggleTaskStatus(e.task)
+    }
+
+    toggleTaskStatus(task) {
+        console.log('toggling task status', task);
+        if (moment(task.date).isSameOrBefore(moment())) {
+            if (task.status != 'COMPLETE') {
                 this.hs.setTaskStatus((<any>this.h).id, task.id, task.date, 'COMPLETE');
-            } else if (e.task.status == 'COMPLETE') {
+            } else if (task.status == 'COMPLETE') {
                 this.hs.setTaskStatus((<any>this.h).id, task.id, task.date, 'MISSED');
             }
-
         }
     }
 

@@ -29,10 +29,10 @@ export class ReportsPage {
 
     ngOnInit() {
         this.hs.habits.asObservable().subscribe((habits) => {
-            if (habits) this.handleHabits(habits)
+            if (habits) this.handleHabits(habits);
             // the first subscription result is null
             // if (!habits) this.presentToast();
-        })
+        });
     }
 
     handleHabits(hs) {

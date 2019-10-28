@@ -16,6 +16,8 @@ import { HabitsService } from './services/habits.service';
 import { StorageService } from './services/storage.service';
 import { ScheduleService } from './services/schedule.service';
 import { SharedModule } from './shared/shared.module';
+import { CypressAdapterService } from './services/cypress-adapter.service';
+import { StatisticsService } from './services/statistics.service';
 
 @NgModule({
     declarations: [AppComponent],
@@ -31,6 +33,8 @@ import { SharedModule } from './shared/shared.module';
         StatusBar,
         SettingsService,
         HabitsService,
+        StatisticsService,
+        CypressAdapterService,
         StorageService,
         ScheduleService,
         SplashScreen,

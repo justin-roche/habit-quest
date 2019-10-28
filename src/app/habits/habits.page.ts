@@ -9,8 +9,6 @@ import * as moment from 'moment';
     styleUrls: ['habits.page.scss']
 })
 export class HabitsPage {
-    private habits = [];
-
     private incompleteTasks = [];
     private completeTasks = [];
     private missedTasks = [];
@@ -20,6 +18,28 @@ export class HabitsPage {
     private mode = 'list';
     private toast;
 
+    private incompleteOptions = {
+        title: 'Incomplete',
+        color: 'primary',
+        buttonColor: 'primary',
+        actionIcon: 'checkmark-circle-outline'
+    };
+    private completeOptions = {
+        title: 'Complete',
+        color: 'success',
+        actionIcon: 'checkmark-circle-outline'
+    };
+    private missedOptions = {
+        title: 'Missed',
+        color: 'danger',
+        actionIcon: 'checkmark-circle-outline'
+    };
+    private incidentsOptions = {
+        title: 'Incidents',
+        color: 'success',
+        actionIcon: 'checkmark-circle-outline'
+    };
+
     constructor(private hs: HabitsService, private toastController: ToastController) {
     }
 
@@ -27,14 +47,14 @@ export class HabitsPage {
         this.hs.habits.asObservable().subscribe((habits) => {
             if (habits) {
                 // if just deleted last habit, set to list view
-                if (habits.length == 0) this.mode = 'list';
+                if (habits.length === 0) this.mode = 'list';
                 this.allHabits = habits;
                 console.log('got new habs', this.allHabits);
 
-                this.createTasks()
+                this.createTasks();
             }
             // if (!habits) this.presentToast();
-        })
+        });
     }
 
     createTasks() {
@@ -43,8 +63,8 @@ export class HabitsPage {
         this.missedTasks = [];
         this.allHabits.forEach((h) => {
             // filter all habits for tasks occuring on visible date, set incompleteTasks to applicable tasks
-            let tasks = h.tasks.filter((t) => {
-                return this.currentDate.isSame(t.date, 'd')
+            const tasks = h.tasks.filter((t) => {
+                return this.currentDate.isSame(t.date, 'd');
             }).map((t) => {
                 return {
                     task: t,
@@ -53,12 +73,12 @@ export class HabitsPage {
                     // the following are used for sorts and time display
                     // hour: moment(t.date).hour(),
                     _hour: moment(t.date).format('hh:mm')
-                }
-            })
+                };
+            });
 
-            let completed = tasks.filter((t) => t.status == "COMPLETE")
-            let awaiting = tasks.filter((t) => t.status == "AWAITING")
-            let missed = tasks.filter((t) => t.status == "MISSED")
+            const completed = tasks.filter((t) => t.status === 'COMPLETE');
+            const awaiting = tasks.filter((t) => t.status === 'AWAITING');
+            const missed = tasks.filter((t) => t.status === 'MISSED');
 
             this.incompleteTasks = this.incompleteTasks.concat(awaiting);
             this.missedTasks = this.missedTasks.concat(missed);
@@ -72,22 +92,23 @@ export class HabitsPage {
             return t;
         }).sort((a, b) => {
             return a._hour - b._hour;
-        })
+        });
 
         this.incompleteTasks = this.incompleteTasks.sort((a, b) => {
             return a.hour - b.hour;
-        })
+        });
 
-        console.log('filtered incompleteTasks', this.incompleteTasks);
+        // console.log('filtered incompleteTasks', this.incompleteTasks);
     }
 
     private decrementDate() {
         this.currentDate = this.currentDate.subtract(1, 'day');
-        this.createTasks()
+        this.createTasks();
     }
+
     private incrementDate() {
         this.currentDate = this.currentDate.add(1, 'day');
-        this.createTasks()
+        this.createTasks();
     }
 
     toggleTaskStatus(t) {
@@ -96,11 +117,10 @@ export class HabitsPage {
         if (moment().isSame(t.task.date, 'd')) {
             markedTime = moment().format('hh:mm');
             console.log('mt', markedTime);
-
         }
 
         let newStatus = null;
-        if (t.status == 'COMPLETE') {
+        if (t.status === 'COMPLETE') {
             if (moment().isAfter(t.task.date, 'd')) {
                 newStatus = 'MISSED';
             } else {
@@ -114,8 +134,8 @@ export class HabitsPage {
     }
 
     private toggleDeleteMode() {
-        if (this.mode == 'list') {
-            this.mode = 'delete'
+        if (this.mode === 'list') {
+            this.mode = 'delete';
         } else {
             this.mode = 'list';
         }
@@ -128,12 +148,12 @@ export class HabitsPage {
 
     selectHabit(e, h) {
         if (!e.target.checked) {
-            this.selectedHabits.push(h)
+            this.selectedHabits.push(h);
 
         } else {
             this.selectedHabits = this.selectedHabits.filter((_h) => {
-                return _h != h;
-            })
+                return _h !== h;
+            });
         }
     }
 
@@ -154,8 +174,8 @@ export class HabitsPage {
 
     ionViewWillLeave() {
         if (this.toast) {
-            this.toast.dismiss()
-            this.toast = null
+            this.toast.dismiss();
+            this.toast = null;
         }
     }
 

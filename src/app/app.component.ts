@@ -1,30 +1,35 @@
+declare var require: any;
 import { Component } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { SettingsService } from './services/settings.service';
+
+import * as moment from 'moment';
+let mockdate = require('mockdate');
 
 @Component({
     selector: 'app-root',
     templateUrl: 'app.component.html'
 })
 export class AppComponent {
-    private theme = null;
     constructor(
         private platform: Platform,
         private splashScreen: SplashScreen,
         private statusBar: StatusBar,
-        private ss: SettingsService
     ) {
         this.initializeApp();
 
-        this.ss.getSettings().subscribe((val) => {
-            // this.settings = val;
-            // console.log('app settings', val);
-            console.log('interval', val.autoScheduleInterval);
-        });
+        let self = this;
 
+        (<any>window).mdSet = function(d) {
+            mockdate.set(moment(d));
+            console.log('set mock date', moment().format());
+        };
+        (<any>window).mdIncrement = function(d) {
+            mockdate.set(moment().add(1, 'd'));
+            console.log('new date', moment().format());
+        };
     }
 
     initializeApp() {

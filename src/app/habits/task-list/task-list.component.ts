@@ -12,11 +12,12 @@ export class TaskListComponent implements OnInit {
     @Input() mode;
     @Output() action = new EventEmitter<any>();
     @Output() deleteAction = new EventEmitter<any>();
+    private expanded = true;
 
     constructor() { }
 
     ngOnInit() {
-        console.log('options', this.options);
+        // console.log('options', this.options);
     }
 
     formatHour(h) {
@@ -29,5 +30,9 @@ export class TaskListComponent implements OnInit {
 
     emitDelete(d) {
         this.deleteAction.emit(d)
+    }
+
+    toggleExpand(){
+this.expanded = !this.expanded
     }
 }

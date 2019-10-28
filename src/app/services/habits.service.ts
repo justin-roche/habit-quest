@@ -1,10 +1,16 @@
-import * as _ from 'underscore';
+declare var require: any;
+
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import * as moment from 'moment';
 import { StorageService } from './storage.service';
 import { SettingsService } from './settings.service';
-// let m = require('./form.json');
+import { StatisticsService } from './statistics.service';
+// without subpathing it will look for coverage build? https://github.com/bunkat/later/issues/155
+import * as moment from 'moment';
+import * as _ from 'underscore';
+require('later/later.js');
+let later = (<any>window).later;
+// let mockdate = require('mockdate');
 
 @Injectable({
     providedIn: 'root'
@@ -12,14 +18,16 @@ import { SettingsService } from './settings.service';
 export class HabitsService {
     // the primary variables, habits array and aggregate statistics
     private h = [];
-    private expired = [];
+    private i = [];
     private as = null;
     private settings;
-
     public habits: BehaviorSubject<Array<any>>;
+    public incidents: BehaviorSubject<Array<any>>;
     public aggregate: BehaviorSubject<any>;
 
-    constructor(private storage: StorageService, private ss: SettingsService) {
+    constructor(private storage: StorageService,
+        private ss: SettingsService,
+        private sts: StatisticsService) {
 
         this.ss.getSettings().subscribe((val) => {
             this.settings = val;
@@ -27,44 +35,52 @@ export class HabitsService {
 
         // the initial set value, emitted as first value to all subscribers
         this.habits = new BehaviorSubject(null);
+        this.incidents = new BehaviorSubject(null);
         this.aggregate = new BehaviorSubject(null);
 
         let self = this;
         (<any>window).ph = function() {
             console.log('habits', JSON.stringify(self.h));
-        }
+        };
+        // storage saves state atomically, incorporating habits with expired habits
         this.storage.load().subscribe(this.handleLoad.bind(this));
-        // this.addHabit(m);
-
+        this.scheduleExpirationCheck();
     }
 
-    handleLoad(value) {
-        this.h = value;
-        this.markMissedTasks();
-        this.updateAllStatistics();
+    scheduleExpirationCheck() {
+        var schedule = later.parse.cron('0 0 * * *');
+        // var schedule = later.parse.text('every 5 seconds');
+        later.setInterval(this.markExpired.bind(this), schedule);
+        later.setInterval(this.markMissed.bind(this), schedule);
+    }
+
+    handleLoad(state) {
+        this.h = state;
+        this.markMissed();
+        this.sts.updateAllStatistics(this.h);
         this.broadcastHabits();
     }
 
-    markMissedTasks() {
+    markExpired() {
         this.h.forEach((h) => {
-            h.tasks.forEach((t) => {
-                if (this.isMissed(t)) t.status = 'MISSED'
-            })
-        })
+            if (h.tasks.every((t) => moment().isAfter(t.date, 'd'))) h.expired = true;
+        });
     }
 
-    isMissed(t) {
-        return (moment(t.date).isBefore(moment(), 'day') && t.status == 'AWAITING');
+    addIncident(i) {
+        i.id = this.guidGenerator();
+        this.i.push(i);
+        this.broadcastHabits();
     }
 
     addHabit(h) {
         h.start_date = moment(h.start_date);
         h.id = this.guidGenerator();
         this.createTasks(h);
-        this.createStatisticsForHabit(h);
+        this.sts.createStatisticsForHabit(h);
         this.h.push(h);
-        this.markMissedTasks();
-        this.updateAllStatistics();
+        this.markMissed();
+        this.sts.updateAllStatistics(this.h);
         this.broadcastHabits();
         // this.habits.next(this.h);
     }
@@ -85,6 +101,18 @@ export class HabitsService {
         else if (h.frequency_units == 'week') {
             this.addWeeklyTasks(h, next, end);
         }
+    }
+
+    markMissed() {
+        this.h.forEach((h) => {
+            h.tasks.forEach((t) => {
+                if (this.isMissed(t)) t.status = 'MISSED'
+            })
+        })
+    }
+
+    isMissed(t) {
+        return (moment(t.date).isBefore(moment(), 'day') && t.status == 'AWAITING');
     }
 
     getTasksForDate(d) {
@@ -160,10 +188,6 @@ export class HabitsService {
         }))
     }
 
-    isNotStartRange(d) {
-        // kj
-    }
-
     setStartDate(h) {
         if (h.start_type == 'auto') {
             // add habits at 14 day intervals by default
@@ -212,7 +236,7 @@ export class HabitsService {
         this.h = this.h.filter((h) => h.id != id);
 
         // duplicated elsewhwere
-        this.updateAggregateStatistics();
+        this.sts.updateAggregateStatistics(this.h);
         this.broadcastHabits();
     }
 
@@ -230,9 +254,9 @@ export class HabitsService {
             task.completed_time = date;
         }
 
-        this.updateStatistics(habit);
+        this.sts.updateStatistics(habit);
         if (this.allTasksComplete(habit)) habit.status = 'COMPLETE'
-        this.updateAggregateStatistics();
+        this.as = this.sts.updateAggregateStatistics(this.h);
         this.broadcastHabits();
     }
 
@@ -243,269 +267,14 @@ export class HabitsService {
             return Object.assign({}, h);
         });
         this.habits.next(this.h);
+
         // as above, to trigger update on charts of summary page 
         this.as = Object.assign({}, this.as);
         this.aggregate.next(this.as);
+        this.incidents.next(this.i);
         this.storage.set(this.h);
-    }
+        console.log('broadcast', this.h);
 
-    getStatisticsTemplate() {
-        // let h = this.h;
-        return {
-            completion: {
-                // completion objects for historical days
-                totals: [],
-                months: [],
-                weeks: [],
-                // completion objects for present day
-                total: {
-                    total: 0,
-                    completed: 0,
-                    percent: 0
-                },
-                month: {
-                    total: 0,
-                    completed: 0,
-                    percent: 0
-                },
-                week: {
-                    total: 0,
-                    completed: 0,
-                    percent: 0
-                },
-                tasks_completed: 0,
-                // tasks_remaining: h.tasks.length,
-                // hours_remaining: h.tasks.length,
-                // hours_used: h.tasks.length,
-            },
-            strength: {
-                streak: {
-                    current: 0,
-                    longest: 0
-                },
-                streaks: [],
-
-                habit_strength: 0,
-                tasks_missed: 0,
-                trends: {
-                },
-                trend_week: 0,
-                trend_month: 0,
-            },
-            points: {
-                point_total: 0,
-                total_point_value: 0,
-                points_per_task: 0,
-            }
-        }
-    }
-
-    createStatisticsForHabit(h) {
-        // console.log('creating stats', h);
-
-        let points = this.createPointValue(h);
-        let statistics = this.getStatisticsTemplate();
-        statistics.points.total_point_value = points = h.tasks.length;
-        statistics.points.points_per_task = points;
-        h.statistics = statistics
-        console.log('stats', h.statistics);
-    }
-
-    createPointValue(h) {
-        // adjust points according to selected profile here (in relation to schedule)
-        return h.difficulty + h.priority + (h.abstinence ? 0 : 1);
-    }
-
-    // UPDATE STATISTICS
-    updateAllStatistics() {
-        this.h.forEach((h) => {
-            this.updateStatistics(h);
-        });
-        this.updateAggregateStatistics();
-    }
-
-    updateStatistics(h) {
-        // derive completed percentage from number of tasks that have been completed, non emitting
-        this.updateCompletion(h);
-        this.updateStrength(h);
-        this.updatePoints(h);
-        console.log('updated stats', h.statistics);
-
-    }
-
-    updateAggregateStatistics() {
-        this.as = this.getStatisticsTemplate();
-
-        // reduce h.statistics.completion.totals by date to aggregate
-
-        this.as.completion.totals = this.getAggregateSuccessRatesByPeriod('totals');
-        this.as.completion.total = _.last(this.as.completion.totals);
-        // the last item of a historical series is the current value
-
-        this.as.completion.months = this.getAggregateSuccessRatesByPeriod('months');
-        this.as.completion.month = _.last(this.as.completion.months);
-
-        this.as.completion.weeks = this.getAggregateSuccessRatesByPeriod('weeks');
-        this.as.completion.week = _.last(this.as.completion.weeks);
-        // console.log('aggregate stats', this.as);
-    }
-
-    getAggregateSuccessRatesByPeriod(period) {
-
-        let aggregateSeries = [];
-        // the aggregateSeries for the period contains the results for all habits, eg. totals, months, weeks
-        this.h.forEach((h) => {
-            // iterate all habits
-            h.statistics.completion[period].forEach((taskStat) => {
-                // iterate the period value series for a single habit, test to see if an aggregate for this date exists
-                let aggregate = _.find(aggregateSeries, (testAggregate) => {
-                    return moment(testAggregate.time).isSame(taskStat.time);
-                });
-                if (!aggregate) {
-                    // if no aggregate for the date, create one
-                    // set the time for the aggregate to the first located task on that day
-                    aggregateSeries.push({
-                        values: [taskStat],
-                        time: taskStat.time
-                    });
-                } else {
-                    aggregate.values.push(taskStat);
-                }
-            });
-        });
-
-        aggregateSeries.forEach((dayAggregate) => {
-            // for each day in the aggregate series, derive an average rate for all active habits
-            dayAggregate.averageRate = dayAggregate.values.reduce((acc, v) => {
-                return Number(v.rate) + acc;
-            }, 0) / dayAggregate.values.length;
-        })
-
-        aggregateSeries = aggregateSeries.sort((dt1, dt2) => {
-            return moment(dt1.time).isBefore(dt2.time) ? -1 : 1;
-        })
-
-        return aggregateSeries;
-    }
-
-    getSuccessRatesByPeriod(h, period, referenceTime) {
-        // given a reference time, calculate the success rates for a period preceeding it
-        let n;
-        if (referenceTime) {
-            n = moment(referenceTime)
-        } else {
-            n = moment()
-        }
-
-        let range = h.tasks.filter((t) => {
-            // if period provided, calculate on all tasks in same period and prior
-            if (period) {
-                return n.isSame(t.date, period) && n.isSameOrAfter(t.date);
-            }
-            // if no period (all prior) test if task is not in the future 
-            return n.isSameOrAfter(t.date)
-
-        });
-        // console.log('range', range.length, range);
-
-        let complete = range.filter((t) =>
-            t.status == 'COMPLETE');
-
-        let rate = ((complete.length / range.length) * 100).toFixed(1);
-
-        return {
-            total: range.length,
-            complete: complete.length,
-            rate: rate,
-            time: n.format(),
-            id: h.id
-        };
-    }
-
-    updateCompletion(h) {
-        let comp = h.statistics.completion;
-
-        comp.total = this.getSuccessRatesByPeriod(h, null, null);
-        // debugger;
-        comp.month = this.getSuccessRatesByPeriod(h, 'month', null);
-        comp.week = this.getSuccessRatesByPeriod(h, 'week', null);
-
-        // historical values for completion data; operates on tasks (which all have unique dates 
-        let ts = h.tasks.filter((t) => {
-            return moment(t.date).isBefore(moment());
-        })
-        // debugger;
-
-        comp.totals = [];
-        comp.weeks = [];
-        comp.months = [];
-
-        ts.forEach((t) => {
-            let historical = {};
-            let historicalTime = t.date;
-            // calculate the rates for historical reference times, can be more efficient by only calculating historical data for times in the future of the triggering change, instead of recalculating all historical values for every change.
-
-            let total = this.getSuccessRatesByPeriod(h, null, historicalTime);
-            let month = this.getSuccessRatesByPeriod(h, 'month', historicalTime);
-            let week = this.getSuccessRatesByPeriod(h, 'week', historicalTime);
-
-            comp.totals.push(total);
-            comp.months.push(month);
-            comp.weeks.push(week);
-        })
-        // console.log('updated historical', comp, h);
-        comp.hours_used = this.getDurationMinutes(h);
-    }
-
-    updateStrength(h) {
-        this.getHistoricalStreaks(h);
-
-        // calculate missed metrics 
-        h.statistics.strength.tasks_missed = h.tasks.filter((t) => {
-            return t.status == 'MISSED';
-        }).length
-    }
-
-    getHistoricalStreaks(h) {
-        let strength = h.statistics.strength;
-        strength.streaks = [];
-
-        h.tasks.filter((t) => {
-            // only use data from past tasks
-            return moment().isSameOrAfter(t.date);
-        }).forEach((t) => {
-            let historicalTime = t.date;
-            // calculate the streaks for historical reference times, can be more efficient by only calculating historical data for times in the future of the triggering change, instead of recalculating all historical values for every change.
-
-            let streakData = this.getHistoricalStreak(h, historicalTime);
-            strength.streaks.push(streakData);
-        })
-        // console.log('streaks', strength.streaks);
-        strength.streak = _.last(strength.streaks);
-    }
-
-    getHistoricalStreak(h, time) {
-        let longest = 0;
-        let current = 0;
-
-        h.tasks.filter((t) => (moment(t.date).isSameOrBefore(moment(time))))
-            // reduce the longest streak up to the provided time
-            .forEach((t) => {
-                current = t.status == "COMPLETE" ? current += 1 : 0;
-                if (current > longest) longest = current;
-            });
-
-        // time must be included to add labels in charts
-        return { current, longest, time }
-    }
-
-    updatePoints(h) {
-        h.statistics.points.point_total = h.statistics.completion.tasks_completed * h.statistics.points.points_per_task;
-    }
-
-    getDurationMinutes(h) {
-        let tm = h.statistics.completion.tasks_completed * ((h.duration_hours * 60) + h.duration_minutes) / 60;
-        return tm;
     }
 
     allTasksComplete(h) {

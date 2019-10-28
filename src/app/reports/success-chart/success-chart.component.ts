@@ -40,7 +40,7 @@ export class SuccessChartComponent implements OnInit {
         let o = this.getChartBase();
         console.log('options', JSON.parse(JSON.stringify(o)));
         delete o.options.scales.yAxes[0].ticks.suggestedMax;
-        o.options.scales.yAxes[0].ticks.stepSize = 1;
+        (<any>o.options.scales.yAxes[0].ticks).stepSize = 1;
 
         this.barChart = new Chart(this.barCanvas.nativeElement, o);
     }

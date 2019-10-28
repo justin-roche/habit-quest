@@ -13,6 +13,10 @@ import localeUS from '@angular/common/locales/en';
 import { MonthSchedulePageModule } from '../month-schedule/month-schedule.module';
 import { DaySchedulePageModule } from '../day-schedule/day-schedule.module';
 import { WheelSelector } from '@ionic-native/wheel-selector/ngx';
+import { InfoFormComponent } from './info-form/info-form.component';
+import { SchedulingFormComponent } from './scheduling-form/scheduling-form.component';
+import { CategoryFormComponent } from './category-form/category-form.component';
+import { IncidentFormComponent } from './incident-form/incident-form.component';
 registerLocaleData(localeUS);
 
 const routes: Routes = [
@@ -27,7 +31,7 @@ const routes: Routes = [
         CommonModule,
         FormsModule,
         IonicModule,
-       PurposePageModule,
+        PurposePageModule,
         DaySchedulePageModule,
         MonthSchedulePageModule,
         ReactiveFormsModule,
@@ -39,6 +43,6 @@ const routes: Routes = [
         WheelSelector,
         { provide: LOCALE_ID, useValue: 'en' },
     ],
-    declarations: [CreatePage]
+    declarations: [CreatePage, InfoFormComponent, SchedulingFormComponent, CategoryFormComponent,IncidentFormComponent]
 })
 export class CreatePageModule { }
