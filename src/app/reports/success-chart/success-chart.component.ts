@@ -8,7 +8,7 @@ import { Chart } from 'chart.js';
 })
 export class SuccessChartComponent implements OnInit {
 
-    @ViewChild("barCanvas") barCanvas: ElementRef;
+    @ViewChild('barCanvas') barCanvas: ElementRef;
     @Input() period;
     @Input() options;
     private d;
@@ -19,7 +19,7 @@ export class SuccessChartComponent implements OnInit {
         this.d = value;
         // console.log('style', this.style);
 
-        if (this.options.style == 'streak') {
+        if (this.options.style === 'streak') {
             // console.log('streak data', this.d);
             this.getStreakChart();
         } else {
@@ -32,7 +32,7 @@ export class SuccessChartComponent implements OnInit {
     ngOnInit() { }
 
     getSuccessChart() {
-        let o = this.getChartBase();
+        const o = this.getChartBase();
         this.barChart = new Chart(this.barCanvas.nativeElement, o);
     }
 
@@ -46,21 +46,21 @@ export class SuccessChartComponent implements OnInit {
     }
 
     getChartBase() {
-        let inputData = this.d.map((t, i) => {
+        const inputData = this.d.map((t, i) => {
             return t[this.options.dataSelector];
         });
 
-        let bgcolors = inputData.map((d) => {
+        const bgcolors = inputData.map((d) => {
             // return "rgba(54, 162, 235, 0.2)";
             return "green";
         });
 
-        let bordercolors = inputData.map((d) => {
+        const bordercolors = inputData.map((d) => {
             // return "rgba(255,99,132,1)";
             return "green";
         });
 
-        let labels = this.d.map((d) => {
+        const labels = this.d.map((d) => {
             return d.time;
         });
 
@@ -68,7 +68,6 @@ export class SuccessChartComponent implements OnInit {
             labels: labels,
             datasets: [{
                 fill: false,
-                // label: 'Page Views',
                 data: inputData,
                 borderColor: '#3880ff',
                 backgroundColor: '#3880ff',
@@ -91,7 +90,7 @@ export class SuccessChartComponent implements OnInit {
                     suggestedMax: 100,
                 },
             }]
-        }
+        };
 
         const options = {
             type: 'line',
@@ -103,7 +102,7 @@ export class SuccessChartComponent implements OnInit {
                 responsive: true,
                 scales: scales
             }
-        }
+        };
 
         return options;
     }

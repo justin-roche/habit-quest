@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SettingsService } from '../services/settings.service';
 
-import { flatMap, map, catchError, delay, throttleTime, concatMap, bufferTime, take, switchMap, toArray } from 'rxjs/operators'
+import {  take, toArray } from 'rxjs/operators'
 import { Observable, Subject, pipe, of, from, interval, concat, timer, merge, fromEvent, SubscriptionLike, PartialObserver } from 'rxjs';
 
 @Component({

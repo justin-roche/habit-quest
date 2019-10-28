@@ -11,7 +11,6 @@ import { SummaryStatsComponent } from './summary-stats/summary-stats.component';
 import { StatRowComponent } from './stat-row/stat-row.component';
 import { SuccessChartComponent } from './success-chart/success-chart.component';
 import { ReportCalendarComponent } from './report-calendar/report-calendar.component';
-import { AppCalendarComponent } from '../shared/app-calendar/app-calendar.component';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
