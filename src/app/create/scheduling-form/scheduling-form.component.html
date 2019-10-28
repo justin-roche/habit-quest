@@ -1,0 +1,72 @@
+<ion-list *ngIf="form && form.controls.type.value == 'habit'" >
+    <ion-list-header>
+        <ion-label color="tertiary">Scheduling</ion-label>
+    </ion-list-header>
+    <ion-item [attr.lines]="form.controls['start_date'].value? 'none':''">
+        <ion-label>
+            Start On
+        </ion-label>
+        <ion-select float-right [formControl]="form.controls.start_type" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
+            <ion-select-option *ngFor="let item of formOptions.start_types" [disabled]="item.disabled" [value]="item.value">{{item.display}}</ion-select-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item *ngIf="form.controls['start_date'].value">
+        <ion-text slot="end">{{formatDate(form.controls.start_date.value)}}</ion-text>
+    </ion-item>
+    <!-- {{formOptions.start_types.length}} -->
+    <ion-item>
+
+        <ion-label>Time Required</ion-label>
+
+        <ion-datetime style="" [pickerOptions]="pickerOptions" value="{{getDurationDisplay()}}" hourValues="{{formOptions.hours.toString()}}" minuteValues="{{formOptions.minutes.toString()}}" displayFormat="H:mm">
+        </ion-datetime>
+        <!-- {{getDurationDisplay()}} -->
+    </ion-item>
+    <!-- <ion-item> -->
+    <!-- <ion-label></ion-label> -->
+    <!-- <ion-button slot="end" color="none"> -->
+    <!-- <ion-icon color="dark" slot="icon-only" name="timer"></ion-icon> -->
+    <!-- </ion-button> -->
+    <!-- </ion-item> -->
+    <ion-item lines="none">
+        <ion-label>Repeat</ion-label>
+        <ion-input id="frequency-quantity" slot="end" type="text" style="" style="text-align:right" [formControl]="form.controls.frequency_quantity"></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-label></ion-label>
+        <ion-select style="" id="frequency-units" [formControl]="form.controls.frequency_units" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
+            <ion-select-option *ngFor="let item of formOptions.frequency_units" [value]="item.value">{{item.display}}</ion-select-option>
+        </ion-select>
+    </ion-item>
+    <ion-item *ngIf="form.controls.frequency_units.value == 'week'">
+        <ion-button (click)="toggleWeekday(d)" class="weekday" color="{{_weekdayColor(d)}}" *ngFor="let d of formOptions.weekdays">
+            <!-- {{_weekdayColor(d)}} -->
+            {{d.display}}
+        </ion-button>
+    </ion-item>
+
+    <ion-item>
+        <ion-label>
+            Time of day
+        </ion-label>
+        <ion-button id="timer-btn" (click)="presentDayScheduleModal()" color="none">
+            <ion-icon id="timer" color="dark" slot="icon-only" name="timer"></ion-icon>
+        </ion-button>
+    </ion-item>
+    <ion-item lines="none">
+        <ion-label>
+            End After
+        </ion-label>
+        <ion-input *ngIf="form.controls.end_date.value" value="{{formatDate(form.controls.end_date.value)}}" slot="end" style="text-align:right"></ion-input>
+        <ion-input *ngIf="form.controls.end_units.value != 'date'" style="border:1px solid gray" style="text-align:right" type="number" [formControl]="form.controls.end_quantity"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label>
+        </ion-label>
+        <ion-select [formControl]="form.controls.end_units" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
+            <ion-select-option *ngFor="let endUnit of formOptions.end_units" [value]="endUnit.value">{{endUnit.display}}</ion-select-option>
+        </ion-select>
+    </ion-item>
+</ion-list>

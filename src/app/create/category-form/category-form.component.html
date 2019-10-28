@@ -1,0 +1,32 @@
+<ion-list *ngIf="form">
+    <!-- category -->
+    <ion-list-header>
+        <ion-label color="tertiary">Category</ion-label>
+    </ion-list-header>
+    <ion-item>
+        <ion-label>Group</ion-label>
+        <ion-select [formControl]="form.controls.group" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
+            <ion-select-option *ngFor="let item of formOptions.groups" [value]="item.value">{{item.display}}</ion-select-option>
+        </ion-select>
+    </ion-item>
+
+    <ng-container *ngIf="form.controls.type.value == 'habit'">
+        <ion-item>
+            <ion-label>Abstinence type</ion-label>
+            <ion-checkbox class="abstinence" [formControl]="form.controls.abstinence"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+            <ion-label>Difficulty</ion-label>
+            <ion-select [formControl]="form.controls.difficulty" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
+                <ion-select-option *ngFor="let item of formOptions.difficulties" [value]="item.value">{{item.display}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label>Priority</ion-label>
+            <ion-select [formControl]="form.controls.priority" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
+                <ion-select-option *ngFor="let item of formOptions.priorities" [value]="item.value">{{item.display}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+    </ng-container>
+
+</ion-list>

@@ -1,0 +1,13 @@
+<ion-list *ngIf="form">
+    <ion-list-header>
+        <ion-label color="tertiary">Info</ion-label>
+    </ion-list-header>
+    <ion-item [attr.lines]="form.controls['start_date'].value? 'none':''">
+        <ion-label>
+            Start On
+        </ion-label>
+        <ion-select float-right [formControl]="form.controls.start_type" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One">
+            <ion-select-option *ngFor="let item of formOptions.start_types" [disabled]="item.disabled" [value]="item.value">{{item.display}}</ion-select-option>
+        </ion-select>
+    </ion-item>
+</ion-list>

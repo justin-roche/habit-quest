@@ -1,0 +1,18 @@
+<ion-list *ngIf="form.controls">
+    <ion-list-header>
+        <ion-label floating color="tertiary">Info</ion-label>
+    </ion-list-header>
+
+    <ion-item>
+        <ion-label>
+            Name
+        </ion-label>
+        <ion-input placeholder="enter name" slot="end" style="text-align:right" [formControl]="form.controls.name"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>
+            Description
+        </ion-label>
+        <ion-input slot="end" style="text-align:right" [formControl]="form.controls.description" placeholder="enter description"></ion-input>
+    </ion-item>
+</ion-list>
