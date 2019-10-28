@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import * as moment from 'moment';
 import { HabitsService } from 'src/app/services/habits.service';
 import { SettingsService } from 'src/app/services/settings.service';
@@ -32,7 +32,7 @@ export class ReportCalendarComponent {
     }
 
     constructor(private cas: CypressAdapterService,
-                private scs: ScheduleService,
+        private scs: ScheduleService,
         private ss: SettingsService,
         private hs: HabitsService) {
         this.cas.register('report-calendar', this);
